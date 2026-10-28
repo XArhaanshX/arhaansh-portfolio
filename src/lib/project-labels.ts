@@ -176,6 +176,8 @@ export function parseHonours(items: string[]): Honour[] {
       const event = (right && /\b(1st|2nd|3rd|Top \d+)\b/.test(left) ? right : left)
         .replace(/\b(1st|2nd|3rd|Top \d+|Best Freshers)\b.*$/, "")
         .replace(/ by .*$/, "")
+        // an honour with no "by Organiser" still ends in its date
+        .replace(/ (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{4}$/, "")
         .replace(/\s+/g, " ")
         .trim();
       const track = text.match(/(\w+(?:'s)?) Track/)?.[1]?.replace(/'s$/, "");
