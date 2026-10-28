@@ -415,6 +415,27 @@
   "score": 20
  },
  {
+  "repo": "XArhaanshX/WunderFund-Quant-Dev-Challenge",
+  "title": "Quant ML Challenge",
+  "summary": "Wunder Fund Alpha Connectome: predict future price moves from 112 order-book and trade features. Code goes public after 15 Nov 2026.",
+  "category": "Quant ML",
+  "origin": "personal",
+  "stack": [
+   "Python"
+  ],
+  "langs": [],
+  "year": 2026,
+  "created": "2026-10-26T10:25:25.000Z",
+  "pushedAt": "2026-10-28T20:07:20Z",
+  "status": "active",
+  "role": "solo",
+  "share": 1,
+  "commits": 1,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/WunderFund-Quant-Dev-Challenge",
+  "score": 20
+ },
+ {
   "repo": "liualt/PRISM",
   "title": "Code History Search",
   "summary": "PRISM (Samsung PRISM GenAI Hackathon): ask about a JavaScript repo in plain English and get matching functions across its whole git history.",
