@@ -84,7 +84,7 @@ type Page = { pageInfo: { hasNextPage: boolean; endCursor: string | null }; node
 async function gql<T>(token: string, query: string, variables: Record<string, unknown>): Promise<T> {
   const r = await fetch("https://api.github.com/graphql", {
     method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "User-Agent": "xiao.sh-projects", "content-type": "application/json" },
+    headers: { Authorization: `Bearer ${token}`, "User-Agent": "arhaansh-portfolio-projects", "content-type": "application/json" },
     body: JSON.stringify({ query, variables }),
   });
   const body = (await r.json()) as { data?: T; errors?: { message: string }[] };
@@ -151,7 +151,7 @@ export async function collectRepos(token: string, login: string, orgs: string[],
   await Promise.all(
     ambiguous.map(async (r) => {
       const res = await fetch(`https://api.github.com/repos/${r.repo}/contributors?per_page=30`, {
-        headers: { Authorization: `Bearer ${token}`, "User-Agent": "xiao.sh-projects", Accept: "application/vnd.github+json" },
+        headers: { Authorization: `Bearer ${token}`, "User-Agent": "arhaansh-portfolio-projects", Accept: "application/vnd.github+json" },
       });
       if (!res.ok) return;
       const list = (await res.json()) as { login?: string; contributions?: number }[];
@@ -164,17 +164,17 @@ export async function collectRepos(token: string, login: string, orgs: string[],
 // ---- honours (LinkedIn "Honors & Awards") ---------------------------------------------------
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-/** Hackathon honours only (school awards stay on LinkedIn), newest first. */
+/** Hackathon and CTF honours only (school awards stay on LinkedIn), newest first. */
 export function parseHonours(items: string[]): Honour[] {
   return items
-    .filter((t) => /hack/i.test(t))
+    .filter((t) => /hack|\bctf\b/i.test(t))
     .map((text) => {
       const d = text.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) (\d{4})$/);
-      const place = (text.match(/\b(1st|2nd|3rd|Top \d+|Track Prize)\b/) ?? ["Winner"])[0];
+      const place = (text.match(/\b(1st|2nd|3rd|Top \d+|Track Prize|Best Freshers)\b/) ?? ["Winner"])[0];
       // "Event - Track Place Org Mon YYYY" or "Place Track - Event by Org ..." or "Event Place Org ..."
       const [left, right] = text.split(" - ");
       const event = (right && /\b(1st|2nd|3rd|Top \d+)\b/.test(left) ? right : left)
-        .replace(/\b(1st|2nd|3rd|Top \d+)\b.*$/, "")
+        .replace(/\b(1st|2nd|3rd|Top \d+|Best Freshers)\b.*$/, "")
         .replace(/ by .*$/, "")
         .replace(/\s+/g, " ")
         .trim();
@@ -188,19 +188,19 @@ export function parseHonours(items: string[]): Honour[] {
 
 // ---- derive -------------------------------------------------------------------------------
 // category: the rule with the most keyword hits in name + description + topics wins; ties go
-// to the earlier rule; no hit -> "Web apps"
+// to the earlier rule; no hit -> "Systems". ML areas come first: this is an ML portfolio.
 const CATEGORIES: [string, RegExp][] = [
-  ["ML systems", /\b(inference|diffusion|mlx|moe|quantiz\w*|transformers?|spectrogram|neural|safetensors|llm-inference|machine-learning)\b/gi],
-  ["Agents & AI", /\b(agents?|agentic|llm|gpt|gemini|claude|mistral|openrouter|ai|mcp|memory|translat\w*|speech|automat\w*)\b/gi],
-  ["Dev tools", /\b(plugin|cli|skills?|extension|developer-tools|codex|vscode|harness|benchmarks?|claude-code-plugin|code-quality)\b/gi],
-  ["Research", /\b(research|neutron|reflectivity|simulation)\b/gi],
-  ["Infra", /\b(kubernetes|vps|ansible|docker|cluster|tailscale|iac|fleet|vps-deployment)\b/gi],
-  ["Hardware & games", /\b(robots?|humanoid|vr|fps|frame-time|overclocking|gaming|hardware|game-mod|teleoperation)\b/gi],
-  ["Finance", /\b(stocks?|sec|filings?|insider|crypto|fundrais\w*|finance)\b/gi],
+  ["Computer vision", /\b(vision|images?|video|deepfakes?|detector|cnns?|gnns?|yolo|opencv|mediapipe|segmentation|symbols?|handwriting|ocr|fatigue|visual|faces?|recognition|webcam|diagrams?)\b/gi],
+  ["Time series", /\b(forecast\w*|time[- ]series|temporal|load|signals?|stochastic|tremor|lstm|telemetry|imu|fft|sensors?)\b/gi],
+  ["NLP & agents", /\b(nlp|llms?|agents?|agentic|bert|distilbert|rag|gpt|transformers?|language|text|retriev\w*|authorship)\b/gi],
+  ["Quant ML", /\b(quant\w*|trading|alpha|stocks?|finance|portfolio|markets?|options|backtest\w*|wunderfund)\b/gi],
+  ["Research", /\b(research|study|discharge|heat\w*|climate|humid\w*|noise|robustness)\b/gi],
+  ["Classical ML", /\b(churn|classification|clustering|regression|xgboost|lightgbm|smote|prediction|anomaly|ml|machine-learning)\b/gi],
+  ["Systems", /\b(b\+?-?tree|database|index|reverse|engineering|kernel|configs?|linux)\b/gi],
 ];
 function categorize(r: RawRepo): [string, string] {
   const hay = `${r.name.replace(/[-_]/g, " ")} ${r.description} ${r.topics.join(" ")}`;
-  let best: [string, string] = ["Web apps", "no keyword hit"];
+  let best: [string, string] = ["Systems", "no keyword hit"];
   let bestN = 0;
   for (const [name, re] of CATEGORIES) {
     const hits = hay.match(re) ?? [];
@@ -209,9 +209,19 @@ function categorize(r: RawRepo): [string, string] {
   return best;
 }
 
-// markup/config languages never count as "the stack"
-const MARKUP = ["CSS", "SCSS", "HTML", "Dockerfile", "Makefile", "Procfile", "Batchfile", "Jupyter Notebook", "MDX", "Nix"];
+// markup/config languages never count as "the stack" (notebooks do: ML work lives in them)
+const MARKUP = ["CSS", "SCSS", "HTML", "Dockerfile", "Makefile", "Procfile", "Batchfile", "MDX", "Nix", "TeX"];
+// ML libraries first: only the first three hits make the stack
 const FRAMEWORKS: [string, RegExp][] = [
+  ["PyTorch", /pytorch|\btorch\b/i],
+  ["TensorFlow", /tensorflow|\bkeras\b/i],
+  ["Transformers", /hugging ?face|\btransformers\b|distilbert/i],
+  ["scikit-learn", /scikit|sklearn/i],
+  ["LightGBM", /lightgbm/i],
+  ["XGBoost", /xgboost/i],
+  ["OpenCV", /opencv|\bcv2\b/i],
+  ["MediaPipe", /mediapipe/i],
+  ["YOLO", /\byolo|ultralytics/i],
   ["Next.js", /next\.?js|"next":/i],
   ["React", /\breact\b/i],
   ["Svelte", /svelte/i],
@@ -223,7 +233,6 @@ const FRAMEWORKS: [string, RegExp][] = [
   ["Stripe", /\bstripe\b/i],
   ["Cloudflare", /cloudflare|wrangler/i],
   ["Docker", /docker/i],
-  ["PyTorch", /pytorch|\btorch\b/i],
   ["MLX", /\bmlx\b/i],
   ["Modal", /\bmodal\b/i],
   ["Bun", /\bbun\b/i],
@@ -240,10 +249,11 @@ function stackOf(r: RawRepo): Pick<Project, "stack" | "langs"> {
   return { stack: [...new Set([...code.slice(0, 3), ...fw.slice(0, 3)])], langs };
 }
 
-// a description shaped "Long Name (ACRONYM)" expands an acronym repo name (ICBG)
+// a description shaped "Long Name (ACRONYM)" expands an acronym repo name (ICBG); kebab-case
+// names read as words (Deepfake-Detection -> Deepfake Detection)
 function titleOf(r: RawRepo): string {
   const m = r.description.match(/^([A-Z][\w ]+?) \(([A-Z]+)\)$/);
-  return m && m[2] === r.name ? m[1] : r.name;
+  return m && m[2] === r.name ? m[1] : r.name.replace(/[-_]+/g, " ");
 }
 
 // the description, else the README's first prose paragraph; first sentence of 40-150 chars
@@ -348,7 +358,7 @@ export function deriveProjects({ raws, login, aliases = [], hackathonOrgs, honou
   const why: Record<string, string[]> = {};
   const projects = kept.map((r) => {
     const title = titleOf(r);
-    const origin: Project["origin"] = r.fork ? "contrib" : hackathonOrgs.includes(r.owner) || /hackathon/i.test(r.readme.slice(0, 1500)) ? "hackathon" : /research/i.test(`${r.owner} ${r.topics.join(" ")}`) ? "research" : "personal";
+    const origin: Project["origin"] = r.fork ? "contrib" : hackathonOrgs.includes(r.owner) || /hackathon/i.test(r.readme.slice(0, 1500)) ? "hackathon" : /\bresearch\b/i.test(`${r.owner} ${r.name.replace(/[-_]/g, " ")} ${r.description} ${r.topics.join(" ")} ${r.readme.slice(0, 600)}`) ? "research" : "personal";
     const [category, catWhy] = categorize(r);
     const ageDays = (now - Date.parse(r.pushedAt)) / DAY;
     const status: Project["status"] = r.archived ? "archived" : ageDays < 14 ? "active" : ageDays < 90 ? "recent" : origin === "hackathon" ? "shipped" : "dormant";
