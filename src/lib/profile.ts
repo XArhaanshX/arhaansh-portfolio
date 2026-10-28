@@ -1,4 +1,6 @@
 export type Profile = {
+  // the site's name: header, boot log, page title
+  site: string;
   name: string;
   role: string;
   dob?: string;
@@ -19,6 +21,7 @@ export type Profile = {
 };
 
 export const profile: Profile = {
+  site: "jhingan.sh",
   name: "Arhaansh Jhingan",
   role: "Quant ML Developer",
   location: "Vellore, India",

@@ -142,12 +142,25 @@ const TECH: Record<string, { tag: string; col: string }> = {
   modal: { tag: "MOD", col: "#7fe08a" },
   dockerfile: { tag: "DK", col: "#6b8794" },
   jupyternotebook: { tag: "IPY", col: "#e88a4c" },
+  r: { tag: "R", col: "#5b8fd6" },
+  tex: { tag: "TEX", col: "#5fa88a" },
+  powershell: { tag: "PS", col: "#5a8fd0" },
+  lua: { tag: "LUA", col: "#6a7fe0" },
+  gdscript: { tag: "GD", col: "#6fa8dc" },
+  cmake: { tag: "CMK", col: "#7fb07f" },
+  tensorflow: { tag: "TF", col: "#ff9f3b" },
+  transformers: { tag: "HF", col: "#ffcc4d" },
+  scikitlearn: { tag: "SKL", col: "#f7a53c" },
+  lightgbm: { tag: "LGB", col: "#8fd16a" },
+  xgboost: { tag: "XGB", col: "#3fa7d6" },
+  opencv: { tag: "CV", col: "#6ec6ff" },
+  mediapipe: { tag: "MP", col: "#00c2a8" },
+  yolo: { tag: "YOLO", col: "#9b7ad6" },
 };
 function techTag(name: string) {
   const key = name.toLowerCase().replace(/[.\s_-]/g, "");
   return TECH[key] ?? { tag: name.slice(0, 3).toUpperCase(), col: MUTED };
 }
-const LOCATIONS = ["Boston, MA", "SF, CA", "Sugar Land, TX"];
 
 // The one link primitive. <a href> emits OSC 8 when the terminal supports it (clickable),
 // otherwise renders as plain underlined accent text — never garbage.
@@ -181,19 +194,21 @@ function ThinkingDots() {
 
 // Full-screen typed boot log. Used as the intro on connect (load-in) and on every screen
 // change (load-out → swap → load-in). Lines type out, a bar fills, then onDone reveals.
+const HOME = `/home/${profile.name.split(" ")[0].toLowerCase()}`;
 const BOOT_LINES = [
-  "$ ssh guest@xiao.sh",
+  `$ ssh guest@${profile.site}`,
   "Authenticating guest ............ OK",
-  "$ ./xiao.sh --boot",
-  "[ ok ] mount /home/jerry",
+  `$ ./${profile.site} --boot`,
+  `[ ok ] mount ${HOME}`,
   "[ ok ] load profile.json",
   `[ ok ] index projects (${projects.length})`,
+  "[ ok ] load model weights",
   "[ ok ] connect spotify",
   "[ ok ] start ai-search daemon",
   "[ ok ] render tui",
   "ready.",
   "",
-  "welcome — jerry xiao",
+  `welcome — ${profile.name.toLowerCase()}`,
 ];
 
 function bootLinesFor(to: Screen): string[] {
@@ -206,9 +221,9 @@ const SHUTDOWN_LINES = [
   "[ ok ] flush analytics",
   "[ ok ] stop ai-search daemon",
   "[ ok ] release koi pond",
-  "[ ok ] unmount /home/jerry",
+  `[ ok ] unmount ${HOME}`,
   "connection closed.",
-  "goodbye — jerry xiao",
+  `goodbye — ${profile.name.toLowerCase()}`,
 ];
 
 function BootLine({ line }: { line: string }) {
@@ -595,7 +610,7 @@ function Header({ screen }: { screen: Screen }) {
     <box style={{ flexDirection: "column", flexShrink: 0 }}>
       <box style={{ flexDirection: "row", justifyContent: "space-between", paddingLeft: 2, paddingRight: 2, paddingTop: 1 }}>
         <text bg={PANEL}>
-          <strong fg={INK}>xiao.sh</strong>
+          <strong fg={INK}>{profile.site}</strong>
         </text>
         <text bg={PANEL}>
           <span fg={FAINT}>{"~/"}</span>
@@ -1532,7 +1547,7 @@ function Chat({
       <box style={{ flexGrow: 1, flexDirection: "column", paddingLeft: 2, paddingRight: 2 }}>
         {messages.length === 0 && (
           <text bg={PANEL} fg={FAINT} wrapMode="none" style={{ height: 1 }}>
-            Ask about Jerry — projects, wins, stack, links. Type /help for commands.
+            {`Ask about ${profile.name.split(" ")[0]} — ML work, projects, wins, stack, links. Type /help for commands.`}
           </text>
         )}
         {visible.map((r, i) => (
