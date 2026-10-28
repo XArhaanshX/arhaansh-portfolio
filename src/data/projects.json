@@ -1,0 +1,566 @@
+[
+ {
+  "repo": "XArhaanshX/Multimodal-Fatigue-Detection-System",
+  "title": "Fatigue Detection",
+  "summary": "🏆 Best freshers — Panasonic Equinox'26 Hackathon",
+  "category": "Computer vision",
+  "origin": "hackathon",
+  "stack": [
+   "Python",
+   "LightGBM",
+   "OpenCV",
+   "MediaPipe"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 63
+   },
+   {
+    "name": "HTML",
+    "pct": 26
+   },
+   {
+    "name": "Jupyter Notebook",
+    "pct": 6
+   },
+   {
+    "name": "CSS",
+    "pct": 4
+   },
+   {
+    "name": "JavaScript",
+    "pct": 2
+   }
+  ],
+  "year": 2026,
+  "created": "2026-04-07T07:01:41.000Z",
+  "pushedAt": "2026-10-07T17:03:10Z",
+  "status": "recent",
+  "role": "lead",
+  "share": 0.81,
+  "commits": 17,
+  "stars": 1,
+  "award": {
+   "place": "Best Freshers",
+   "event": "Panasonic Equinox '26",
+   "when": "Apr 2026",
+   "at": "2026-04-01",
+   "sure": true
+  },
+  "githubUrl": "https://github.com/XArhaanshX/Multimodal-Fatigue-Detection-System",
+  "score": 47
+ },
+ {
+  "repo": "XArhaanshX/SilentHeat",
+  "title": "SilentHeat",
+  "summary": "Beyond 40°C: quantifying the humid-heat blind spot in India's heatwave warnings",
+  "category": "Research",
+  "origin": "personal",
+  "stack": [],
+  "langs": [
+   {
+    "name": "HTML",
+    "pct": 95
+   },
+   {
+    "name": "R",
+    "pct": 3
+   },
+   {
+    "name": "Python",
+    "pct": 2
+   }
+  ],
+  "year": 2026,
+  "created": "2026-10-13T11:35:57.000Z",
+  "pushedAt": "2026-10-20T12:38:58Z",
+  "status": "active",
+  "role": "solo",
+  "share": 1,
+  "commits": 49,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/SilentHeat",
+  "score": 29
+ },
+ {
+  "repo": "XArhaanshX/Tremor-Detection",
+  "title": "Tremor Detection",
+  "summary": "An ESP32 + IMU wristband that watches a Parkinson's patient's hand all day, detects rest tremor on the band itself with an FFT (no cloud), turns it i…",
+  "category": "Time series",
+  "origin": "personal",
+  "stack": [
+   "JavaScript",
+   "C++",
+   "Python"
+  ],
+  "langs": [
+   {
+    "name": "JavaScript",
+    "pct": 54
+   },
+   {
+    "name": "C++",
+    "pct": 20
+   },
+   {
+    "name": "Python",
+    "pct": 10
+   },
+   {
+    "name": "CSS",
+    "pct": 7
+   },
+   {
+    "name": "C",
+    "pct": 5
+   },
+   {
+    "name": "HTML",
+    "pct": 4
+   }
+  ],
+  "year": 2026,
+  "created": "2026-10-05T15:14:39.000Z",
+  "pushedAt": "2026-10-13T04:16:14Z",
+  "status": "recent",
+  "role": "solo",
+  "share": 0.97,
+  "commits": 112,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/Tremor-Detection",
+  "score": 29
+ },
+ {
+  "repo": "XArhaanshX/database-project",
+  "title": "Stream-Aware B+Tree",
+  "summary": "A B+-tree index in C++17 that makes ascending inserts cheaper and keeps the resulting pages full.",
+  "category": "Systems",
+  "origin": "personal",
+  "stack": [
+   "C",
+   "C++",
+   "Python",
+   "PostgreSQL"
+  ],
+  "langs": [
+   {
+    "name": "TeX",
+    "pct": 32
+   },
+   {
+    "name": "C",
+    "pct": 29
+   },
+   {
+    "name": "C++",
+    "pct": 26
+   },
+   {
+    "name": "Python",
+    "pct": 9
+   },
+   {
+    "name": "Shell",
+    "pct": 2
+   },
+   {
+    "name": "CMake",
+    "pct": 1
+   }
+  ],
+  "year": 2026,
+  "created": "2026-10-28T17:49:16.000Z",
+  "pushedAt": "2026-10-28T18:48:12Z",
+  "status": "active",
+  "role": "solo",
+  "share": 1,
+  "commits": 30,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/database-project",
+  "score": 23
+ },
+ {
+  "repo": "XArhaanshX/SCOPE-Reverse-Engineering",
+  "title": "SCOPE Reverse-Eng",
+  "summary": "Reverse-engineering track. The goal is to recover the original, human-readable source of the provided application, challenges/task3ppqqcc/ppqqcc.exe.",
+  "category": "Systems",
+  "origin": "hackathon",
+  "stack": [
+   "Python",
+   "Go"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 54
+   },
+   {
+    "name": "Go",
+    "pct": 43
+   },
+   {
+    "name": "Shell",
+    "pct": 2
+   }
+  ],
+  "year": 2026,
+  "created": "2026-10-26T04:51:13.000Z",
+  "pushedAt": "2026-10-26T08:57:59Z",
+  "status": "active",
+  "role": "lead",
+  "share": 0.73,
+  "commits": 8,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/SCOPE-Reverse-Engineering",
+  "score": 21
+ },
+ {
+  "repo": "XArhaanshX/Wafer-Anomaly-Detection",
+  "title": "Wafer Anomaly Audit",
+  "summary": "Audit and repair of the Fab-7 WAFER-GUARD excursion detector (GDG wildcard, AI/ML task).",
+  "category": "Classical ML",
+  "origin": "personal",
+  "stack": [
+   "Jupyter Notebook",
+   "PyTorch",
+   "scikit-learn"
+  ],
+  "langs": [
+   {
+    "name": "Jupyter Notebook",
+    "pct": 100
+   }
+  ],
+  "year": 2026,
+  "created": "2026-10-17T11:20:05.000Z",
+  "pushedAt": "2026-10-17T12:56:02Z",
+  "status": "active",
+  "role": "solo",
+  "share": 1,
+  "commits": 11,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/Wafer-Anomaly-Detection",
+  "score": 20
+ },
+ {
+  "repo": "XArhaanshX/MeghMitra",
+  "title": "MeghMitra",
+  "summary": "Ankur (SIH 2026): retrieves pre-approved contingency actions from district agriculture plans to match IMD's forecast.",
+  "category": "NLP & agents",
+  "origin": "hackathon",
+  "stack": [
+   "Python",
+   "TypeScript",
+   "Next.js",
+   "FastAPI",
+   "PostgreSQL"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 71
+   },
+   {
+    "name": "TypeScript",
+    "pct": 25
+   },
+   {
+    "name": "PLpgSQL",
+    "pct": 2
+   },
+   {
+    "name": "CSS",
+    "pct": 1
+   }
+  ],
+  "year": 2026,
+  "created": "2026-08-24T08:32:54.000Z",
+  "pushedAt": "2026-08-28T13:46:47Z",
+  "status": "recent",
+  "role": "team",
+  "share": 0.05,
+  "commits": 2,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/MeghMitra",
+  "score": 13
+ },
+ {
+  "repo": "XArhaanshX/Churn-Prediction-Project",
+  "title": "Churn Prediction",
+  "summary": "A churn prediction system using ML models with full data pre-processing , EDA, class balancing, and performance evaluation.",
+  "category": "Classical ML",
+  "origin": "personal",
+  "stack": [
+   "Jupyter Notebook",
+   "scikit-learn",
+   "FastAPI"
+  ],
+  "langs": [
+   {
+    "name": "Jupyter Notebook",
+    "pct": 99
+   },
+   {
+    "name": "Python",
+    "pct": 1
+   }
+  ],
+  "year": 2025,
+  "created": "2025-12-13T22:46:27.000Z",
+  "pushedAt": "2026-04-21T18:16:30Z",
+  "status": "dormant",
+  "role": "solo",
+  "share": 1,
+  "commits": 7,
+  "stars": 1,
+  "githubUrl": "https://github.com/XArhaanshX/Churn-Prediction-Project",
+  "score": 9
+ },
+ {
+  "repo": "XArhaanshX/HFLF-Temporal-Resolution-Study",
+  "title": "HFLF Resolution Study",
+  "summary": "This repository is an independent research extension of the Short-Term Load Forecasting (STLF) project.",
+  "category": "Time series",
+  "origin": "research",
+  "stack": [
+   "Python",
+   "LightGBM"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 100
+   }
+  ],
+  "year": 2026,
+  "created": "2026-07-14T13:41:10.000Z",
+  "pushedAt": "2026-07-16T08:50:54Z",
+  "status": "dormant",
+  "role": "solo",
+  "share": 1,
+  "commits": 4,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/HFLF-Temporal-Resolution-Study",
+  "score": 9
+ },
+ {
+  "repo": "XArhaanshX/Stochastic-Signal-Integration-in-HF-Load-Data",
+  "title": "Stochastic HF Load",
+  "summary": "An Independent Research Framework for Evaluating Forecasting Robustness",
+  "category": "Time series",
+  "origin": "research",
+  "stack": [
+   "Python",
+   "LightGBM"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 100
+   }
+  ],
+  "year": 2026,
+  "created": "2026-07-16T16:30:17.000Z",
+  "pushedAt": "2026-07-20T19:54:29Z",
+  "status": "dormant",
+  "role": "solo",
+  "share": 1,
+  "commits": 2,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/Stochastic-Signal-Integration-in-HF-Load-Data",
+  "score": 9
+ },
+ {
+  "repo": "XArhaanshX/Symbol-Segmentation-in-SLDs",
+  "title": "SLD Segmentation",
+  "summary": "Automated Circuit Symbol Localization in Single Line Diagrams",
+  "category": "Computer vision",
+  "origin": "research",
+  "stack": [
+   "Python",
+   "Transformers",
+   "YOLO"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 79
+   },
+   {
+    "name": "HTML",
+    "pct": 21
+   }
+  ],
+  "year": 2026,
+  "created": "2026-06-05T05:33:50.000Z",
+  "pushedAt": "2026-07-15T16:30:06Z",
+  "status": "dormant",
+  "role": "solo",
+  "share": 1,
+  "commits": 5,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/Symbol-Segmentation-in-SLDs",
+  "score": 9
+ },
+ {
+  "repo": "XArhaanshX/Time-Series-Load-Forecasting",
+  "title": "Load Forecasting",
+  "summary": "Working on predicting energy load in power grids using various machine learning architectures",
+  "category": "Time series",
+  "origin": "research",
+  "stack": [
+   "Python"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 100
+   }
+  ],
+  "year": 2026,
+  "created": "2026-04-14T20:19:20.000Z",
+  "pushedAt": "2026-04-21T23:44:28Z",
+  "status": "dormant",
+  "role": "solo",
+  "share": 1,
+  "commits": 4,
+  "stars": 1,
+  "githubUrl": "https://github.com/XArhaanshX/Time-Series-Load-Forecasting",
+  "score": 8
+ },
+ {
+  "repo": "XArhaanshX/Handwriting-Recognition-Few-Shot-Pipeline",
+  "title": "Few-Shot Handwriting",
+  "summary": "A research framework for deterministically identifying specific handwritten symbols (such as lowercase 'a' and uppercase 'A') in scanned paragraphs u…",
+  "category": "Computer vision",
+  "origin": "research",
+  "stack": [
+   "Python"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 100
+   }
+  ],
+  "year": 2026,
+  "created": "2026-06-21T07:57:46.000Z",
+  "pushedAt": "2026-07-01T19:18:19Z",
+  "status": "dormant",
+  "role": "solo",
+  "share": 1,
+  "commits": 1,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/Handwriting-Recognition-Few-Shot-Pipeline",
+  "score": 7
+ },
+ {
+  "repo": "XArhaanshX/Deepfake-Detection",
+  "title": "Deepfake Detection",
+  "summary": "Interactive deepfake detector using CNNs and GNNs to analyze visual artifacts and relational structure.",
+  "category": "Computer vision",
+  "origin": "personal",
+  "stack": [
+   "Jupyter Notebook",
+   "Python",
+   "PyTorch",
+   "OpenCV"
+  ],
+  "langs": [
+   {
+    "name": "Jupyter Notebook",
+    "pct": 72
+   },
+   {
+    "name": "Python",
+    "pct": 28
+   }
+  ],
+  "year": 2026,
+  "created": "2026-02-12T16:20:04.000Z",
+  "pushedAt": "2026-02-12T17:03:41Z",
+  "status": "dormant",
+  "role": "solo",
+  "share": 1,
+  "commits": 6,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/Deepfake-Detection",
+  "score": 6
+ },
+ {
+  "repo": "XArhaanshX/Clustering-Problem-for-Discharge-Research",
+  "title": "Partial Discharge",
+  "summary": "",
+  "category": "Research",
+  "origin": "research",
+  "stack": [],
+  "langs": [],
+  "year": 2026,
+  "created": "2026-05-26T14:12:15.000Z",
+  "pushedAt": "2026-05-26T14:19:30Z",
+  "status": "dormant",
+  "role": "solo",
+  "share": 1,
+  "commits": 6,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/Clustering-Problem-for-Discharge-Research",
+  "score": 3
+ },
+ {
+  "repo": "XArhaanshX/PSSE-Agent",
+  "title": "PSSE Agent",
+  "summary": "Agentic AI that turns a substation spec into a validated PSS/E 36 power-system model and single-line diagram.",
+  "category": "NLP & agents",
+  "origin": "personal",
+  "stack": [
+   "Python"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 99
+   },
+   {
+    "name": "PowerShell",
+    "pct": 1
+   }
+  ],
+  "year": 2026,
+  "created": "2026-05-19T05:11:25.000Z",
+  "pushedAt": "2026-05-30T05:09:25Z",
+  "status": "dormant",
+  "role": "solo",
+  "share": 1,
+  "commits": 1,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/PSSE-Agent",
+  "score": 3
+ },
+ {
+  "repo": "XArhaanshX/Single-Circuit-Symbol-Identification",
+  "title": "Circuit Symbol ID",
+  "summary": "A research-oriented hybrid Computer Vision pipeline for one-shot localization of embedded circuit symbols inside complex engineering diagrams.",
+  "category": "Computer vision",
+  "origin": "research",
+  "stack": [
+   "Python"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 100
+   }
+  ],
+  "year": 2026,
+  "created": "2026-05-11T19:43:02.000Z",
+  "pushedAt": "2026-05-14T05:37:23Z",
+  "status": "dormant",
+  "role": "solo",
+  "share": 1,
+  "commits": 4,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/Single-Circuit-Symbol-Identification",
+  "score": 2
+ }
+]
