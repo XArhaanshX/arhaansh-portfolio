@@ -1277,43 +1277,64 @@ function Projects({ list, selected, onSelect }: { list: Project[]; selected: num
   );
 }
 
-// ---- About (layout A: profile + wins) -------------------------------------------------------
+// ---- About (layout A: profile + experience + wins) ------------------------------------------
 // Everything is derived: wins from LinkedIn honours, "building" from the most recently
 // pushed personal repo, "writes in" from each repo's code languages weighted by his commits.
 // Name banner letterforms (own drawing): 5-row full blocks wide, 2-row half blocks on phones.
 // ponytail: only the letters of his name are drawn; add glyphs if the name changes.
 const BANNER_BIG: Record<string, string[]> = {
-  J: ["     ██", "     ██", "     ██", "██   ██", " █████ "],
-  E: ["███████", "██     ", "█████  ", "██     ", "███████"],
-  R: ["██████ ", "██   ██", "██████ ", "██   ██", "██   ██"],
-  Y: ["██    ██", " ██  ██ ", "  ████  ", "   ██   ", "   ██   "],
-  X: ["██   ██", " ██ ██ ", "  ███  ", " ██ ██ ", "██   ██"],
-  I: ["██", "██", "██", "██", "██"],
   A: [" █████ ", "██   ██", "███████", "██   ██", "██   ██"],
-  O: [" ██████ ", "██    ██", "██    ██", "██    ██", " ██████ "],
+  R: ["██████ ", "██   ██", "██████ ", "██   ██", "██   ██"],
+  H: ["██   ██", "██   ██", "███████", "██   ██", "██   ██"],
+  N: ["███   ██", "████  ██", "██ ██ ██", "██  ████", "██   ███"],
+  S: [" ██████", "██     ", " █████ ", "     ██", "██████ "],
+  J: ["     ██", "     ██", "     ██", "██   ██", " █████ "],
+  I: ["██", "██", "██", "██", "██"],
+  G: [" ██████ ", "██      ", "██   ███", "██    ██", " ██████ "],
   " ": ["  ", "  ", "  ", "  ", "  "],
 };
 const BANNER_SMALL: Record<string, string[]> = {
-  J: ["  █", "█▄█"], E: ["█▀▀", "██▄"], R: ["█▀█", "█▀▄"], Y: ["█▄█", " █ "], X: ["▀▄▀", "█ █"],
-  I: ["█", "█"], A: ["▄▀█", "█▀█"], O: ["█▀█", "█▄█"], " ": ["  ", "  "],
+  A: ["▄▀█", "█▀█"], R: ["█▀█", "█▀▄"], H: ["█ █", "█▀█"], N: ["█▄ █", "█ ▀█"], S: ["█▀▀", "▄██"],
+  J: ["  █", "█▄█"], I: ["█", "█"], G: ["█▀▀", "█▄█"], " ": ["  ", "  "],
 };
 const BANNER_SHADE = ["#e9ece9", "#d6ddd8", "#c2ccc6", "#adbab3", "#98a89f"];
-function banner(name: string, big: boolean): string[] {
+// one block of rows per banner line: a name wider than `w` breaks between words
+function banner(name: string, big: boolean, w: number): string[][] {
   const font = big ? BANNER_BIG : BANNER_SMALL;
-  const rows = font[" "].map(() => "");
-  for (const ch of name.toUpperCase()) {
-    const g = font[ch] ?? font[" "];
-    for (let r = 0; r < rows.length; r += 1) rows[r] += `${g[r]} `;
+  const draw = (text: string) => {
+    const rows = font[" "].map(() => "");
+    for (const ch of text.toUpperCase()) {
+      const g = font[ch] ?? font[" "];
+      for (let r = 0; r < rows.length; r += 1) rows[r] += `${g[r]} `;
+    }
+    return rows;
+  };
+  const lines: string[][] = [];
+  let cur = "";
+  for (const word of name.split(" ")) {
+    const next = cur ? `${cur} ${word}` : word;
+    if (cur && draw(next)[0].trimEnd().length > w) {
+      lines.push(draw(cur));
+      cur = word;
+    } else cur = next;
   }
-  return rows;
+  lines.push(draw(cur));
+  return lines;
 }
-const NON_CODE = ["HTML", "CSS", "SCSS", "Dockerfile", "Makefile", "Procfile", "Batchfile", "Jupyter Notebook", "MDX", "Nix"];
+// banner lines stack with one blank row between them
+const bannerRows = (lines: string[][]) => lines.reduce((a, l) => a + l.length, 0) + lines.length - 1;
+// notebooks are Python; markup and build files are not "writing in" anything
+const NON_CODE = ["HTML", "CSS", "SCSS", "Dockerfile", "Makefile", "Procfile", "Batchfile", "MDX", "Nix", "TeX", "CMake"];
+const LANG_AS: Record<string, string> = { "Jupyter Notebook": "Python" };
 function writesIn(list: Project[]): { name: string; pct: number }[] {
   const acc = new Map<string, number>();
   for (const p of list) {
     const code = p.langs.filter((l) => !NON_CODE.includes(l.name));
     const sum = code.reduce((a, l) => a + l.pct, 0) || 1;
-    for (const l of code) acc.set(l.name, (acc.get(l.name) ?? 0) + (l.pct / sum) * p.commits);
+    for (const l of code) {
+      const name = LANG_AS[l.name] ?? l.name;
+      acc.set(name, (acc.get(name) ?? 0) + (l.pct / sum) * p.commits);
+    }
   }
   const total = [...acc.values()].reduce((a, b) => a + b, 0) || 1;
   return [...acc].map(([name, v]) => ({ name, pct: (v / total) * 100 })).sort((a, b) => b.pct - a.pct);
@@ -1323,10 +1344,14 @@ function birthday(dob?: string): string {
   const [m, d, y] = (dob ?? "").split("/").map(Number);
   return m && d && y ? `${MONTHS[m - 1]} ${d}, ${y}` : "";
 }
+// "Aug 2026" -> "AUG 26", the same stamp the wins list uses
+const stamp = (when: string) => `${when.slice(0, 3).toUpperCase()} ${when.slice(-2)}`;
+// a named award ("Best Freshers") reads as a prize; the award's name moves to the event column
+const RANKED = /^(1st|2nd|3rd|Top \d+|Winner|Track Prize)/;
 
 function Field({ k, children }: { k: string; children: ReactNode }) {
   return (
-    <text bg={PANEL}>
+    <text bg={PANEL} wrapMode="none">
       <span fg={MUTED}>{k.padEnd(12)}</span>
       {children}
     </text>
@@ -1355,25 +1380,34 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
     if (next.length <= (narrow ? width - 4 : 78) - 12) speaks = next;
   }
   const building = list.filter((p) => p.origin === "personal").sort((a, b) => b.pushedAt.localeCompare(a.pushedAt))[0];
+  const job = profile.work.find((w) => !w.to);
+  const work = profile.work;
   const stacked = width < 148;
-  const extraRows = (building ? 1 : 0) + (wins[0] ? 1 : 0) + (profile.dob ? 1 : 0) + (speaks ? 1 : 0);
+  const extraRows = (building ? 1 : 0) + (job ? 1 : 0) + (wins[0] ? 1 : 0) + (profile.dob ? 1 : 0) + profile.studies.length + (speaks ? 1 : 0);
   // rows left for the two lists: screen minus header/footer (6), padding, the left column when
-  // stacked, and the fixed rows of the right column (2 headings + the gap between); overflow overprints rows
+  // stacked, and the fixed rows of the right column (experience block, 2 headings, the gaps
+  // between); overflow overprints rows
   const budgetFor = (nameRows: number, gap: number, linkRows: number) =>
-    height - 6 - 1 - (stacked ? nameRows + 3 + linkRows + 4 * gap + extraRows + gap : 0) - 2 - gap;
+    height - 6 - 1 - (stacked ? nameRows + 3 + linkRows + 4 * gap + extraRows + gap : 0) - (1 + work.length + gap) - 2 - gap;
+  const bannerW = narrow ? width - 4 : 78;
+  const bigRows = bannerRows(banner(profile.name, true, bannerW));
+  const smallRows = bannerRows(banner(profile.name, false, bannerW));
   // stacked on a short screen: first the 2-row banner instead of the 5-row one, then drop the spacer
   // rows and put the links on one line, so at least a few wins and languages always fit
-  const compact = narrow || (stacked && budgetFor(5, 1, 3) < 4);
-  const tight = stacked && budgetFor(2, 1, 3) < 4;
+  const compact = narrow || (stacked && budgetFor(bigRows, 1, 3) < 4);
+  const tight = stacked && budgetFor(smallRows, 1, 3) < 4;
   const gap = tight ? 0 : 1;
-  const name = banner(profile.name, !compact);
-  const tagline = `${profile.role.toLowerCase()}  ·  ${profile.education.split(" ")[0].toLowerCase()}  ·  ${profile.location.split(",")[0].toLowerCase()}`;
-  const short = (place: string) => (place.startsWith("1st") ? "1st" : place === "Track Prize" ? "prize" : place.split(" · ")[0]);
+  const name = banner(profile.name, !compact, bannerW);
+  const role = `${profile.role}${job ? ` @ ${job.org}` : ""}`.toLowerCase();
+  const tagline = `${role}  ·  ${profile.studies.map((s) => s.school).join(" + ").toLowerCase()}`;
+  const short = (place: string) => (place.startsWith("1st") ? "1st" : !RANKED.test(place) || place === "Track Prize" ? "prize" : place.split(" · ")[0]);
+  const event = (h: { place: string; event: string }) => `${h.event.replace(/ Hackathon$/i, "")}${RANKED.test(h.place) ? "" : ` · ${h.place.toLowerCase()}`}`;
   const barW = narrow ? Math.max(8, width - 4 - 22) : 30;
-  const budget = budgetFor(name.length, gap, tight ? 1 : 3);
+  const budget = budgetFor(bannerRows(name), gap, tight ? 1 : 3);
   const nWrites = Math.max(0, Math.min(narrow ? 4 : 6, Math.floor(budget / 2)));
   const nWins = Math.max(0, Math.min(narrow ? 5 : 8, budget - nWrites));
   const writesShown = writesIn(list).slice(0, nWrites);
+  const listW = narrow ? width - 20 : 46;
   const bare = (u: string) => u.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, "");
   // tight: github · linkedin · email on one row, as many as fit the width
   let linkW = narrow ? 0 : 12;
@@ -1384,14 +1418,19 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
   ].filter((l) => (linkW += l.text.length + 3) - 3 <= width - 4);
   const left = (
     <box style={{ flexDirection: "column", width: narrow ? undefined : 78, flexShrink: 0 }}>
-      {name.map((row, i) => (
-        <text key={i} bg={PANEL} fg={BANNER_SHADE[name.length > 2 ? i : i * 2]} wrapMode="none">
-          {row}
-        </text>
+      {name.map((line, li) => (
+        <Fragment key={li}>
+          {li > 0 && <box style={{ height: 1 }} />}
+          {line.map((row, i) => (
+            <text key={i} bg={PANEL} fg={BANNER_SHADE[line.length > 2 ? i : i * 2]} wrapMode="none">
+              {row}
+            </text>
+          ))}
+        </Fragment>
       ))}
       <box style={{ height: gap }} />
-      <text bg={PANEL} fg={ACCENT}>
-        {narrow ? profile.role.toLowerCase() : tagline}
+      <text bg={PANEL} fg={ACCENT} wrapMode="none">
+        {narrow ? role : tagline}
       </text>
       <box style={{ height: gap }} />
       <text bg={PANEL} fg={MUTED}>
@@ -1402,9 +1441,15 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
           <span fg={INK}>{`${building.title} — pushed ${timeAgo(building.pushedAt)}`}</span>
         </Field>
       )}
+      {job && (
+        <Field k="working">
+          <span fg={INK}>{job.role}</span>
+          <span fg={MUTED}>{` @ ${job.org}`}</span>
+        </Field>
+      )}
       {wins[0] && (
         <Field k="last win">
-          <span fg={ACCENT}>{`${short(wins[0].place)} · ${wins[0].event.replace(/ Hackathon$/i, "")}`}</span>
+          <span fg={ACCENT}>{`${short(wins[0].place)} · ${event(wins[0])}`}</span>
         </Field>
       )}
       {profile.dob && (
@@ -1413,8 +1458,14 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
         </Field>
       )}
       <box style={{ height: gap }} />
+      {profile.studies.map((s, i) => (
+        <Field key={s.school} k={i === 0 ? "studying" : ""}>
+          <span fg={INK}>{truncate(s.degree, (narrow ? width - 4 : 78) - 12 - s.school.length - 3)}</span>
+          <span fg={MUTED}>{` · ${s.school}`}</span>
+        </Field>
+      ))}
       <Field k="based">
-        <span fg={INK}>{(narrow ? LOCATIONS.map((l) => l.split(",")[0]) : LOCATIONS).join(narrow ? " · " : "  ·  ")}</span>
+        <span fg={INK}>{(narrow ? profile.based.map((l) => l.split(",")[0]) : profile.based).join(narrow ? " · " : "  ·  ")}</span>
       </Field>
       {speaks && (
         <Field k="speaks">
@@ -1442,6 +1493,19 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
   );
   const right = (
     <box style={{ flexDirection: "column", paddingLeft: stacked ? 0 : 6, paddingTop: stacked ? gap : 0 }}>
+      <text bg={PANEL}>
+        <span fg={MUTED}>EXPERIENCE</span>
+        <span fg={FAINT}>{`  ${work.length}`}</span>
+      </text>
+      {work.map((w) => (
+        <text key={w.org} bg={PANEL} wrapMode="none">
+          <span fg={FAINT}>{`${stamp(w.from)}  `}</span>
+          <span fg={w.to ? FAINT : ACCENT}>{(w.to ? stamp(w.to) : "now").padEnd(8)}</span>
+          <span fg={w.to ? INK : ACCENT}>{truncate(w.role, listW)}</span>
+          <span fg={MUTED}>{truncate(` @ ${w.org}`, Math.max(0, listW - w.role.length))}</span>
+        </text>
+      ))}
+      <box style={{ height: gap }} />
       {nWins > 0 && (
         <text bg={PANEL}>
           <span fg={MUTED}>WINS</span>
@@ -1450,9 +1514,9 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
       )}
       {wins.slice(0, nWins).map((h) => (
         <text key={h.text} bg={PANEL} wrapMode="none">
-          <span fg={FAINT}>{`${h.when.slice(0, 3).toUpperCase()} ${h.when.slice(-2)}  `}</span>
-          <span fg={h.place.startsWith("1st") ? ACCENT : INK}>{short(h.place).padEnd(7)}</span>
-          <span fg={MUTED}>{truncate(h.event.replace(/ Hackathon$/i, ""), narrow ? width - 20 : 40)}</span>
+          <span fg={FAINT}>{`${stamp(h.when)}  `}</span>
+          <span fg={h.place.startsWith("1st") ? ACCENT : INK}>{short(h.place).padEnd(8)}</span>
+          <span fg={MUTED}>{truncate(event(h), listW)}</span>
         </text>
       ))}
       {nWrites > 0 && (
