@@ -10,26 +10,42 @@ import type { ProjectOverride } from "@/lib/project-labels";
 // where projects come from besides github.com/<profile login>: hackathon team orgs (their
 // repos are labelled hackathon builds) and single extra repos
 export const PROJECT_SOURCES = {
-  hackathonOrgs: ["shlawgathon"],
-  repos: ["Northeastern-Research-ORNL-1/pyreflect-interface"],
-  // His commits are matched by author email. Older history in the team repos carries the
-  // addresses and login of the account that GitHub no longer serves.
-  authorEmails: ["jerry.x0930@gmail.com", "optifinecapemain@gmail.com", "152939329+undeemed@users.noreply.github.com"],
-  formerLogins: ["undeemed"],
+  hackathonOrgs: [] as string[],
+  repos: [] as string[],
+  // His commits are matched by author email (plus the GitHub noreply address, added at sync).
+  authorEmails: ["arhaanshjhingan@gmail.com"],
+  formerLogins: [] as string[],
 };
 
-const LI = "?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEerNM8BaiLwsyO2-11sjJzKRTO2VXWvfD4";
-const post = (slug: string) => `https://www.linkedin.com/posts/xiaojerry_${slug}${LI}`;
-
 export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
-  // LinkedIn lists the OceanTech win but no post names BlueDocs, so it cannot be matched
-  "shlawgathon/BlueDocs": { set: { award: { place: "1st · Governance track", event: "OceanTech Hackathon", when: "Mar 2026", at: "2026-03-01", sure: true } } },
-  "shlawgathon/Physical": { set: { title: "Physical.ai", linkedinUrl: post("within-24-hours-we-aritra-saharay-neil-activity-7421684534938767361-2Dxc"), eventUrl: "https://events.ycombinator.com/fullstackhackathon" } },
-  "i098/pinger": { hide: true },
-  // LinkedIn post + event pages: not on GitHub; the LinkedIn sync scrapes these posts
-  "shlawgathon/interpreter": { set: { linkedinUrl: post("exploring-the-features-of-a-live-translator-activity-7431220415206744064-0h-U"), eventUrl: "https://luma.com/0xgxtpdt?tk=FJOJQR" } },
-  "shlawgathon/WebBrain": { set: { linkedinUrl: post("i-had-lots-of-fun-at-the-mongodb-agentic-activity-7383038759665164288-yzTn"), eventUrl: "https://cerebralvalley.ai/e/mongoDB-hackathon?tab=guest-list" } },
-  "shlawgathon/ICBG": { set: { linkedinUrl: post("last-night-we-aritra-saharay-wei-tu-and-activity-7406439444557443072-a_O6"), eventUrl: "https://luma.com/9ecbetao?tk=KZdXd4" } },
-  "shlawgathon/productkit": { set: { linkedinUrl: post("github-shlawgathonproductkit-an-agentic-activity-7398606880346030080-OeHb"), eventUrl: "https://cerebralvalley.ai/e/bfl-hackathon?tab=guest-list" } },
-  "shlawgathon/sportsclips": { set: { linkedinUrl: post("another-day-another-hackathon-shack15-activity-7385938406486437888-_u5O"), eventUrl: "https://cerebralvalley.ai/e/2025-ted-ai-hackathon?tab=guest-list" } },
+  // not portfolio work
+  "XArhaanshX/github-demo": { hide: true },
+  "XArhaanshX/test-portfolio": { hide: true },
+  "XArhaanshX/Arch-Hyprland-Configs": { hide: true },
+  "XArhaanshX/arhaansh-portfolio": { hide: true },
+  // LinkedIn names the project, not the repo, so the win cannot be matched by rule
+  "XArhaanshX/Multimodal-Fatigue-Detection-System": {
+    set: { title: "Fatigue Detection", origin: "hackathon", award: { place: "Best Freshers", event: "Panasonic Equinox '26", when: "Apr 2026", at: "2026-04-01", sure: true } },
+  },
+  // Power Projects internship: no README, so the filter skips it
+  "XArhaanshX/PSSE-Agent": {
+    show: true,
+    set: { title: "PSSE Agent", category: "NLP & agents", summary: "Agentic AI that turns a substation spec into a validated PSS/E 36 power-system model and single-line diagram." },
+  },
+  // Smart India Hackathon 2026 build; the README calls it Ankur
+  "XArhaanshX/MeghMitra": {
+    set: { origin: "hackathon", category: "NLP & agents", summary: "Ankur (SIH 2026): retrieves pre-approved contingency actions from district agriculture plans to match IMD's forecast." },
+  },
+  // titles that fit the 22-cell index column
+  "XArhaanshX/Handwriting-Recognition-Few-Shot-Pipeline": { set: { title: "Few-Shot Handwriting" } },
+  "XArhaanshX/Clustering-Problem-for-Discharge-Research": { set: { title: "Partial Discharge" } },
+  "XArhaanshX/Stochastic-Signal-Integration-in-HF-Load-Data": { set: { title: "Stochastic HF Load" } },
+  "XArhaanshX/HFLF-Temporal-Resolution-Study": { set: { title: "HFLF Resolution Study" } },
+  "XArhaanshX/Single-Circuit-Symbol-Identification": { set: { title: "Circuit Symbol ID" } },
+  "XArhaanshX/Symbol-Segmentation-in-SLDs": { set: { title: "SLD Segmentation" } },
+  "XArhaanshX/Time-Series-Load-Forecasting": { set: { title: "Load Forecasting" } },
+  "XArhaanshX/Churn-Prediction-Project": { set: { title: "Churn Prediction" } },
+  "XArhaanshX/Wafer-Anomaly-Detection": { set: { title: "Wafer Anomaly Audit" } },
+  "XArhaanshX/SCOPE-Reverse-Engineering": { set: { title: "SCOPE Reverse-Eng" } },
+  "XArhaanshX/database-project": { set: { title: "Stream-Aware B+Tree" } },
 };
