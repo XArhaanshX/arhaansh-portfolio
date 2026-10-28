@@ -79,7 +79,7 @@ const server = Bun.serve({
 console.log(`listening on ${REDIRECT}`);
 console.log("\nOpen this URL, log in, and approve:\n\n" + authUrl + "\n");
 try {
-  Bun.spawn(["open", authUrl]); // macOS; ignore if it fails
+  Bun.spawn([process.platform === "darwin" ? "open" : "xdg-open", authUrl]); // ignore if it fails
 } catch {
   // user opens manually
 }
