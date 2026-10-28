@@ -14,7 +14,7 @@
   "workers_dev": true,
   // .data on Cloudflare: one KV entry per .data-relative file (visits.json, spotify.json, ...).
   // Create it once with `bunx wrangler kv namespace create DATA` and paste the id here.
-  "kv_namespaces": [{ "binding": "DATA", "id": "00000000000000000000000000000000" }],
+  "kv_namespaces": [{ "binding": "DATA", "id": "7e1f5a01e6574765be47424144c4c924" }],
   "vars": { "NODE_ENV": "production", "PUBLIC_ORIGIN": "https://arhaansh.me" },
   // daily re-derive of the project labels into KV (server/worker.ts `scheduled`)
   "triggers": { "crons": ["17 9 * * *"] },
