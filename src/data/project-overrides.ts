@@ -79,6 +79,7 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   "XArhaanshX/Single-Circuit-Symbol-Identification": { set: { title: "Circuit Symbol ID" } },
   "XArhaanshX/Symbol-Segmentation-in-SLDs": { set: { title: "SLD Segmentation" } },
   "XArhaanshX/Time-Series-Load-Forecasting": { set: { title: "Load Forecasting" } },
+  "XArhaanshX/Load-forecasting": { set: { title: "Load Forecast Survey" } },
   "XArhaanshX/Churn-Prediction-Project": { set: { title: "Churn Prediction" } },
   "XArhaanshX/Wafer-Anomaly-Detection": { set: { title: "Wafer Anomaly Audit" } },
   "XArhaanshX/SCOPE-Reverse-Engineering": {

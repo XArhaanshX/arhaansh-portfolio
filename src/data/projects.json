@@ -269,6 +269,32 @@
   "score": 28
  },
  {
+  "repo": "XArhaanshX/Load-forecasting",
+  "title": "Load Forecast Survey",
+  "summary": "Literature review of ML methods for electrical load forecasting: the 50 newest arXiv papers, collected and summarised by script.",
+  "category": "Time series",
+  "origin": "research",
+  "stack": [
+   "Python"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 100
+   }
+  ],
+  "year": 2026,
+  "created": "2026-04-13T16:55:03.000Z",
+  "pushedAt": "2026-10-28T19:55:18Z",
+  "status": "active",
+  "role": "solo",
+  "share": 1,
+  "commits": 4,
+  "stars": 0,
+  "githubUrl": "https://github.com/XArhaanshX/Load-forecasting",
+  "score": 25
+ },
+ {
   "repo": "XArhaanshX/database-project",
   "title": "Stream-Aware B+Tree",
   "summary": "A B+-tree index in C++17 that makes ascending inserts cheaper and keeps the resulting pages full.",
