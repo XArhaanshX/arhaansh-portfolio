@@ -27,7 +27,7 @@ export const profile: Profile = {
   location: "Vellore, India",
   based: ["Vellore, TN", "Mumbai, MH"],
   bio: "Machine learning engineer and researcher: computer vision, time-series forecasting and quantitative ML. Quant ML Developer at Mintzy; previously ML Engineer intern at L&T and ML Research intern at Power Projects. BTech CSE at VIT Vellore and BS in Data Science & Applications at IIT Madras.",
-  education: "VIT Vellore + IIT Madras",
+  education: "VIT Vellore and IIT Madras",
   studies: [
     { degree: "BTech CSE", school: "VIT Vellore", years: "2025-29" },
     { degree: "BS Data Science & Applications", school: "IIT Madras", years: "2025-29" },

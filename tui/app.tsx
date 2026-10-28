@@ -1399,7 +1399,7 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
   const gap = tight ? 0 : 1;
   const name = banner(profile.name, !compact, bannerW);
   const role = `${profile.role}${job ? ` @ ${job.org}` : ""}`.toLowerCase();
-  const tagline = `${role}  ·  ${profile.studies.map((s) => s.school).join(" + ").toLowerCase()}`;
+  const tagline = `${role}  ·  ${profile.studies.map((s) => s.school).join(" and ").toLowerCase()}`;
   const short = (place: string) => (place.startsWith("1st") ? "1st" : !RANKED.test(place) || place === "Track Prize" ? "prize" : place.split(" · ")[0]);
   const event = (h: { place: string; event: string }) => `${h.event.replace(/ Hackathon$/i, "")}${RANKED.test(h.place) ? "" : ` · ${h.place.toLowerCase()}`}`;
   const barW = narrow ? Math.max(8, width - 4 - 22) : 30;
