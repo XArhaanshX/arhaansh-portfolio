@@ -25,7 +25,7 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   "XArhaanshX/arhaansh-portfolio": { hide: true },
   // LinkedIn names the project, not the repo, so the win cannot be matched by rule
   "XArhaanshX/Multimodal-Fatigue-Detection-System": {
-    set: { title: "Fatigue Detection", origin: "hackathon", award: { place: "Best Freshers", event: "Panasonic Equinox '26", when: "Apr 2026", at: "2026-04-01", sure: true } },
+    set: { title: "Fatigue Detection", origin: "hackathon", summary: "Godot driving-sim telemetry plus webcam face signals (OpenCV, MediaPipe) feed a LightGBM fatigue model that escalates haptic alerts.", award: { place: "Best Freshers", event: "Panasonic Equinox '26", when: "Apr 2026", at: "2026-04-01", sure: true } },
   },
   // Power Projects internship: no README, so the filter skips it
   "XArhaanshX/PSSE-Agent": {
@@ -38,7 +38,7 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   },
   // titles that fit the 22-cell index column
   "XArhaanshX/Handwriting-Recognition-Few-Shot-Pipeline": { set: { title: "Few-Shot Handwriting" } },
-  "XArhaanshX/Clustering-Problem-for-Discharge-Research": { set: { title: "Partial Discharge" } },
+  "XArhaanshX/Clustering-Problem-for-Discharge-Research": { set: { title: "Partial Discharge", summary: "How robust is partial-discharge classification (simulated, sharp point, void, surface) as the signal degrades with noise?" } },
   "XArhaanshX/Stochastic-Signal-Integration-in-HF-Load-Data": { set: { title: "Stochastic HF Load" } },
   "XArhaanshX/HFLF-Temporal-Resolution-Study": { set: { title: "HFLF Resolution Study" } },
   "XArhaanshX/Single-Circuit-Symbol-Identification": { set: { title: "Circuit Symbol ID" } },
@@ -46,6 +46,6 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   "XArhaanshX/Time-Series-Load-Forecasting": { set: { title: "Load Forecasting" } },
   "XArhaanshX/Churn-Prediction-Project": { set: { title: "Churn Prediction" } },
   "XArhaanshX/Wafer-Anomaly-Detection": { set: { title: "Wafer Anomaly Audit" } },
-  "XArhaanshX/SCOPE-Reverse-Engineering": { set: { title: "SCOPE Reverse-Eng" } },
+  "XArhaanshX/SCOPE-Reverse-Engineering": { set: { title: "SCOPE Reverse-Eng", summary: "Dortress Hackathon 2026, reverse-engineering track: unpacked a Themida-protected Go binary and rebuilt its source as readable Go." } },
   "XArhaanshX/database-project": { set: { title: "Stream-Aware B+Tree" } },
 };

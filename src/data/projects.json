@@ -2,7 +2,7 @@
  {
   "repo": "XArhaanshX/Multimodal-Fatigue-Detection-System",
   "title": "Fatigue Detection",
-  "summary": "🏆 Best freshers — Panasonic Equinox'26 Hackathon",
+  "summary": "Godot driving-sim telemetry plus webcam face signals (OpenCV, MediaPipe) feed a LightGBM fatigue model that escalates haptic alerts.",
   "category": "Computer vision",
   "origin": "hackathon",
   "stack": [
@@ -183,7 +183,7 @@
  {
   "repo": "XArhaanshX/SCOPE-Reverse-Engineering",
   "title": "SCOPE Reverse-Eng",
-  "summary": "Reverse-engineering track. The goal is to recover the original, human-readable source of the provided application, challenges/task3ppqqcc/ppqqcc.exe.",
+  "summary": "Dortress Hackathon 2026, reverse-engineering track: unpacked a Themida-protected Go binary and rebuilt its source as readable Go.",
   "category": "Systems",
   "origin": "hackathon",
   "stack": [
@@ -491,7 +491,7 @@
  {
   "repo": "XArhaanshX/Clustering-Problem-for-Discharge-Research",
   "title": "Partial Discharge",
-  "summary": "",
+  "summary": "How robust is partial-discharge classification (simulated, sharp point, void, surface) as the signal degrades with noise?",
   "category": "Research",
   "origin": "research",
   "stack": [],
