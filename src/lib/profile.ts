@@ -21,7 +21,7 @@ export type Profile = {
 };
 
 export const profile: Profile = {
-  site: "jhingan.sh",
+  site: "arhaansh.me",
   name: "Arhaansh Jhingan",
   role: "Quant ML Developer",
   location: "Vellore, India",
