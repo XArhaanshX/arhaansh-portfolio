@@ -24,6 +24,17 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   "XArhaanshX/test-portfolio": { hide: true },
   "XArhaanshX/Arch-Hyprland-Configs": { hide: true },
   "XArhaanshX/arhaansh-portfolio": { hide: true },
+  // only a README pointing at Multimodal-Fatigue-Detection-System
+  "XArhaanshX/Fatigue-Detection": { hide: true },
+  // Wunder Fund Alpha Connectome: the rules keep the approach private until 15 Nov 2026
+  "XArhaanshX/WunderFund-Quant-Dev-Challenge": {
+    set: {
+      title: "Quant ML Challenge",
+      category: "Quant ML",
+      stack: ["Python"],
+      summary: "Wunder Fund Alpha Connectome: predict future price moves from 112 order-book and trade features. Code goes public after 15 Nov 2026.",
+    },
+  },
   // LinkedIn names the project, not the repo, so the win cannot be matched by rule
   "XArhaanshX/Multimodal-Fatigue-Detection-System": {
     set: { title: "Fatigue Detection", origin: "hackathon", summary: "Godot driving-sim telemetry plus webcam face signals (OpenCV, MediaPipe) feed a LightGBM fatigue model that escalates haptic alerts.", award: { place: "Winner", event: "Panasonic Equinox '26", when: "Apr 2026", at: "2026-04-01", sure: true } },
