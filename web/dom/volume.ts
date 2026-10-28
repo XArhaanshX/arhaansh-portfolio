@@ -3,6 +3,7 @@
 // audio half of the old xterm client (server/web.ts): shared <audio>, gesture-built
 // analyser/gain graph, ambient now-playing loop, visitor preview playback, band feed.
 // The object shape is tui/music.tsx's VolumeChannel (checked structurally in web/main.ts).
+import { profile } from "@/lib/profile";
 
 export function createVolumeChannel() {
   const song = new Audio();
@@ -20,7 +21,7 @@ export function createVolumeChannel() {
   // listening volume: whisper-quiet default; persisted across visits
   let vol = 0.04;
   try {
-    const s = parseFloat(localStorage.getItem("xiao-vol") ?? "");
+    const s = parseFloat(localStorage.getItem("jhingan-vol") ?? "");
     if (!isNaN(s)) vol = Math.min(1, Math.max(0, s));
   } catch {}
 
@@ -114,7 +115,7 @@ export function createVolumeChannel() {
       .then((r) => r.json())
       .then((d: { playing: boolean; name: string | null; artists: string[]; previewUrl: string | null }) => {
         const key = d.playing ? `${d.name} - ${d.artists.join(", ")}` : "";
-        document.title = key ? `♫ ${key} · xiao.sh` : "xiao.sh";
+        document.title = key ? `♫ ${key} · ${profile.site}` : profile.site;
         if (d.playing && d.previewUrl) manual = false; // my live playback takes the audio back
         else if (manual) return; // visitor playback owns the idle state
         if (key === songKey) return;
@@ -178,7 +179,7 @@ export function createVolumeChannel() {
     set(v: number, _source: "tui" | "client") {
       vol = Math.min(1, Math.max(0, v));
       try {
-        localStorage.setItem("xiao-vol", String(vol));
+        localStorage.setItem("jhingan-vol", String(vol));
       } catch {}
       if (fadeTimer) {
         clearInterval(fadeTimer);

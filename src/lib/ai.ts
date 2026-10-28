@@ -52,8 +52,8 @@ function headers(apiKey: string) {
   return {
     Authorization: `Bearer ${apiKey}`,
     "Content-Type": "application/json",
-    "HTTP-Referer": process.env.OPENROUTER_SITE_URL ?? "https://xiao.sh",
-    "X-Title": process.env.OPENROUTER_SITE_NAME ?? "xiao.sh",
+    "HTTP-Referer": process.env.OPENROUTER_SITE_URL ?? `https://${profile.site}`,
+    "X-Title": process.env.OPENROUTER_SITE_NAME ?? profile.site,
   };
 }
 
@@ -128,7 +128,9 @@ async function buildProfileContext() {
     `Date of Birth: ${profile.dob?.trim() ? profile.dob : "Not listed"}`,
     age !== null ? `Age: ${age}` : "Age: Not listed",
     `Location: ${profile.location}`,
-    `Education: ${profile.education}`,
+    `Education: ${profile.studies.map((s) => `${s.degree}, ${s.school} (${s.years})`).join("; ")}`,
+    `Experience: ${profile.work.map((w) => `${w.role} @ ${w.org}, ${w.from} - ${w.to ?? "present"} (${w.kind})`).join("; ")}`,
+    `Bio: ${profile.bio}`,
     `Skills: ${profile.skills.join(", ")}`,
     `GitHub: ${profile.links.github}`,
     `LinkedIn: ${profile.links.linkedin}`,

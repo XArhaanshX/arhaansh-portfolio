@@ -2,6 +2,7 @@
 // data endpoints and the SEO files. Shared by the Bun server (server/web.ts) and the
 // Cloudflare Worker (server/worker.ts); /app.js and the favicon are served by each host.
 import { SEO_HEAD, seoBody, robotsTxt, sitemapXml, llmsTxt } from "./seo";
+import { profile } from "@/lib/profile";
 import { getSpotify } from "@/lib/spotify";
 import { getPreviewUrl } from "@/lib/preview";
 import { getLinkedInSnapshot } from "@/lib/linkedin";
@@ -21,7 +22,7 @@ const APP_HTML = `<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>xiao.sh</title>${SEO_HEAD}
+<title>${profile.site}</title>${SEO_HEAD}
 <link rel="icon" type="image/png" href="/favicon.png" />
 <meta name="theme-color" content="#030c0d" />
 <style>

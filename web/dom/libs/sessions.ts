@@ -6,7 +6,7 @@ import type { ChatMessage } from "../../../src/lib/ai";
 import type { SavedSession } from "../../../src/lib/sessions";
 export type { SavedSession };
 
-const KEY = "xiao-sessions";
+const KEY = "jhingan-sessions";
 type Stored = { name: string; slug: string; savedAt: string; messages: ChatMessage[] };
 
 function readAll(): Stored[] {

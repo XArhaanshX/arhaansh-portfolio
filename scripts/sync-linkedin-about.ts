@@ -552,7 +552,7 @@ async function cleanSnapshotWithOpenRouter(snapshot: LinkedInSnapshot) {
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
           "HTTP-Referer": process.env.OPENROUTER_SITE_URL ?? "http://localhost:3000",
-          "X-Title": process.env.OPENROUTER_SITE_NAME ?? "xiao.sh",
+          "X-Title": process.env.OPENROUTER_SITE_NAME ?? "jhingan.sh",
         },
         body: JSON.stringify({
           model,
@@ -1024,7 +1024,7 @@ function extractCollaborators(posts: RawPost[], extraSources: string[] = []) {
   }
 
   return uniqueCaseInsensitive(names)
-    .filter((name) => !/\b(jerry|xiao)\b/i.test(name))
+    .filter((name) => !/\b(arhaansh|jhingan)\b/i.test(name))
     .slice(0, 12);
 }
 

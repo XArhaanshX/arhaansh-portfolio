@@ -1,12 +1,13 @@
 // Tiny SEO/GEO surface for the web terminal. The page is a JS terminal (not crawlable),
 // so we inject real meta + Person JSON-LD + a visually-hidden content block, and serve
-// llms.txt / robots.txt / sitemap.xml — enough for search + AI crawlers to read who Jerry is.
+// llms.txt / robots.txt / sitemap.xml — enough for search + AI crawlers to read who Arhaansh is.
 import { profile } from "@/lib/profile";
 import type { Project } from "@/lib/projects";
 
-const ORIGIN = (process.env.PUBLIC_ORIGIN ?? "https://xiao.sh").replace(/\/$/, "");
+const ORIGIN = (process.env.PUBLIC_ORIGIN ?? `https://${profile.site}`).replace(/\/$/, "");
 const PAGE_TITLE = `${profile.name} — ${profile.role}`;
-const DESC = `${profile.name} — ${profile.role}. CS @ ${profile.education}, based in ${profile.location}. Searchable projects, hackathon wins, and an AI you can ask about me — in a terminal UI right in the browser.`;
+const STUDIES = profile.studies.map((s) => `${s.degree} @ ${s.school}`).join(", ");
+const DESC = `${profile.name} — ${profile.role}, machine learning engineer. ${STUDIES}, based in ${profile.location}. ML projects, hackathon wins, and an AI you can ask about me — in a terminal UI right in the browser.`;
 
 function esc(s: string) {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -18,7 +19,7 @@ const personLd = {
   name: profile.name,
   url: `${ORIGIN}/`,
   jobTitle: profile.role,
-  alumniOf: { "@type": "CollegeOrUniversity", name: profile.education },
+  alumniOf: profile.studies.map((s) => ({ "@type": "CollegeOrUniversity", name: s.school })),
   homeLocation: profile.location,
   knowsAbout: profile.skills,
   sameAs: [profile.links.github, profile.links.linkedin],
@@ -41,7 +42,7 @@ export function seoBody(projects: Project[]): string {
   return `
 <main class="seo-content">
   <h1>${esc(profile.name)}</h1>
-  <p>${esc(profile.role)} · CS @ ${esc(profile.education)} · ${esc(profile.location)}</p>
+  <p>${esc(profile.role)} · ${esc(STUDIES)} · ${esc(profile.location)}</p>
   <p>${esc(DESC)}</p>
   <h2>Projects</h2>
   <ul>
@@ -90,9 +91,12 @@ export function llmsTxt(projects: Project[]) {
   return [
     `# ${profile.name}`,
     "",
-    `> ${profile.role}. CS @ ${profile.education}, ${profile.location}.`,
+    `> ${profile.role}. ${STUDIES}, ${profile.location}.`,
     "",
-    `${profile.name} is a CS student and builder. This site is a terminal UI that runs in the browser. Ask its built-in AI about projects, hackathon wins, and stack.`,
+    `${profile.name} is a machine learning engineer and researcher (computer vision, time series, NLP, quant ML). This site is a terminal UI that runs in the browser. Ask its built-in AI about projects, hackathon wins, and stack.`,
+    "",
+    "## Experience",
+    ...profile.work.map((w) => `- ${w.role} @ ${w.org} (${w.from} - ${w.to ?? "present"})`),
     "",
     "## Projects",
     ...projects.map((p) => `- ${p.githubUrl ? `[${p.title}](${p.githubUrl})` : p.title}: ${p.summary}${projectLabel(p)}`),
