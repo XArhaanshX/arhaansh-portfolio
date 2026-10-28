@@ -36,6 +36,9 @@ export const profile: Profile = {
     { role: "Quant ML Developer", org: "Mintzy", from: "Aug 2026", kind: "quant ML" },
     { role: "ML Research Intern", org: "Power Projects", from: "May 2026", to: "Sep 2026", kind: "agentic AI · CAD" },
     { role: "ML Engineer Intern", org: "L&T", from: "Jun 2026", to: "Aug 2026", kind: "computer vision" },
+    // student chapters, after the internships
+    { role: "AIML Team", org: "CodeChef-VIT", from: "Jan 2026", kind: "student chapter" },
+    { role: "AIML Team", org: "IEEE-CS VIT", from: "Jan 2026", kind: "student chapter" },
   ],
   skills: [
     "Python",
