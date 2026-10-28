@@ -25,7 +25,7 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   "XArhaanshX/arhaansh-portfolio": { hide: true },
   // LinkedIn names the project, not the repo, so the win cannot be matched by rule
   "XArhaanshX/Multimodal-Fatigue-Detection-System": {
-    set: { title: "Fatigue Detection", origin: "hackathon", summary: "Godot driving-sim telemetry plus webcam face signals (OpenCV, MediaPipe) feed a LightGBM fatigue model that escalates haptic alerts.", award: { place: "Best Freshers", event: "Panasonic Equinox '26", when: "Apr 2026", at: "2026-04-01", sure: true } },
+    set: { title: "Fatigue Detection", origin: "hackathon", summary: "Godot driving-sim telemetry plus webcam face signals (OpenCV, MediaPipe) feed a LightGBM fatigue model that escalates haptic alerts.", award: { place: "Winner", event: "Panasonic Equinox '26", when: "Apr 2026", at: "2026-04-01", sure: true } },
   },
   // Power Projects internship: no README, so the filter skips it
   "XArhaanshX/PSSE-Agent": {
@@ -46,6 +46,12 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   "XArhaanshX/Time-Series-Load-Forecasting": { set: { title: "Load Forecasting" } },
   "XArhaanshX/Churn-Prediction-Project": { set: { title: "Churn Prediction" } },
   "XArhaanshX/Wafer-Anomaly-Detection": { set: { title: "Wafer Anomaly Audit" } },
-  "XArhaanshX/SCOPE-Reverse-Engineering": { set: { title: "SCOPE Reverse-Eng", summary: "Dortress Hackathon 2026, reverse-engineering track: unpacked a Themida-protected Go binary and rebuilt its source as readable Go." } },
+  "XArhaanshX/SCOPE-Reverse-Engineering": {
+    set: {
+      title: "CTF-Dotress",
+      summary: "Dotress CTF 2026, reverse-engineering track: unpacked a Themida-protected Go binary and rebuilt its source as readable Go.",
+      award: { place: "Winner", event: "Dotress CTF 2026", when: "Oct 2026", at: "2026-10-01", sure: true },
+    },
+  },
   "XArhaanshX/database-project": { set: { title: "Stream-Aware B+Tree" } },
 };

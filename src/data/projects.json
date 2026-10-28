@@ -42,7 +42,7 @@
   "commits": 17,
   "stars": 1,
   "award": {
-   "place": "Best Freshers",
+   "place": "Winner",
    "event": "Panasonic Equinox '26",
    "when": "Apr 2026",
    "at": "2026-04-01",
@@ -50,6 +50,48 @@
   },
   "githubUrl": "https://github.com/XArhaanshX/Multimodal-Fatigue-Detection-System",
   "score": 47
+ },
+ {
+  "repo": "XArhaanshX/SCOPE-Reverse-Engineering",
+  "title": "CTF-Dotress",
+  "summary": "Dotress CTF 2026, reverse-engineering track: unpacked a Themida-protected Go binary and rebuilt its source as readable Go.",
+  "category": "Systems",
+  "origin": "hackathon",
+  "stack": [
+   "Python",
+   "Go"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 54
+   },
+   {
+    "name": "Go",
+    "pct": 43
+   },
+   {
+    "name": "Shell",
+    "pct": 2
+   }
+  ],
+  "year": 2026,
+  "created": "2026-10-26T04:51:13.000Z",
+  "pushedAt": "2026-10-26T08:57:59Z",
+  "status": "active",
+  "role": "lead",
+  "share": 0.73,
+  "commits": 8,
+  "stars": 0,
+  "award": {
+   "place": "Winner",
+   "event": "Dotress CTF 2026",
+   "when": "Oct 2026",
+   "at": "2026-10-01",
+   "sure": true
+  },
+  "githubUrl": "https://github.com/XArhaanshX/SCOPE-Reverse-Engineering",
+  "score": 46
  },
  {
   "repo": "XArhaanshX/SilentHeat",
@@ -179,41 +221,6 @@
   "stars": 0,
   "githubUrl": "https://github.com/XArhaanshX/database-project",
   "score": 23
- },
- {
-  "repo": "XArhaanshX/SCOPE-Reverse-Engineering",
-  "title": "SCOPE Reverse-Eng",
-  "summary": "Dortress Hackathon 2026, reverse-engineering track: unpacked a Themida-protected Go binary and rebuilt its source as readable Go.",
-  "category": "Systems",
-  "origin": "hackathon",
-  "stack": [
-   "Python",
-   "Go"
-  ],
-  "langs": [
-   {
-    "name": "Python",
-    "pct": 54
-   },
-   {
-    "name": "Go",
-    "pct": 43
-   },
-   {
-    "name": "Shell",
-    "pct": 2
-   }
-  ],
-  "year": 2026,
-  "created": "2026-10-26T04:51:13.000Z",
-  "pushedAt": "2026-10-26T08:57:59Z",
-  "status": "active",
-  "role": "lead",
-  "share": 0.73,
-  "commits": 8,
-  "stars": 0,
-  "githubUrl": "https://github.com/XArhaanshX/SCOPE-Reverse-Engineering",
-  "score": 21
  },
  {
   "repo": "XArhaanshX/Wafer-Anomaly-Detection",
