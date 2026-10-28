@@ -6,7 +6,7 @@
   "location": "Vellore, Tamil Nadu, India",
   "linkedinUrl": "https://www.linkedin.com/in/arhaansh-jhingan-swarm/",
   "achievements": [
-   "Won Dotress CTF 2026 (reverse-engineering track): unpacked a Themida-protected Go binary and rebuilt its source",
+   "Won Dortress CTF 2026 (reverse-engineering track): unpacked a Themida-protected Go binary and rebuilt its source",
    "Won Innohack 2.0 (IIC, VIT Vellore) with Vivaad Radar, linking Indian court records to land survey numbers",
    "Won Panasonic Equinox '26 (60-hour hackathon) with a Multimodal Driver Fatigue Detection System",
    "Won the CodeChef-VIT Internal Hackathon: authorship attribution and style transfer with DistilBERT",
@@ -72,7 +72,7 @@
   {
    "title": "Projects",
    "items": [
-    "CTF-Dotress (won Dotress CTF 2026, reverse-engineering track): unpacked a Themida-protected Go binary and rebuilt its source as readable Go",
+    "CTF-Dortress (won Dortress CTF 2026, reverse-engineering track): unpacked a Themida-protected Go binary and rebuilt its source as readable Go",
     "L&T SLD symbol detection: one template, no labels; multi-scale chamfer matching, a template bank for tiny symbols and structural verification; deterministic on CPU, now in L&T's SLD automation system",
     "Vivaad Radar (won Innohack 2.0): survey number in, potential court-case matches out, with supporting documents and a confidence level; Arhaansh built the ML",
     "Authorship attribution (won CodeChef-VIT Internal Hackathon): TF-IDF baselines to DistilBERT on stylistic signals, plus style transfer into another author's voice",
@@ -83,7 +83,7 @@
   {
    "title": "Honors & Awards",
    "items": [
-    "Dotress CTF 2026 Hackathon Oct 2026",
+    "Dortress CTF 2026 Hackathon Oct 2026",
     "Innohack 2.0 Hackathon by Institution's Innovation Council, VIT Vellore Sep 2026",
     "Panasonic Equinox '26 Hackathon by Panasonic India & roboVITics Apr 2026",
     "CodeChef-VIT Internal Hackathon by CodeChef-VIT Student Chapter Apr 2026"

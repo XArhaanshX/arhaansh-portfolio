@@ -53,8 +53,8 @@
  },
  {
   "repo": "XArhaanshX/SCOPE-Reverse-Engineering",
-  "title": "CTF-Dotress",
-  "summary": "Dotress CTF 2026, reverse-engineering track: unpacked a Themida-protected Go binary and rebuilt its source as readable Go.",
+  "title": "CTF-Dortress",
+  "summary": "Dortress CTF 2026, reverse-engineering track: unpacked a Themida-protected Go binary and rebuilt its source as readable Go.",
   "category": "Systems",
   "origin": "hackathon",
   "stack": [
@@ -85,7 +85,7 @@
   "stars": 0,
   "award": {
    "place": "Winner",
-   "event": "Dotress CTF 2026",
+   "event": "Dortress CTF 2026",
    "when": "Oct 2026",
    "at": "2026-10-01",
    "sure": true

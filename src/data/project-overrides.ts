@@ -48,9 +48,9 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   "XArhaanshX/Wafer-Anomaly-Detection": { set: { title: "Wafer Anomaly Audit" } },
   "XArhaanshX/SCOPE-Reverse-Engineering": {
     set: {
-      title: "CTF-Dotress",
-      summary: "Dotress CTF 2026, reverse-engineering track: unpacked a Themida-protected Go binary and rebuilt its source as readable Go.",
-      award: { place: "Winner", event: "Dotress CTF 2026", when: "Oct 2026", at: "2026-10-01", sure: true },
+      title: "CTF-Dortress",
+      summary: "Dortress CTF 2026, reverse-engineering track: unpacked a Themida-protected Go binary and rebuilt its source as readable Go.",
+      award: { place: "Winner", event: "Dortress CTF 2026", when: "Oct 2026", at: "2026-10-01", sure: true },
     },
   },
   "XArhaanshX/database-project": { set: { title: "Stream-Aware B+Tree" } },
