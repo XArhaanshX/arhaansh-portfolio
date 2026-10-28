@@ -2,20 +2,20 @@
 // Account comes from CLOUDFLARE_ACCOUNT_ID in the environment; secrets via `wrangler secret`.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "jhingan-sh",
+  "name": "arhaansh-me",
   "main": "server/worker.ts",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
   "build": { "command": "bun server/bundle.ts" },
   // dist/app.js + favicon, served before the Worker runs; every other path reaches the Worker
   "assets": { "directory": "dist" },
-  // served at jhingan-sh.<account>.workers.dev until a custom domain is added under "routes":
+  // served at arhaansh-me.<account>.workers.dev until a custom domain is added under "routes":
   //   "routes": [{ "pattern": "example.com", "custom_domain": true }]
   "workers_dev": true,
   // .data on Cloudflare: one KV entry per .data-relative file (visits.json, spotify.json, ...).
   // Create it once with `bunx wrangler kv namespace create DATA` and paste the id here.
   "kv_namespaces": [{ "binding": "DATA", "id": "00000000000000000000000000000000" }],
-  "vars": { "NODE_ENV": "production", "PUBLIC_ORIGIN": "https://jhingan.sh" },
+  "vars": { "NODE_ENV": "production", "PUBLIC_ORIGIN": "https://arhaansh.me" },
   // daily re-derive of the project labels into KV (server/worker.ts `scheduled`)
   "triggers": { "crons": ["17 9 * * *"] },
   "observability": { "enabled": true }

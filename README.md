@@ -1,4 +1,4 @@
-# jhingan.sh
+# arhaansh.me
 
 The portfolio of Arhaansh Jhingan (Quant ML Developer at Mintzy, BTech CSE at VIT Vellore, BS Data Science & Applications at IIT Madras), rendered as a terminal app.
 
@@ -56,7 +56,7 @@ bunx wrangler secret put GITHUB_TOKEN         # and SPOTIFY_*, OPENROUTER_API_KE
 CLOUDFLARE_ACCOUNT_ID=... bun run deploy:cf
 ```
 
-It serves on `jhingan-sh.<account>.workers.dev`; add a custom domain under `routes` in `wrangler.jsonc` and set `PUBLIC_ORIGIN` to it.
+It serves on `arhaansh-me.<account>.workers.dev`; add a custom domain under `routes` in `wrangler.jsonc` and set `PUBLIC_ORIGIN` to it.
 
 ## License
 

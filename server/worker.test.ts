@@ -7,7 +7,7 @@ import snapshot from "../src/data/projects.json";
 // The Worker keeps .data in KV, so state must outlive the process: run the real Worker in
 // workerd (`wrangler dev`, local KV persisted to a temp dir), stop it, start a fresh one on
 // the same state, and check what carried over.
-const persist = mkdtempSync(path.join(tmpdir(), "jhingan-kv-"));
+const persist = mkdtempSync(path.join(tmpdir(), "arhaansh-kv-"));
 afterAll(() => rmSync(persist, { recursive: true, force: true }));
 const env = { ...process.env, WRANGLER_SEND_METRICS: "false" };
 

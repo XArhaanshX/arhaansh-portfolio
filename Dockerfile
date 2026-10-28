@@ -1,4 +1,4 @@
-# jhingan.sh TUI server (web :8787 + ssh :2222) on Bun.
+# arhaansh.me TUI server (web :8787 + ssh :2222) on Bun.
 FROM oven/bun:1
 WORKDIR /app
 

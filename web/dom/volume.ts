@@ -21,7 +21,7 @@ export function createVolumeChannel() {
   // listening volume: whisper-quiet default; persisted across visits
   let vol = 0.04;
   try {
-    const s = parseFloat(localStorage.getItem("jhingan-vol") ?? "");
+    const s = parseFloat(localStorage.getItem("arhaansh-vol") ?? "");
     if (!isNaN(s)) vol = Math.min(1, Math.max(0, s));
   } catch {}
 
@@ -179,7 +179,7 @@ export function createVolumeChannel() {
     set(v: number, _source: "tui" | "client") {
       vol = Math.min(1, Math.max(0, v));
       try {
-        localStorage.setItem("jhingan-vol", String(vol));
+        localStorage.setItem("arhaansh-vol", String(vol));
       } catch {}
       if (fadeTimer) {
         clearInterval(fadeTimer);

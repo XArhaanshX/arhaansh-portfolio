@@ -42,7 +42,7 @@ export async function getGitHub(): Promise<GitHubPulse | null> {
   if (!login) return null;
 
   const headers: Record<string, string> = {
-    "User-Agent": "jhingan.sh-tui",
+    "User-Agent": "arhaansh.me-tui",
     Accept: "application/vnd.github+json",
   };
   const token = process.env.GITHUB_TOKEN?.trim();
@@ -57,7 +57,7 @@ export async function getGitHub(): Promise<GitHubPulse | null> {
     }),
     // the public profile graph page carries "N contributions in the last year" (no auth;
     // the GraphQL contributions API requires a token)
-    call(fetch(`https://github.com/users/${login}/contributions`, { headers: { "User-Agent": "jhingan.sh-tui" } }), async (r) => {
+    call(fetch(`https://github.com/users/${login}/contributions`, { headers: { "User-Agent": "arhaansh.me-tui" } }), async (r) => {
       const m = (await r.text()).match(/js-contribution-activity-description[^>]*>\s*([\d,]+)/);
       return m ? Number(m[1].replace(/,/g, "")) : undefined;
     }),

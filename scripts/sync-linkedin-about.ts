@@ -552,7 +552,7 @@ async function cleanSnapshotWithOpenRouter(snapshot: LinkedInSnapshot) {
           Authorization: `Bearer ${apiKey}`,
           "Content-Type": "application/json",
           "HTTP-Referer": process.env.OPENROUTER_SITE_URL ?? "http://localhost:3000",
-          "X-Title": process.env.OPENROUTER_SITE_NAME ?? "jhingan.sh",
+          "X-Title": process.env.OPENROUTER_SITE_NAME ?? "arhaansh.me",
         },
         body: JSON.stringify({
           model,
