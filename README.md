@@ -1,10 +1,8 @@
 # arhaansh.me
 
-The portfolio of Arhaansh Jhingan (Quant ML Developer at Mintzy, BTech CSE at VIT Vellore, BS Data Science & Applications at IIT Madras), rendered as a terminal app.
+The portfolio of Arhaansh Jhingan (Quant ML Developer at Mintzy, BTech CSE at VIT Vellore, BS Data Science & Applications at IIT Madras), rendered as a terminal app. Live at [arhaansh.me](https://arhaansh.me).
 
-It is a fork of [xiao.sh](https://github.com/i098/xiao.sh) by Jerry Xiao, used under the Apache License 2.0; see [NOTICE](NOTICE).
-The engine is unchanged: one [OpenTUI](https://github.com/anomalyco/opentui) + React tree, reachable over SSH or in a browser, with the koi pond, the boot log, live GitHub stats, a Spotify widget and an AI chat.
-What changed is the content and the parts that describe it: profile, wins, experience, and ML-first project labels.
+One [OpenTUI](https://github.com/anomalyco/opentui) + React tree, reachable over SSH or in a browser, with an animated koi pond, a boot log, live GitHub stats, a Spotify widget and an AI chat that answers questions about his ML work.
 
 ## Screens
 
@@ -60,4 +58,4 @@ It serves on `arhaansh-me.<account>.workers.dev`; add a custom domain under `rou
 
 ## License
 
-Apache License 2.0, as the original. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
