@@ -18,7 +18,7 @@ Bun.serve({
   port: PORT,
   async fetch(req, server) {
     const url = new URL(req.url);
-    // the cat (restored from the old Next.js app's src/app/icon.png) — public/favicon.ico
+    // the AJ monogram — public/favicon.png
     // is the untouched create-next-app Vercel icon, don't serve it
     if (url.pathname === "/favicon.ico" || url.pathname === "/favicon.png")
       return new Response(Bun.file("public/favicon.png"), {

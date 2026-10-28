@@ -37,7 +37,7 @@ export async function buildAppJs(dev: boolean): Promise<string> {
 
 if (import.meta.main) {
   await Bun.write("dist/app.js", await buildAppJs(false));
-  // the cat (public/favicon.ico is the untouched create-next-app icon) under both names
+  // the AJ monogram under both names
   await Bun.write("dist/favicon.png", Bun.file("public/favicon.png"));
   await Bun.write("dist/favicon.ico", Bun.file("public/favicon.png"));
   console.log("wrote dist/app.js, dist/favicon.png, dist/favicon.ico");
