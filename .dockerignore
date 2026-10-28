@@ -1,0 +1,25 @@
+node_modules
+.next
+.git
+.github
+*.tsbuildinfo
+next-env.d.ts
+coverage
+build
+out
+.data
+.sentrux
+.fallow
+.claude
+# secrets: provided via k8s Secret, never baked into the image
+.env
+.env.*
+!.env.example
+linkedin-session.json
+server/.host-key
+*.key
+*.pem
+*.p12
+*.pfx
+dist
+.wrangler
