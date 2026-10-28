@@ -11,7 +11,8 @@ import type { ProjectOverride } from "@/lib/project-labels";
 // repos are labelled hackathon builds) and single extra repos
 export const PROJECT_SOURCES = {
   hackathonOrgs: [] as string[],
-  repos: [] as string[],
+  // team builds on teammates' accounts
+  repos: ["liualt/Quorum", "liualt/PRISM", "Ujjwal160107/adhigrahan-radar", "Ujjwal160107/vivaad-radar", "Ujjwal160107/CC-Xposed"],
   // His commits are matched by author email (plus the GitHub noreply address, added at sync).
   authorEmails: ["arhaanshjhingan@gmail.com"],
   formerLogins: [] as string[],
@@ -35,6 +36,40 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   // Smart India Hackathon 2026 build; the README calls it Ankur
   "XArhaanshX/MeghMitra": {
     set: { origin: "hackathon", category: "NLP & agents", summary: "Ankur (SIH 2026): retrieves pre-approved contingency actions from district agriculture plans to match IMD's forecast." },
+  },
+  // team hackathon builds on teammates' accounts: the repo names do not say what they are
+  "liualt/Quorum": {
+    set: { title: "AI Interview Panel", origin: "hackathon", category: "NLP & agents", summary: "Quorum (EcoSphere 2026 by Agora): three AI interviewers run a live engineering case while the candidate fixes a real defect in a sandbox." },
+  },
+  "liualt/PRISM": {
+    set: { title: "Code History Search", origin: "hackathon", category: "NLP & agents", summary: "PRISM (Samsung PRISM GenAI Hackathon): ask about a JavaScript repo in plain English and get matching functions across its whole git history." },
+  },
+  "Ujjwal160107/adhigrahan-radar": {
+    set: { title: "Land Delay Radar", origin: "hackathon", category: "Classical ML", summary: "Adhigrahan Radar (SIH 2026, SIH26017): predicts which land-acquisition projects will miss their statutory deadlines, before they do." },
+  },
+  // no README, so the filter skips it
+  "Ujjwal160107/vivaad-radar": {
+    show: true,
+    set: {
+      title: "Land Dispute Radar",
+      origin: "hackathon",
+      category: "NLP & agents",
+      summary: "Vivaad Radar: links court cases to land survey numbers and scores, with evidence, whether a parcel is caught up in litigation.",
+      award: { place: "Winner", event: "Innohack 2.0", when: "Aug 2026", at: "2026-08-01", sure: true },
+    },
+  },
+  // his commits are not in it (the ML lives in his DistilBERT model), so the filter skips it
+  "Ujjwal160107/CC-Xposed": {
+    show: true,
+    set: {
+      title: "Authorship Classifier",
+      origin: "hackathon",
+      // the create-next-app README names Bun; the model is DistilBERT
+      stack: ["Python", "JavaScript", "Transformers", "FastAPI", "Next.js"],
+      category: "NLP & agents",
+      summary: "ChatPrint: tells who wrote a piece of text from its stylistic signals, with a DistilBERT classifier behind a FastAPI service.",
+      award: { place: "Winner", event: "CodeChef-VIT Internal", when: "Mar 2026", at: "2026-03-01", sure: true },
+    },
   },
   // titles that fit the 22-cell index column
   "XArhaanshX/Handwriting-Recognition-Few-Shot-Pipeline": { set: { title: "Few-Shot Handwriting" } },
