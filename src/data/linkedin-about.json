@@ -1,0 +1,104 @@
+{
+ "profile": {
+  "name": "Arhaansh Jhingan",
+  "title": "Quant ML Developer @ Mintzy | Ex-ML intern @ L&T | CS @ VIT Vellore & IIT Madras | Swarm Learning Researcher",
+  "summary": "Machine learning engineer and researcher working across computer vision, time-series forecasting, NLP and quantitative ML.",
+  "location": "Vellore, Tamil Nadu, India",
+  "linkedinUrl": "https://www.linkedin.com/in/arhaansh-jhingan-swarm/",
+  "achievements": [
+   "Won Innohack 2.0 (IIC, VIT Vellore) with Vivaad Radar, linking Indian court records to land survey numbers",
+   "2nd place, CodeChef-VIT Internal Hackathon: authorship attribution and style transfer with DistilBERT",
+   "Best Freshers, Panasonic Equinox '26 (60-hour hackathon): Multimodal Driver Fatigue Detection System",
+   "Churn prediction project featured in Namdapha House (IIT Madras) Innovators Spotlight"
+  ],
+  "technologies": [
+   "Python",
+   "PyTorch",
+   "scikit-learn",
+   "LightGBM",
+   "XGBoost",
+   "OpenCV",
+   "MediaPipe",
+   "DistilBERT",
+   "FastAPI",
+   "Pandas",
+   "NumPy",
+   "C++",
+   "SQL",
+   "Docker"
+  ],
+  "collaborators": [
+   "Ujjwal Tiwari",
+   "Eklavya Nathani"
+  ],
+  "narrative": []
+ },
+ "sections": [
+  {
+   "title": "Experience",
+   "items": [
+    "Quant Machine Learning Developer - Mintzy - Aug 2026 - Present - Remote - Quantitative Finance, Quantitative Research",
+    "Machine Learning Researcher (Internship) - Power Projects - May 2026 - Sep 2026 - Hybrid - Agentic AI Development, Computer-Aided Design (CAD)",
+    "Machine Learning Engineer (Internship) - Larsen & Toubro - Jun 2026 - Aug 2026 - Hybrid - one-shot symbol detection in Single Line Diagrams",
+    "Junior Core - CodeChef-VIT Student Chapter - Jan 2026 - Present - Large Scale Dataset Cleaning, Deep Learning",
+    "Core Committee Member - IEEE Computer Society - VIT - Jan 2026 - Present"
+   ]
+  },
+  {
+   "title": "Education",
+   "items": [
+    "Vellore Institute of Technology - Bachelor of Technology (BTech), Computer Science - Jul 2025 - Jun 2029",
+    "Indian Institute of Technology, Madras - Bachelor of Science (BS), Data Science & Applications - Jul 2025 - May 2029"
+   ]
+  },
+  {
+   "title": "Skills",
+   "items": [
+    "Machine Learning",
+    "Deep Learning",
+    "Computer Vision",
+    "Time-Series Forecasting",
+    "Natural Language Processing",
+    "Quantitative Research",
+    "Quantitative Finance",
+    "Agentic AI Development",
+    "Large Scale Dataset Cleaning",
+    "Python",
+    "PyTorch",
+    "scikit-learn"
+   ]
+  },
+  {
+   "title": "Projects",
+   "items": [
+    "L&T SLD symbol detection: one template, no labels; multi-scale chamfer matching, a template bank for tiny symbols and structural verification; deterministic on CPU, now in L&T's SLD automation system",
+    "Vivaad Radar (won Innohack 2.0): survey number in, potential court-case matches out, with supporting documents and a confidence level; Arhaansh built the ML",
+    "Authorship attribution (2nd, CodeChef-VIT Internal Hackathon): TF-IDF baselines to DistilBERT on stylistic signals, plus style transfer into another author's voice",
+    "Multimodal Driver Fatigue Detection (Best Freshers, Panasonic Equinox '26): Godot sim telemetry + OpenCV/MediaPipe face signals, 19-dim features, LightGBM P(fatigue), escalating haptic alerts",
+    "Customer churn prediction: EDA, SMOTE, model comparison and a FastAPI service; featured by Namdapha House, IIT Madras"
+   ]
+  },
+  {
+   "title": "Honors & Awards",
+   "items": [
+    "CTF by TBD Oct 2026",
+    "Innohack 2.0 Hackathon by Institution's Innovation Council, VIT Vellore Sep 2026",
+    "Panasonic Equinox '26 Hackathon Best Freshers by Panasonic India & roboVITics Apr 2026",
+    "CodeChef-VIT Internal Hackathon 2nd by CodeChef-VIT Student Chapter Apr 2026"
+   ]
+  },
+  {
+   "title": "Languages",
+   "items": [
+    "English",
+    "German",
+    "Hindi",
+    "Marathi",
+    "Punjabi"
+   ]
+  }
+ ],
+ "posts": [],
+ "pulledAt": "2026-10-29T00:00:00.000Z",
+ "source": "manual"
+}
