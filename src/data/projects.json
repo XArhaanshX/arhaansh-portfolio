@@ -94,6 +94,56 @@
   "score": 46
  },
  {
+  "repo": "Ujjwal160107/vivaad-radar",
+  "title": "Land Dispute Radar",
+  "summary": "Vivaad Radar: links court cases to land survey numbers and scores, with evidence, whether a parcel is caught up in litigation.",
+  "category": "NLP & agents",
+  "origin": "hackathon",
+  "stack": [
+   "Python",
+   "TypeScript"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 43
+   },
+   {
+    "name": "TypeScript",
+    "pct": 41
+   },
+   {
+    "name": "HTML",
+    "pct": 15
+   },
+   {
+    "name": "PLpgSQL",
+    "pct": 1
+   },
+   {
+    "name": "CSS",
+    "pct": 1
+   }
+  ],
+  "year": 2026,
+  "created": "2026-08-20T11:03:55.000Z",
+  "pushedAt": "2026-08-21T05:42:45Z",
+  "status": "recent",
+  "role": "team",
+  "share": 0.06,
+  "commits": 2,
+  "stars": 1,
+  "award": {
+   "place": "Winner",
+   "event": "Innohack 2.0",
+   "when": "Aug 2026",
+   "at": "2026-08-01",
+   "sure": true
+  },
+  "githubUrl": "https://github.com/Ujjwal160107/vivaad-radar",
+  "score": 41
+ },
+ {
   "repo": "XArhaanshX/SilentHeat",
   "title": "SilentHeat",
   "summary": "Beyond 40°C: quantifying the humid-heat blind spot in India's heatwave warnings",
@@ -174,6 +224,51 @@
   "score": 29
  },
  {
+  "repo": "Ujjwal160107/CC-Xposed",
+  "title": "Authorship Classifier",
+  "summary": "ChatPrint: tells who wrote a piece of text from its stylistic signals, with a DistilBERT classifier behind a FastAPI service.",
+  "category": "NLP & agents",
+  "origin": "hackathon",
+  "stack": [
+   "Python",
+   "JavaScript",
+   "Transformers",
+   "FastAPI",
+   "Next.js"
+  ],
+  "langs": [
+   {
+    "name": "JavaScript",
+    "pct": 69
+   },
+   {
+    "name": "Python",
+    "pct": 30
+   },
+   {
+    "name": "CSS",
+    "pct": 1
+   }
+  ],
+  "year": 2026,
+  "created": "2026-03-07T13:33:52.000Z",
+  "pushedAt": "2026-03-08T07:49:42Z",
+  "status": "dormant",
+  "role": "team",
+  "share": 0,
+  "commits": 0,
+  "stars": 1,
+  "award": {
+   "place": "Winner",
+   "event": "CodeChef-VIT Internal",
+   "when": "Mar 2026",
+   "at": "2026-03-01",
+   "sure": true
+  },
+  "githubUrl": "https://github.com/Ujjwal160107/CC-Xposed",
+  "score": 28
+ },
+ {
   "repo": "XArhaanshX/database-project",
   "title": "Stream-Aware B+Tree",
   "summary": "A B+-tree index in C++17 that makes ascending inserts cheaper and keeps the resulting pages full.",
@@ -223,6 +318,49 @@
   "score": 23
  },
  {
+  "repo": "Ujjwal160107/adhigrahan-radar",
+  "title": "Land Delay Radar",
+  "summary": "Adhigrahan Radar (SIH 2026, SIH26017): predicts which land-acquisition projects will miss their statutory deadlines, before they do.",
+  "category": "Classical ML",
+  "origin": "hackathon",
+  "stack": [
+   "Python",
+   "TypeScript"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 66
+   },
+   {
+    "name": "TypeScript",
+    "pct": 25
+   },
+   {
+    "name": "HTML",
+    "pct": 7
+   },
+   {
+    "name": "PLpgSQL",
+    "pct": 1
+   },
+   {
+    "name": "Makefile",
+    "pct": 1
+   }
+  ],
+  "year": 2026,
+  "created": "2026-09-04T15:58:35.000Z",
+  "pushedAt": "2026-09-30T06:51:56Z",
+  "status": "recent",
+  "role": "team",
+  "share": 0.15,
+  "commits": 2,
+  "stars": 0,
+  "githubUrl": "https://github.com/Ujjwal160107/adhigrahan-radar",
+  "score": 22
+ },
+ {
   "repo": "XArhaanshX/Wafer-Anomaly-Detection",
   "title": "Wafer Anomaly Audit",
   "summary": "Audit and repair of the Fab-7 WAFER-GUARD excursion detector (GDG wildcard, AI/ML task).",
@@ -249,6 +387,86 @@
   "stars": 0,
   "githubUrl": "https://github.com/XArhaanshX/Wafer-Anomaly-Detection",
   "score": 20
+ },
+ {
+  "repo": "liualt/PRISM",
+  "title": "Code History Search",
+  "summary": "PRISM (Samsung PRISM GenAI Hackathon): ask about a JavaScript repo in plain English and get matching functions across its whole git history.",
+  "category": "NLP & agents",
+  "origin": "hackathon",
+  "stack": [
+   "Python"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 92
+   },
+   {
+    "name": "JavaScript",
+    "pct": 4
+   },
+   {
+    "name": "CSS",
+    "pct": 2
+   },
+   {
+    "name": "HTML",
+    "pct": 1
+   },
+   {
+    "name": "Dockerfile",
+    "pct": 1
+   }
+  ],
+  "year": 2026,
+  "created": "2026-10-02T16:13:08+05:30",
+  "pushedAt": "2026-10-06T14:56:16Z",
+  "status": "recent",
+  "role": "lead",
+  "share": 0.67,
+  "commits": 12,
+  "stars": 0,
+  "githubUrl": "https://github.com/liualt/PRISM",
+  "score": 19
+ },
+ {
+  "repo": "liualt/Quorum",
+  "title": "AI Interview Panel",
+  "summary": "Quorum (EcoSphere 2026 by Agora): three AI interviewers run a live engineering case while the candidate fixes a real defect in a sandbox.",
+  "category": "NLP & agents",
+  "origin": "hackathon",
+  "stack": [
+   "Python",
+   "TypeScript",
+   "Next.js",
+   "React",
+   "FastAPI"
+  ],
+  "langs": [
+   {
+    "name": "Python",
+    "pct": 67
+   },
+   {
+    "name": "TypeScript",
+    "pct": 32
+   },
+   {
+    "name": "CSS",
+    "pct": 1
+   }
+  ],
+  "year": 2026,
+  "created": "2026-08-30T06:28:15.000Z",
+  "pushedAt": "2026-09-07T16:49:38Z",
+  "status": "recent",
+  "role": "team",
+  "share": 0.03,
+  "commits": 1,
+  "stars": 0,
+  "githubUrl": "https://github.com/liualt/Quorum",
+  "score": 19
  },
  {
   "repo": "XArhaanshX/MeghMitra",
