@@ -1,4 +1,4 @@
-# Structural rules for xiao.sh — enforced by `sentrux check` (advisory) and the gate.
+# Structural rules for jhingan.sh — enforced by `sentrux check` (advisory) and the gate.
 # Tuned to the current codebase: no cycles / no god files, with headroom on the
 # inherently large pieces (the koi sim in tui/app.tsx, the linkedin scraper).
 [constraints]

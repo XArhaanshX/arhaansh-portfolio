@@ -1,4 +1,4 @@
-# xiao.sh TUI server (web :8787 + ssh :2222) on Bun.
+# jhingan.sh TUI server (web :8787 + ssh :2222) on Bun.
 FROM oven/bun:1
 WORKDIR /app
 

@@ -1,4 +1,13 @@
-xiao.sh
-Copyright 2026 Jerry Xiao
+jhingan.sh
+Copyright 2026 Arhaansh Jhingan
+
+This product is a modified version of xiao.sh
+(https://github.com/i098/xiao.sh), Copyright 2026 Jerry Xiao,
+licensed under the Apache License, Version 2.0.
+
+Modifications by Arhaansh Jhingan: personal content and data (profile,
+LinkedIn snapshot, project snapshot and overrides, favicon), ML-focused
+project labelling rules, the About screen layout, and site naming.
+The commit history records every change made to the original files.
 
 This product is licensed under the Apache License, Version 2.0.
