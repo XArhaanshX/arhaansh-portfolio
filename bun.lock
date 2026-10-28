@@ -3,7 +3,7 @@
   "configVersion": 0,
   "workspaces": {
     "": {
-      "name": "xiao.sh",
+      "name": "arhaansh.me",
       "dependencies": {
         "@opentui/core": "^0.4.2",
         "@opentui/react": "^0.4.2",
