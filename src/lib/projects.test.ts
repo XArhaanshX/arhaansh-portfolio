@@ -7,15 +7,15 @@ useStore({ get: async (k) => kv.get(k) ?? null, put: async (k, v) => void kv.set
 
 const entry = (repo: string) => ({ ...projects[0], repo }) as Project;
 
-test("a store list that still has the retired account serves the bundle, with overrides applied", async () => {
-  kv.set(PROJECTS_KEY, JSON.stringify([entry("undeemed/pinger"), entry("undeemed/other")]));
-  const list = await getProjects();
-  expect(list).toBe(projects);
-  expect(list.some((p) => p.repo.startsWith("undeemed/") || p.repo === "i098/pinger")).toBe(false);
+test("an empty or corrupt store list serves the bundle", async () => {
+  kv.set(PROJECTS_KEY, "[]");
+  expect(await getProjects()).toBe(projects);
+  kv.set(PROJECTS_KEY, "{not json");
+  expect(await getProjects()).toBe(projects);
 });
 
-test("a fresh store list is served over the bundle", async () => {
-  kv.set(PROJECTS_KEY, JSON.stringify([entry("i098/pinger"), entry("i098/fresh")]));
+test("a fresh store list is served over the bundle, with overrides applied", async () => {
+  kv.set(PROJECTS_KEY, JSON.stringify([entry("XArhaanshX/github-demo"), entry("XArhaanshX/fresh")]));
   const list = await getProjects();
-  expect(list.map((p) => p.repo)).toEqual(["i098/fresh"]);
+  expect(list.map((p) => p.repo)).toEqual(["XArhaanshX/fresh"]);
 });

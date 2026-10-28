@@ -7,7 +7,7 @@ import snapshot from "../src/data/projects.json";
 // The Worker keeps .data in KV, so state must outlive the process: run the real Worker in
 // workerd (`wrangler dev`, local KV persisted to a temp dir), stop it, start a fresh one on
 // the same state, and check what carried over.
-const persist = mkdtempSync(path.join(tmpdir(), "xiao-kv-"));
+const persist = mkdtempSync(path.join(tmpdir(), "jhingan-kv-"));
 afterAll(() => rmSync(persist, { recursive: true, force: true }));
 const env = { ...process.env, WRANGLER_SEND_METRICS: "false" };
 
@@ -49,7 +49,7 @@ test(".data (visit counter) survives a Worker restart through KV", async () => {
 // what a fresh load shows - /api/projects (which the browser twin reads), the SEO block and
 // llms.txt - with the same bundle, no rebuild or redeploy.
 test("project labels in KV win over the bundled snapshot", async () => {
-  const fresh = [{ ...snapshot[0], repo: "i098/kv-sentinel", title: "KV Sentinel", summary: "Written by the daily refresh." }];
+  const fresh = [{ ...snapshot[0], repo: "XArhaanshX/kv-sentinel", title: "KV Sentinel", summary: "Written by the daily refresh." }];
   const put = Bun.spawnSync(
     ["node_modules/.bin/wrangler", "kv", "key", "put", "projects.json", JSON.stringify(fresh), "--binding", "DATA", "--local", "--persist-to", persist],
     { env },

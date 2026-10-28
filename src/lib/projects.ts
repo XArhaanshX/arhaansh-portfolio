@@ -5,8 +5,7 @@
 //  - `getProjects()`: the daily cron's copy in the store (KV on the Worker) when present,
 //    else the snapshot. The cron picks up new repos and their GitHub-derived labels; awards
 //    are matched against the bundled LinkedIn snapshot, so they update once the snapshot is synced,
-//    the Worker is redeployed and the next daily refresh has run. A store copy that still lists the
-//    retired account (RETIRED_OWNER) predates the bundle and is ignored until the refresh replaces it.
+//    the Worker is redeployed and the next daily refresh has run.
 //    The browser gets the same list through /api/projects
 //    (web/dom/libs/projects.ts), because this file is compiled into the static /app.js.
 import snapshot from "@/data/projects.json";
@@ -19,7 +18,6 @@ import { get, put } from "@/lib/store";
 export type { Project };
 
 export const PROJECTS_KEY = "projects.json";
-const RETIRED_OWNER = "undeemed/";
 
 export const projects: Project[] = applyOverrides(snapshot as Project[], PROJECT_OVERRIDES);
 
@@ -28,7 +26,7 @@ export async function getProjects(): Promise<Project[]> {
   if (raw) {
     try {
       const list: unknown = JSON.parse(raw);
-      if (Array.isArray(list) && list.length > 0 && !(list as Project[]).some((p) => p.repo?.startsWith(RETIRED_OWNER))) {
+      if (Array.isArray(list) && list.length > 0) {
         return applyOverrides(list as Project[], PROJECT_OVERRIDES);
       }
     } catch {
@@ -52,7 +50,7 @@ export async function buildProjects(token: string): Promise<DeriveResult> {
     overrides: PROJECT_OVERRIDES,
     now: Date.now(),
   });
-  // Repos GitHub can no longer list (private, or on the old account) keep their committed
+  // Repos GitHub can no longer list (private, or deleted) keep their committed
   // entry instead of vanishing from the site; the committed githubUrl rules decide the link.
   const seen = new Set([...derived.projects.map((p) => p.repo), ...derived.skipped.map((s) => s.repo)]);
   const kept = (snapshot as Project[]).filter((p) => !seen.has(p.repo));
