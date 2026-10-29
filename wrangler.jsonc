@@ -9,11 +9,14 @@
   "build": { "command": "bun server/bundle.ts" },
   // dist/app.js + favicon, served before the Worker runs; every other path reaches the Worker
   "assets": { "directory": "dist" },
-  // served at arhaansh-me.<account>.workers.dev until a custom domain is added under "routes":
-  //   "routes": [{ "pattern": "example.com", "custom_domain": true }]
+  // arhaansh.me and www (zone on Cloudflare; DNS records are created by the deploy), plus
+  // arhaansh-me.arhaansh-me.workers.dev
   "workers_dev": true,
+  "routes": [
+    { "pattern": "arhaansh.me", "custom_domain": true },
+    { "pattern": "www.arhaansh.me", "custom_domain": true }
+  ],
   // .data on Cloudflare: one KV entry per .data-relative file (visits.json, spotify.json, ...).
-  // Create it once with `bunx wrangler kv namespace create DATA` and paste the id here.
   "kv_namespaces": [{ "binding": "DATA", "id": "7e1f5a01e6574765be47424144c4c924" }],
   "vars": { "NODE_ENV": "production", "PUBLIC_ORIGIN": "https://arhaansh.me" },
   // daily re-derive of the project labels into KV (server/worker.ts `scheduled`)
