@@ -122,7 +122,7 @@ function Text({ style, fg, bg, wrapMode, attributes, children }: TextProps) {
   if (fg) css.color = tone(fg);
   if (bg && bg !== "transparent") css.background = tone(bg);
   if (attributes && attributes & 8) css.textDecoration = "underline";
-  return <div style={css}>{stretchBlocks(children)}</div>;
+  return <div style={css}>{pinGlyphs(children)}</div>;
 }
 
 // an inline span's background only covers the font box (~16px of a 19px line), leaving
@@ -136,21 +136,71 @@ function cellBg(css: CSSProperties, bg?: string) {
   css.verticalAlign = "top";
 }
 
-// block-element glyphs (▁█▌…) ink only the font box, so stacked rows (volume bar rungs)
-// show seams; stretch each block-run to the full cell height like a terminal draws them.
-// Runs inside mixed strings (" ▊█ ") are wrapped individually — spaces stay untouched.
-const BLOCK_RUN = /[▀-▟]+/;
-function stretchBlocks(children: TextProps["children"]): TextProps["children"] {
-  if (typeof children !== "string" || !BLOCK_RUN.test(children)) return children;
-  return children.split(/([▀-▟]+)/).map((p, i) =>
-    BLOCK_RUN.test(p) ? (
-      <span key={i} style={{ display: "inline-block", transform: "scaleY(var(--bs,1.2))" }}>
-        {p}
-      </span>
-    ) : (
-      p
-    ),
-  );
+// Symbol glyphs (block elements, box drawing, arrows, stars, dashes) are missing from many
+// monospace fonts — phones especially — and the fallback font draws them at its own width,
+// so every row after one drifts out of the grid. Each one is pinned to exactly one cell:
+// block elements and the rules are painted with CSS (pixel-exact, no seams, any font), the
+// rest are centred in a cell-wide box. Runs of one glyph share a box.
+const PINNED = /[\u2000-\u206F\u2190-\u21FF\u2300-\u23FF\u2500-\u27BF]/;
+const C = "currentColor";
+const eighths = (dir: string, n: number) => `linear-gradient(${dir}, ${C} ${n * 12.5}%, transparent ${n * 12.5}%)`;
+const quad = (...q: ("ul" | "ur" | "ll" | "lr")[]): CSSProperties => ({
+  backgroundImage: q.map(() => `linear-gradient(${C}, ${C})`).join(","),
+  backgroundSize: "50% 50%",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: q.map((k) => `${k[1] === "l" ? "left" : "right"} ${k[0] === "u" ? "top" : "bottom"}`).join(","),
+});
+const PAINT: Record<string, CSSProperties> = {
+  "█": { background: C },
+  "▀": { background: eighths("to bottom", 4) },
+  "▔": { background: eighths("to bottom", 1) },
+  "▐": { background: eighths("to left", 4) },
+  "▕": { background: eighths("to left", 1) },
+  "░": { background: C, opacity: 0.25 },
+  "▒": { background: C, opacity: 0.5 },
+  "▓": { background: C, opacity: 0.75 },
+  "▖": quad("ll"), "▗": quad("lr"), "▘": quad("ul"), "▝": quad("ur"),
+  "▙": quad("ul", "ll", "lr"), "▚": quad("ul", "lr"), "▛": quad("ul", "ur", "ll"),
+  "▜": quad("ul", "ur", "lr"), "▞": quad("ur", "ll"), "▟": quad("ur", "ll", "lr"),
+  // rules: light and heavy horizontals, the dashed vertical divider
+  "─": { background: `linear-gradient(to bottom, transparent calc(50% - 0.5px), ${C} calc(50% - 0.5px), ${C} calc(50% + 0.5px), transparent calc(50% + 0.5px))` },
+  "━": { background: `linear-gradient(to bottom, transparent calc(50% - 1.5px), ${C} calc(50% - 1.5px), ${C} calc(50% + 1.5px), transparent calc(50% + 1.5px))` },
+  "╎": { background: `linear-gradient(to right, transparent calc(50% - 0.5px), ${C} calc(50% - 0.5px), ${C} calc(50% + 0.5px), transparent calc(50% + 0.5px)) center / 100% 50% no-repeat` },
+};
+// ▁▂▃▄▅▆▇ fill from the bottom, ▉▊▋▌▍▎▏ from the left
+"▁▂▃▄▅▆▇".split("").forEach((g, i) => (PAINT[g] = { background: eighths("to top", i + 1) }));
+"▉▊▋▌▍▎▏".split("").forEach((g, i) => (PAINT[g] = { background: eighths("to right", 7 - i) }));
+const CELL: CSSProperties = { display: "inline-block", height: "var(--lh)", verticalAlign: "top" };
+
+function pinGlyphs(children: TextProps["children"]): TextProps["children"] {
+  if (typeof children !== "string" || !PINNED.test(children)) return children;
+  const out: ReactNode[] = [];
+  const chars = Array.from(children);
+  let text = "";
+  for (let i = 0; i < chars.length; ) {
+    const ch = chars[i];
+    if (!PINNED.test(ch)) {
+      text += ch;
+      i += 1;
+      continue;
+    }
+    if (text) out.push(text);
+    text = "";
+    let j = i;
+    while (j < chars.length && chars[j] === ch) j += 1;
+    const paint = PAINT[ch];
+    if (paint) out.push(<span key={i} style={{ ...CELL, width: `calc(${j - i} * var(--cw))`, ...paint }} />);
+    else
+      for (let k = i; k < j; k += 1)
+        out.push(
+          <span key={k} style={{ ...CELL, width: "var(--cw)", lineHeight: "var(--lh)", textAlign: "center", whiteSpace: "pre" }}>
+            {ch}
+          </span>,
+        );
+    i = j;
+  }
+  if (text) out.push(text);
+  return out;
 }
 
 function Span({ fg, bg, attributes, children }: TextProps) {
@@ -158,7 +208,7 @@ function Span({ fg, bg, attributes, children }: TextProps) {
   if (fg) css.color = tone(fg);
   cellBg(css, bg);
   if (attributes && attributes & 8) css.textDecoration = "underline";
-  return <span style={css}>{stretchBlocks(children)}</span>;
+  return <span style={css}>{pinGlyphs(children)}</span>;
 }
 
 function Strong({ fg, bg, children }: TextProps) {
