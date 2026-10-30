@@ -12,11 +12,14 @@ export type Profile = {
   studies: { degree: string; school: string; years: string }[];
   // newest first; `to` absent = current
   work: { role: string; org: string; from: string; to?: string; kind: string }[];
+  // papers and studies, newest first; `tag` is the short status column on the terminal
+  research: { title: string; tag: string; status: string; when: string; detail: string; url?: string }[];
   skills: string[];
   links: {
     github: string;
     linkedin: string;
     email: string;
+    resume?: string;
   };
 };
 
@@ -39,6 +42,24 @@ export const profile: Profile = {
     // student chapters, after the internships
     { role: "AIML Team", org: "CodeChef-VIT", from: "Jan 2026", kind: "student chapter" },
     { role: "AIML Team", org: "IEEE-CS VIT", from: "Jan 2026", kind: "student chapter" },
+  ],
+  research: [
+    {
+      title: "Short-term electrical load forecasting",
+      tag: "AUPEC",
+      status: "Accepted at AUPEC 2026",
+      when: "Aug 2026",
+      detail: "A new pre-processing approach for load signals on Haryana grid data, under Dr. Ganesan K. Benchmarked 17 forecasting models (statistical, tree-based, deep and attention-based); feature-engineered tree models came out on top.",
+      url: "https://github.com/XArhaanshX/Time-Series-Load-Forecasting",
+    },
+    {
+      title: "Fuzzy-logic clustering of discharge data",
+      tag: "study",
+      status: "Research study",
+      when: "Jul 2026",
+      detail: "Clustering algorithms written from scratch that combine machine learning with fuzzy logic, to handle uncertainty and overlapping cluster boundaries in partial-discharge data.",
+      url: "https://github.com/XArhaanshX/Clustering-Problem-for-Discharge-Research",
+    },
   ],
   skills: [
     "Python",
@@ -64,5 +85,6 @@ export const profile: Profile = {
     github: "https://github.com/XArhaanshX",
     linkedin: "https://www.linkedin.com/in/arhaansh-jhingan-swarm/",
     email: "arhaanshjhingan@gmail.com",
+    resume: "/resume.pdf",
   },
 };

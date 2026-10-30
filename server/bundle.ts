@@ -61,5 +61,6 @@ if (import.meta.main) {
   await Bun.write("dist/favicon.png", Bun.file("public/favicon.png"));
   await Bun.write("dist/favicon.ico", Bun.file("public/favicon.png"));
   await Bun.write("dist/og.png", Bun.file("public/og.png"));
-  console.log("wrote dist/app.js, dist/m.js, dist/favicon.png, dist/favicon.ico, dist/og.png");
+  await Bun.write("dist/resume.pdf", Bun.file("public/resume.pdf"));
+  console.log("wrote dist/app.js, dist/m.js, dist/favicon.png, dist/favicon.ico, dist/og.png, dist/resume.pdf");
 }
