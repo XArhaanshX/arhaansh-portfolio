@@ -8,13 +8,22 @@ import App from "../tui/app";
 import { initMetrics } from "./dom/metrics";
 import { startPond } from "./dom/pond";
 import { createVolumeChannel } from "./dom/volume";
+import { chooseEdition } from "./chooser";
 
 async function boot(): Promise<void> {
   const appEl = document.getElementById("app");
   const rootEl = document.getElementById("root");
   if (!appEl || !rootEl) return;
+  // ?v=laptop or ?v=phone forces an edition; otherwise the remembered one, else ask
+  const edition = new URLSearchParams(location.search).get("v") ?? localStorage.getItem("version");
+  if (edition === "phone") {
+    location.replace(`/m${location.hash}`);
+    return;
+  }
   initMetrics(rootEl);
   startPond(appEl); // koi visible immediately, on the same text grid, behind the boot screen's rows
+  if (edition !== "laptop") await chooseEdition();
+  localStorage.setItem("version", "laptop");
   const distinctId = crypto.randomUUID();
   try {
     const r = await fetch("/api/boot", {
@@ -41,6 +50,10 @@ async function boot(): Promise<void> {
         // arhaansh.me/#projects opens that screen; the hash follows navigation (no history entries)
         initialScreen: location.hash.slice(1) || undefined,
         onScreen: (screen: string) => history.replaceState(null, "", screen === "home" ? location.pathname : `#${screen}`),
+        onSwitch: () => {
+          localStorage.setItem("version", "phone");
+          location.href = "/m";
+        },
       }),
     );
   } catch {

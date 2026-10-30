@@ -2,6 +2,7 @@
 // data endpoints and the SEO files. Shared by the Bun server (server/web.ts) and the
 // Cloudflare Worker (server/worker.ts); /app.js and the favicon are served by each host.
 import { PAGE_TITLE, SEO_HEAD, seoBody, robotsTxt, sitemapXml, llmsTxt } from "./seo";
+import { phonePage } from "./phone";
 import { getSpotify } from "@/lib/spotify";
 import { getPreviewUrl } from "@/lib/preview";
 import { getLinkedInSnapshot } from "@/lib/linkedin";
@@ -55,6 +56,24 @@ const APP_HTML = `<!doctype html>
     position:fixed;inset:0;z-index:9;pointer-events:none;
     background:radial-gradient(140% 140% at 50% 50%, rgba(0,0,0,0) 65%, rgba(0,0,0,0.45) 100%), rgba(67,240,138,0.04);
   }
+  /* "Enter portfolio": the edition chooser over the pond on a first visit (web/chooser.ts) */
+  .chooser{position:fixed;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;padding:24px;
+    font:15px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#e9ece9;}
+  .ch-panel{width:min(520px,100%);background:#030c0d;border:1px solid #2c3531;padding:28px;}
+  .ch-site{margin:0;color:#7c8a82;font-size:13px;}
+  .ch-title{margin:6px 0 0;font-size:22px;font-weight:600;}
+  .ch-role{margin:2px 0 0;color:#43f08a;}
+  .ch-q{margin:24px 0 10px;color:#7c8a82;}
+  .ch-opts{display:grid;gap:10px;}
+  .ch-opt{display:grid;gap:2px;text-align:left;width:100%;min-height:64px;padding:12px 14px;background:none;color:inherit;
+    font:inherit;border:1px solid #2c3531;cursor:pointer;}
+  .ch-opt:hover{border-color:#56645d;}
+  .ch-opt.ch-suggested{border-color:#43f08a;}
+  .ch-opt:focus-visible{outline:2px solid #43f08a;outline-offset:2px;}
+  .ch-name{font-weight:600;}
+  .ch-tag{margin-left:8px;color:#43f08a;font-weight:400;font-size:13px;}
+  .ch-desc{color:#7c8a82;font-size:14px;}
+  .ch-note{margin:14px 0 0;color:#6f7d75;font-size:13px;}
   .seo-content{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 </style>
 <noscript><style>
@@ -201,6 +220,11 @@ export async function handle(req: Request, ip: string, waitUntil: (p: Promise<un
   if (url.pathname === "/robots.txt") return new Response(robotsTxt(), { headers: { "content-type": "text/plain; charset=utf-8" } });
   if (url.pathname === "/sitemap.xml") return new Response(sitemapXml(), { headers: { "content-type": "application/xml; charset=utf-8" } });
   if (url.pathname === "/llms.txt") return new Response(llmsTxt(await getProjects()), { headers: { "content-type": "text/plain; charset=utf-8" } });
+  // the phone edition: server-rendered, so it paints at once and reads without JS
+  if (url.pathname === "/m" || url.pathname === "/m/")
+    return new Response(phonePage(await getLinkedInSnapshot(), await getProjects()), {
+      headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" },
+    });
   // the SEO block lists the same projects the app shows, so it follows the cron too
   const seo = seoBody(await getProjects());
   const html = APP_HTML.replace("<!--seo-body-->", () => seo);

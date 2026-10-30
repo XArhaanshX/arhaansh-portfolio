@@ -248,6 +248,7 @@ export default function App({
   reducedMotion = false,
   initialScreen,
   onScreen,
+  onSwitch,
 }: {
   linkedIn: LinkedInSnapshot;
   visit: VisitInfo;
@@ -265,6 +266,8 @@ export default function App({
   // web: the screen named in the URL (#projects), and a hook to keep the URL in step
   initialScreen?: string;
   onScreen?: (screen: string) => void;
+  // web: open the phone edition (footer tab and the m key); absent over SSH
+  onSwitch?: () => void;
 }) {
   const [screen, setScreen] = useState<Screen>(() => SCREENS.find((s) => s === initialScreen) ?? "home");
   const [booting, setBooting] = useState(!reducedMotion); // full-screen boot log on first mount
@@ -478,6 +481,7 @@ export default function App({
       return;
     }
     if (key.name === "q") return quit();
+    if (key.name === "m" && onSwitch) return onSwitch();
     // home ↑/↓ belong to the volume bar, which handles them itself (every surface)
     // ←/→ cycle screens — except where the arrows already mean something: chat keeps them
     // for the input caret (handled above), home's music browser owns them on every surface
@@ -546,7 +550,7 @@ export default function App({
             />
           )}
         </box>
-        <Footer screen={screen} chatActive={chatActive} onNav={go} />
+        <Footer screen={screen} chatActive={chatActive} onNav={go} onSwitch={onSwitch} />
       </box>
       {/* the pond paints under every cell; this pass keeps it out of each line of copy */}
       {pond && <CopyClearance cellsRef={pondCells} width={termW} height={termH} />}
@@ -615,13 +619,16 @@ function Footer({
   screen,
   chatActive,
   onNav,
+  onSwitch,
 }: {
   screen: Screen;
   chatActive: boolean;
   onNav: (s: Screen) => void;
+  onSwitch?: () => void;
 }) {
-  // nav tabs (~38) + the longest hint (34) + padding (4): below that the hint wraps onto the tabs
-  const showHint = useTerminalDimensions().width >= 76;
+  // nav tabs (~30, +9 with the phone tab) + the longest hint (34) + padding (4): below that the
+  // hint wraps onto the tabs
+  const showHint = useTerminalDimensions().width >= (onSwitch ? 80 : 70);
   const hint = chatActive
     ? "Enter send · Esc back"
     : screen === "projects"
@@ -637,6 +644,14 @@ function Footer({
           {NAV.map((n) => (
             <NavTab key={n.key} item={n} active={n.screen === screen} onNav={onNav} />
           ))}
+          {onSwitch && (
+            <box style={{ paddingRight: 2 }} onMouseDown={onSwitch}>
+              <text bg={PANEL}>
+                <span fg={ACCENT}>m</span>
+                <span fg={MUTED}>{" phone"}</span>
+              </text>
+            </box>
+          )}
         </box>
         {showHint && <text bg={PANEL} fg={MUTED}>{hint}</text>}
       </box>
