@@ -76,7 +76,7 @@ function projectItem(p: Project, i: number): string {
   const link = p.githubUrl ? `<a class="out" href="${esc(p.githubUrl)}" rel="noopener" target="_blank">${owner === "XArhaanshX" ? "code" : `code on ${esc(owner)}`}<span aria-hidden="true"> ↗</span></a>` : "";
   return `<li class="project${i >= FOLD ? " more" : ""}">
 <article>
-${p.award ? `<p class="award"><span aria-hidden="true">★ </span>${esc(placeOf(p.award.place))}, ${esc(p.award.event)}</p>` : ""}
+${p.award ? `<p class="award"><span class="star" aria-hidden="true">★ </span>${esc(placeOf(p.award.place))}, ${esc(p.award.event)}</p>` : ""}
 <h4>${esc(p.title)} <span class="year">${p.year}</span></h4>
 <p class="sum">${esc(p.summary)}</p>
 <div class="foot"><ul class="tags" aria-label="Stack">${tags}</ul>${link}</div>
@@ -146,7 +146,7 @@ ${profile.links.resume ? `<li><a class="btn" href="${esc(profile.links.resume)}"
   <dl class="kv">
     ${building ? `<dt>building</dt><dd>${esc(building.title)} <span class="dim">pushed ${ago(building.pushedAt)}</span></dd>` : ""}
     ${job ? `<dt>working</dt><dd>${esc(job.role)} <span class="dim">at ${esc(job.org)}</span></dd>` : ""}
-    ${wins[0] ? `<dt>last win</dt><dd class="accent">${esc(eventOf(wins[0]))}</dd>` : ""}
+    ${wins[0] ? `<dt>last win</dt><dd class="live">${esc(eventOf(wins[0]))}</dd>` : ""}
   </dl>
 </section>
 <section id="experience" aria-labelledby="exp-h">
@@ -167,7 +167,7 @@ ${
     ${profile.research
       .map(
         (r) => `<li>
-<p class="status${r.status.startsWith("Accepted") ? " accent" : ""}">${esc(r.status)} <span class="dim">${esc(r.when)}</span></p>
+<p class="status${r.status.startsWith("Accepted") ? " accepted" : ""}">${esc(r.status)} <span class="dim">${esc(r.when)}</span></p>
 <h3>${esc(r.title)}</h3>
 <p class="detail">${esc(r.detail)}</p>
 ${r.url ? `<a class="out" href="${esc(r.url)}" rel="noopener" target="_blank">code<span aria-hidden="true"> ↗</span></a>` : ""}
@@ -181,7 +181,13 @@ ${r.url ? `<a class="out" href="${esc(r.url)}" rel="noopener" target="_blank">co
 <section id="wins" aria-labelledby="wins-h">
   <h2 id="wins-h"><span aria-hidden="true">~/</span>wins <span class="count">${wins.length}</span></h2>
   <ul class="wins">
-    ${wins.map((h) => `<li><span class="when">${esc(h.when)}</span><span class="place">${esc(placeOf(h.place))}</span><span class="event">${esc(eventOf(h))}</span></li>`).join("")}
+    ${wins
+      .map((h) => {
+        // every row here is a win: the star says so, and only another placing ("2nd") is spelled out
+        const place = placeOf(h.place);
+        return `<li><span class="when">${esc(h.when)}</span><span class="place"><span class="star" aria-hidden="true">★</span>${place === "Winner" ? "" : ` ${esc(place)}`}</span><span class="event">${esc(eventOf(h))}</span></li>`;
+      })
+      .join("")}
   </ul>
 </section>
 <section id="projects" aria-labelledby="proj-h">
@@ -229,7 +235,9 @@ ${r.url ? `<a class="out" href="${esc(r.url)}" rel="noopener" target="_blank">co
 }
 
 const CSS = `
-:root{--bg:#030c0d;--ink:#e9ece9;--muted:#8d9a92;--dim:#6f7d75;--line:#1c2925;--accent:#43f08a;--koi:#ff8a3d;
+/* from the pond: green for what you can press, koi orange for what is live now, koi gold for
+   the star on wins, ink and greys for the rest */
+:root{--bg:#030c0d;--ink:#e9ece9;--muted:#8d9a92;--dim:#6f7d75;--line:#1c2925;--accent:#43f08a;--live:#ff8a3d;--star:#f2d36b;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Roboto Mono","Liberation Mono",monospace;color-scheme:dark}
 *{box-sizing:border-box}
 html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-padding-top:56px}
@@ -241,7 +249,8 @@ a{color:var(--accent)}
 .skip{position:absolute;left:12px;top:-60px;z-index:20;background:var(--accent);color:var(--bg);padding:8px 12px}
 .skip:focus{top:12px}
 .dim{color:var(--dim)}
-.accent{color:var(--accent)}
+.live{color:var(--live)}
+.star{color:var(--star)}
 .bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;
   height:calc(48px + env(safe-area-inset-top));padding:env(safe-area-inset-top) 20px 0;background:rgba(3,12,13,.92);
   -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
@@ -255,13 +264,15 @@ h1{margin:0}
 .banner{display:block;width:100%;max-width:440px;height:auto}
 .role{margin:18px 0 0;color:var(--accent);font-size:16px}
 .school{margin:2px 0 0;color:var(--muted)}
-.contact{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding:0;list-style:none}
-.btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border:1px solid var(--line);color:var(--ink);text-decoration:none;border-radius:2px}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:20px 0 0;padding:0;list-style:none;max-width:440px}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 16px;border:1px solid var(--line);color:var(--ink);text-decoration:none;border-radius:2px}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
 main{padding:0 20px}
 section{padding:36px 0 8px}
-h2{margin:0 0 16px;font-size:15px;font-weight:600;color:var(--ink)}
-h2 span[aria-hidden]{color:var(--accent)}
+h2{display:flex;align-items:baseline;gap:10px;margin:0 0 18px;font-size:16px;font-weight:600;color:var(--ink)}
+h2 span[aria-hidden]{color:var(--accent);margin-right:-10px}
+h2::after{content:"";flex:1;order:1;border-top:1px dashed var(--line);transform:translateY(-4px)}
+h2 .count{order:2}
 .count{color:var(--dim);font-weight:400;font-variant-numeric:tabular-nums}
 .kv{display:grid;grid-template-columns:7.5em 1fr;gap:6px 12px;margin:0}
 .kv dt{color:var(--muted)}
@@ -269,25 +280,25 @@ h2 span[aria-hidden]{color:var(--accent)}
 .timeline{list-style:none;margin:0;padding:0 0 0 18px;border-left:1px solid var(--line)}
 .timeline li{position:relative;padding:0 0 18px}
 .timeline li::before{content:"";position:absolute;left:-23px;top:8px;width:9px;height:9px;background:var(--bg);border:1px solid var(--dim);border-radius:50%}
-.timeline li.current::before{background:var(--accent);border-color:var(--accent)}
+.timeline li.current::before{background:var(--live);border-color:var(--live)}
+.current .when{color:var(--live)}
 .timeline p{margin:0}
 .when{color:var(--dim);font-size:13px;font-variant-numeric:tabular-nums}
 .what{font-weight:600}
-.current .what{color:var(--accent)}
 .where{color:var(--muted)}
 .research{list-style:none;margin:0;padding:0}
 .research li{padding:0 0 14px;margin-bottom:14px;border-bottom:1px dashed var(--line)}
 .research .status{margin:0;font-size:13px;color:var(--muted)}
-.research .status.accent{color:var(--accent)}
+.research .status.accepted{color:var(--ink)}
 .research h3{margin:2px 0 0;font-size:16px;font-weight:600}
 .research .detail{margin:4px 0 0;color:var(--muted);font-size:14px}
 .wins{list-style:none;margin:0;padding:0}
-.wins li{display:grid;grid-template-columns:5.5em 4.5em 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.wins li{display:grid;grid-template-columns:5.5em max-content 1fr;gap:12px;padding:10px 0;border-bottom:1px dashed var(--line)}
 .wins .place{color:var(--ink)}
 .wins .event{color:var(--muted);min-width:0}
 .filters{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;margin:0 -20px 4px;padding-left:20px;padding-right:20px;scrollbar-width:none;overscroll-behavior-x:contain}
 .filters::-webkit-scrollbar{display:none}
-.filters button{flex:none;min-height:40px;padding:0 14px;border:1px solid var(--line);border-radius:999px;background:none;color:var(--muted);font:inherit;font-size:14px}
+.filters button{flex:none;min-height:40px;padding:0 14px;border:1px solid var(--line);border-radius:2px;background:none;color:var(--muted);font:inherit;font-size:14px}
 .filters button span{color:var(--dim);font-variant-numeric:tabular-nums}
 .filters button[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
 .groups,.plist{list-style:none;margin:0;padding:0}
@@ -299,7 +310,7 @@ h2 span[aria-hidden]{color:var(--accent)}
 .js .group.open .showall{display:none}
 .project{border-bottom:1px dashed var(--line)}
 .project article{padding:14px 0}
-.project .award{margin:0 0 2px;color:var(--accent);font-size:13px}
+.project .award{margin:0 0 2px;color:var(--ink);font-size:13px}
 .project h4{margin:0;font-size:16px;font-weight:600}
 .project .year{color:var(--dim);font-weight:400;font-size:13px;font-variant-numeric:tabular-nums}
 .project .sum{margin:4px 0 8px;color:var(--muted);font-size:14px}
@@ -319,7 +330,7 @@ h2 span[aria-hidden]{color:var(--accent)}
 .music li a{display:flex;gap:8px;padding:8px 0;min-height:40px;color:var(--ink);text-decoration:none;border-bottom:1px dashed var(--line)}
 .music li .by{color:var(--dim);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .music .t{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:none;max-width:60%}
-.music .playing{color:var(--koi)}
+.music .playing{color:var(--live)}
 .lede{margin:0 0 12px;color:var(--muted)}
 .thread{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
 .thread p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
