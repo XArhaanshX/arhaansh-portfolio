@@ -110,6 +110,7 @@ export function phonePage(linkedIn: LinkedInSnapshot, projects: Project[]): stri
   const top = writes[0]?.pct || 1;
   const contact = `<ul class="contact">
 <li><a class="btn primary" href="mailto:${esc(profile.links.email)}">Email ${esc(first)}</a></li>
+${profile.links.resume ? `<li><a class="btn" href="${esc(profile.links.resume)}" target="_blank" rel="noopener">Résumé <span class="dim">PDF</span></a></li>` : ""}
 <li><a class="btn" href="${esc(profile.links.github)}" rel="noopener" target="_blank">GitHub</a></li>
 <li><a class="btn" href="${esc(profile.links.linkedin)}" rel="noopener" target="_blank">LinkedIn</a></li>
 </ul>`;
@@ -158,6 +159,25 @@ export function phonePage(linkedIn: LinkedInSnapshot, projects: Project[]): stri
       .join("")}
   </ol>
 </section>
+${
+  profile.research.length
+    ? `<section id="research" aria-labelledby="res-h">
+  <h2 id="res-h"><span aria-hidden="true">~/</span>research <span class="count">${profile.research.length}</span></h2>
+  <ul class="research">
+    ${profile.research
+      .map(
+        (r) => `<li>
+<p class="status${r.status.startsWith("Accepted") ? " accent" : ""}">${esc(r.status)} <span class="dim">${esc(r.when)}</span></p>
+<h3>${esc(r.title)}</h3>
+<p class="detail">${esc(r.detail)}</p>
+${r.url ? `<a class="out" href="${esc(r.url)}" rel="noopener" target="_blank">code<span aria-hidden="true"> ↗</span></a>` : ""}
+</li>`,
+      )
+      .join("")}
+  </ul>
+</section>`
+    : ""
+}
 <section id="wins" aria-labelledby="wins-h">
   <h2 id="wins-h"><span aria-hidden="true">~/</span>wins <span class="count">${wins.length}</span></h2>
   <ul class="wins">
@@ -236,7 +256,7 @@ h1{margin:0}
 .role{margin:18px 0 0;color:var(--accent);font-size:16px}
 .school{margin:2px 0 0;color:var(--muted)}
 .contact{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding:0;list-style:none}
-.btn{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid var(--line);color:var(--ink);text-decoration:none;border-radius:2px}
+.btn{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 16px;border:1px solid var(--line);color:var(--ink);text-decoration:none;border-radius:2px}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
 main{padding:0 20px}
 section{padding:36px 0 8px}
@@ -255,6 +275,12 @@ h2 span[aria-hidden]{color:var(--accent)}
 .what{font-weight:600}
 .current .what{color:var(--accent)}
 .where{color:var(--muted)}
+.research{list-style:none;margin:0;padding:0}
+.research li{padding:0 0 14px;margin-bottom:14px;border-bottom:1px dashed var(--line)}
+.research .status{margin:0;font-size:13px;color:var(--muted)}
+.research .status.accent{color:var(--accent)}
+.research h3{margin:2px 0 0;font-size:16px;font-weight:600}
+.research .detail{margin:4px 0 0;color:var(--muted);font-size:14px}
 .wins{list-style:none;margin:0;padding:0}
 .wins li{display:grid;grid-template-columns:5.5em 4.5em 1fr;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
 .wins .place{color:var(--ink)}
