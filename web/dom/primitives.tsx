@@ -74,9 +74,25 @@ function Box({ style, border, borderColor, onMouseDown, onMouseMove, onMouseOut,
     css.borderRadius = "6px"; // borderStyle:"rounded" is the only style in the tree
   }
   if (onMouseDown) css.cursor = "pointer";
+  // a box that is only tapped (nav tabs, project rows, tracks) is a button: focusable, and
+  // Enter/Space press it. The root box (pond splashes) also tracks movement, sliders drag.
+  const button = Boolean(onMouseDown && !onMouseMove && !onMouseDrag);
   return (
     <div
       style={css}
+      role={button ? "button" : undefined}
+      tabIndex={button ? 0 : undefined}
+      onKeyDown={
+        button
+          ? (e) => {
+              if (e.key !== "Enter" && e.key !== " ") return;
+              // keep the press from also reaching the app's global hotkeys
+              e.preventDefault();
+              e.stopPropagation();
+              onMouseDown?.({ x: -1, y: -1 });
+            }
+          : undefined
+      }
       onPointerDown={
         onMouseDown || onMouseDrag
           ? (e) => {

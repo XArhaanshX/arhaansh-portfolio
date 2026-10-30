@@ -38,6 +38,9 @@ const APP_HTML = `<!doctype html>
         -webkit-font-smoothing:antialiased;}
   #root input::placeholder{color:#5b6d64;opacity:1;}
   #root a{cursor:pointer;}
+  /* keyboard focus is visible on links and tappable rows; a click never shows the ring */
+  #root a:focus-visible,#root [role=button]:focus-visible{outline:1px solid #43f08a;outline-offset:1px;}
+  #root [role=button]:focus:not(:focus-visible){outline:none;}
   /* 16px stops iOS auto-zoom on focus; the grid still sizes rows via --lh */
   @media (pointer: coarse){ #root input{font-size:16px;} }
   /* static scanlines: the old 4s opacity "flicker" moved their strength by ~2%, invisible, but
