@@ -24,6 +24,9 @@ async function boot(): Promise<void> {
     });
     if (!r.ok) throw new Error(String(r.status));
     const { linkedIn, visit } = await r.json();
+    // the full boot log plays once per browser session
+    const quickBoot = sessionStorage.getItem("booted") === "1";
+    sessionStorage.setItem("booted", "1");
     createRoot(rootEl).render(
       createElement(App, {
         linkedIn,
@@ -33,6 +36,11 @@ async function boot(): Promise<void> {
         onExit: () => {},
         volume: createVolumeChannel(),
         pond: false, // the DOM text-grid pond above replaces the cell-buffer KoiPond
+        quickBoot,
+        reducedMotion: window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false,
+        // arhaansh.me/#projects opens that screen; the hash follows navigation (no history entries)
+        initialScreen: location.hash.slice(1) || undefined,
+        onScreen: (screen: string) => history.replaceState(null, "", screen === "home" ? location.pathname : `#${screen}`),
       }),
     );
   } catch {

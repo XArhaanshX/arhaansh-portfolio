@@ -211,6 +211,9 @@ const BOOT_LINES = [
   `welcome — ${profile.name.toLowerCase()}`,
 ];
 
+// a returning visitor (same browser session) gets two lines instead of the whole log
+const QUICK_BOOT_LINES = [`$ ./${profile.site}`, "ready."];
+
 function bootLinesFor(to: Screen): string[] {
   return [`$ cd ~/${to}`, `[ ok ] open ${to}`];
 }
@@ -248,23 +251,27 @@ function BootLine({ line }: { line: string }) {
   return <text bg={PANEL} fg={MUTED}>{line}</text>;
 }
 
-function BootScreen({ lines, onDone }: { lines: string[]; onDone: () => void }) {
+// `step` ms per typed line and `hold` ms on the finished log; a tap skips to the end (any key
+// does too, in the App's keyboard handler)
+function BootScreen({ lines, onDone, step = 80, hold = 300 }: { lines: string[]; onDone: () => void; step?: number; hold?: number }) {
   const [n, setN] = useState(0);
   const [blink, setBlink] = useState(true);
   useEffect(() => {
     let i = 0;
+    let done: ReturnType<typeof setTimeout> | undefined;
     const type = setInterval(() => {
       i += 1;
       setN(i);
       if (i >= lines.length) {
         clearInterval(type);
-        setTimeout(onDone, 300);
+        done = setTimeout(onDone, hold);
       }
-    }, 80);
+    }, step);
     const cur = setInterval(() => setBlink((b) => !b), 380);
     return () => {
       clearInterval(type);
       clearInterval(cur);
+      if (done) clearTimeout(done);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -272,7 +279,7 @@ function BootScreen({ lines, onDone }: { lines: string[]; onDone: () => void }) 
   const steps = lines.length;
   const filled = Math.round((n / steps) * 24);
   return (
-    <box style={{ width: "100%", height: "100%", flexDirection: "column", paddingLeft: 2, paddingTop: 1 }}>
+    <box style={{ width: "100%", height: "100%", flexDirection: "column", paddingLeft: 2, paddingTop: 1 }} onMouseDown={onDone}>
       {lines.slice(0, n).map((l, i) => (
         <BootLine key={i} line={l} />
       ))}
@@ -297,6 +304,10 @@ export default function App({
   volume,
   pond = true,
   allowSavedSessions = true,
+  quickBoot = false,
+  reducedMotion = false,
+  initialScreen,
+  onScreen,
 }: {
   linkedIn: LinkedInSnapshot;
   visit: VisitInfo;
@@ -307,9 +318,16 @@ export default function App({
   pond?: boolean;
   // Public SSH has no visitor identity, so persisted transcripts would be shared globally.
   allowSavedSessions?: boolean;
+  // web: the full boot log once per browser session, then the two-line one
+  quickBoot?: boolean;
+  // prefers-reduced-motion: no boot log and no screen-change log
+  reducedMotion?: boolean;
+  // web: the screen named in the URL (#projects), and a hook to keep the URL in step
+  initialScreen?: string;
+  onScreen?: (screen: string) => void;
 }) {
-  const [screen, setScreen] = useState<Screen>("home");
-  const [booting, setBooting] = useState(true); // full-screen boot log on first mount
+  const [screen, setScreen] = useState<Screen>(() => SCREENS.find((s) => s === initialScreen) ?? "home");
+  const [booting, setBooting] = useState(!reducedMotion); // full-screen boot log on first mount
   const [transition, setTransition] = useState<Screen | null>(null);
   const [quitting, setQuitting] = useState(false); // boot-down log before the connection closes
   const [selected, setSelected] = useState(0);
@@ -317,10 +335,12 @@ export default function App({
   const go = useCallback(
     (target: Screen) => {
       capture(distinctId, "nav", { screen: target });
-      setTransition(target);
+      if (reducedMotion) setScreen(target);
+      else setTransition(target);
     },
-    [distinctId],
+    [distinctId, reducedMotion],
   );
+  useEffect(() => onScreen?.(screen), [screen, onScreen]);
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -451,7 +471,13 @@ export default function App({
 
   useKeyboard((key) => {
     if (key.ctrl && key.name === "c") return quit();
-    if (booting || transition) return; // ignore input during boot / transition
+    // any key skips the boot log or a screen change (and is not also taken as a command)
+    if (booting) return setBooting(false);
+    if (transition) {
+      setScreen(transition);
+      setTransition(null);
+      return;
+    }
     // resume picker overlay takes all keys while open
     if (picker) {
       if (key.name === "up" || key.name === "k")
@@ -538,7 +564,7 @@ export default function App({
     return <BootScreen key="bye" lines={SHUTDOWN_LINES} onDone={onExit} />;
   }
   if (booting) {
-    return <BootScreen key="boot" lines={BOOT_LINES} onDone={() => setBooting(false)} />;
+    return <BootScreen key="boot" lines={quickBoot ? QUICK_BOOT_LINES : BOOT_LINES} onDone={() => setBooting(false)} />;
   }
   // NOTE: the transition BootScreen is an opaque OVERLAY, not an early return — unmounting
   // and remounting the main tree makes opentui mis-measure remounted text rows (the header
@@ -593,6 +619,8 @@ export default function App({
           <BootScreen
             key={transition}
             lines={bootLinesFor(transition)}
+            step={40}
+            hold={120}
             onDone={() => {
               setScreen(transition);
               setTransition(null);
