@@ -50,11 +50,11 @@ const APP_HTML = `<!doctype html>
     position:fixed;inset:0;z-index:10;pointer-events:none;
     background:repeating-linear-gradient(0deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 1px, rgba(0,0,0,0.32) 2px);
   }
-  /* vignette + faint green tint in one layer; a normal-blend tint instead of mix-blend-mode:
-     screen, which forced a full-viewport backdrop read every frame */
+  /* vignette only: the old 4% green wash muddied every colour; a normal-blend layer instead of
+     mix-blend-mode: screen, which forced a full-viewport backdrop read every frame */
   .crt-vignette{
     position:fixed;inset:0;z-index:9;pointer-events:none;
-    background:radial-gradient(140% 140% at 50% 50%, rgba(0,0,0,0) 65%, rgba(0,0,0,0.45) 100%), rgba(67,240,138,0.04);
+    background:radial-gradient(140% 140% at 50% 50%, rgba(0,0,0,0) 65%, rgba(0,0,0,0.45) 100%);
   }
   /* "Enter portfolio": the edition chooser over the pond on a first visit (web/chooser.ts) */
   .chooser{position:fixed;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;padding:24px;
