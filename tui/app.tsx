@@ -7,6 +7,8 @@ import { parseHonours } from "@/lib/project-labels";
 import { COPY_GAP, COPY_PAD, TEX_CH, TEX_HEX, fillTones, texturePhase } from "@/lib/texture";
 import { ask, type ChatMessage } from "@/lib/ai";
 import { EXTERNAL_LINK_ARROW } from "@/lib/symbols";
+import { techTag } from "@/lib/tech";
+import { BANNER_SHADE, banner, bannerRows } from "@/lib/banner";
 import type { LinkedInSnapshot } from "@/lib/linkedin";
 import type { VisitInfo } from "@/lib/visits";
 import { capture } from "@/lib/analytics";
@@ -99,69 +101,6 @@ function VRule({ rows }: { rows: number }) {
   );
 }
 
-// stack tech -> short colored tag (terminal "icon"), brand color. keyed normalized.
-const TECH: Record<string, { tag: string; col: string }> = {
-  typescript: { tag: "TS", col: "#4fa3e3" },
-  javascript: { tag: "JS", col: "#e8d44d" },
-  python: { tag: "PY", col: "#6fb3df" },
-  java: { tag: "JV", col: "#e8924f" },
-  swift: { tag: "SW", col: "#f0764f" },
-  rust: { tag: "RS", col: "#caa890" },
-  html: { tag: "HT", col: "#e8694c" },
-  css: { tag: "CSS", col: "#9b7ad6" },
-  shell: { tag: "SH", col: "#89e051" },
-  plpgsql: { tag: "SQL", col: "#5a9bd0" },
-  react: { tag: "RE", col: "#61dafb" },
-  nextjs: { tag: "NX", col: "#cfd3d6" },
-  tailwindcss: { tag: "TW", col: "#38bdf8" },
-  bun: { tag: "BUN", col: "#e7dcb6" },
-  fastapi: { tag: "API", col: "#3fc7b4" },
-  pytorch: { tag: "PT", col: "#ee6f4c" },
-  postgresql: { tag: "PG", col: "#5a9bd0" },
-  supabase: { tag: "SB", col: "#3ecf8e" },
-  mongodb: { tag: "MDB", col: "#57a143" },
-  redis: { tag: "RD", col: "#e0584c" },
-  aws: { tag: "AWS", col: "#ff9d3b" },
-  amazonwebservices: { tag: "AWS", col: "#ff9d3b" },
-  googlecloud: { tag: "GCP", col: "#5b9bf5" },
-  azure: { tag: "AZ", col: "#3ca7e6" },
-  cloudflare: { tag: "CF", col: "#f0a03a" },
-  docker: { tag: "DK", col: "#3a9aed" },
-  kubernetes: { tag: "K8S", col: "#5b8def" },
-  vim: { tag: "VIM", col: "#2aa84a" },
-  apple: { tag: "APL", col: "#cccccc" },
-  archlinux: { tag: "ARCH", col: "#3aa9e0" },
-  raspberrypi: { tag: "RPI", col: "#e0507a" },
-  nodejs: { tag: "NODE", col: "#83cd29" },
-  kotlin: { tag: "KT", col: "#b08cff" },
-  "c++": { tag: "C++", col: "#f06a92" },
-  c: { tag: "C", col: "#9aa4ad" },
-  go: { tag: "GO", col: "#4fc3d9" },
-  svelte: { tag: "SV", col: "#ff6a3d" },
-  stripe: { tag: "STR", col: "#8f86ff" },
-  mlx: { tag: "MLX", col: "#cccccc" },
-  modal: { tag: "MOD", col: "#7fe08a" },
-  dockerfile: { tag: "DK", col: "#6b8794" },
-  jupyternotebook: { tag: "IPY", col: "#e88a4c" },
-  r: { tag: "R", col: "#5b8fd6" },
-  tex: { tag: "TEX", col: "#5fa88a" },
-  powershell: { tag: "PS", col: "#5a8fd0" },
-  lua: { tag: "LUA", col: "#6a7fe0" },
-  gdscript: { tag: "GD", col: "#6fa8dc" },
-  cmake: { tag: "CMK", col: "#7fb07f" },
-  tensorflow: { tag: "TF", col: "#ff9f3b" },
-  transformers: { tag: "HF", col: "#ffcc4d" },
-  scikitlearn: { tag: "SKL", col: "#f7a53c" },
-  lightgbm: { tag: "LGB", col: "#8fd16a" },
-  xgboost: { tag: "XGB", col: "#3fa7d6" },
-  opencv: { tag: "CV", col: "#6ec6ff" },
-  mediapipe: { tag: "MP", col: "#00c2a8" },
-  yolo: { tag: "YOLO", col: "#9b7ad6" },
-};
-function techTag(name: string) {
-  const key = name.toLowerCase().replace(/[.\s_-]/g, "");
-  return TECH[key] ?? { tag: name.slice(0, 3).toUpperCase(), col: MUTED };
-}
 
 // The one link primitive. <a href> emits OSC 8 when the terminal supports it (clickable),
 // otherwise renders as plain underlined accent text — never garbage.
@@ -1209,49 +1148,6 @@ function Projects({ list, selected, onSelect }: { list: Project[]; selected: num
 // ---- Home (profile + experience + wins + live) ----------------------------------------------
 // Everything is derived: wins from LinkedIn honours, "building" from the most recently
 // pushed personal repo, "writes in" from each repo's code languages weighted by his commits.
-// Name banner letterforms (own drawing): 5-row full blocks wide, 2-row half blocks on phones.
-// ponytail: only the letters of his name are drawn; add glyphs if the name changes.
-const BANNER_BIG: Record<string, string[]> = {
-  A: [" █████ ", "██   ██", "███████", "██   ██", "██   ██"],
-  R: ["██████ ", "██   ██", "██████ ", "██   ██", "██   ██"],
-  H: ["██   ██", "██   ██", "███████", "██   ██", "██   ██"],
-  N: ["███   ██", "████  ██", "██ ██ ██", "██  ████", "██   ███"],
-  S: [" ██████", "██     ", " █████ ", "     ██", "██████ "],
-  J: ["     ██", "     ██", "     ██", "██   ██", " █████ "],
-  I: ["██", "██", "██", "██", "██"],
-  G: [" ██████ ", "██      ", "██   ███", "██    ██", " ██████ "],
-  " ": ["  ", "  ", "  ", "  ", "  "],
-};
-const BANNER_SMALL: Record<string, string[]> = {
-  A: ["▄▀█", "█▀█"], R: ["█▀█", "█▀▄"], H: ["█ █", "█▀█"], N: ["█▄ █", "█ ▀█"], S: ["█▀▀", "▄██"],
-  J: ["  █", "█▄█"], I: ["█", "█"], G: ["█▀▀", "█▄█"], " ": ["  ", "  "],
-};
-const BANNER_SHADE = ["#e9ece9", "#d6ddd8", "#c2ccc6", "#adbab3", "#98a89f"];
-// one block of rows per banner line: a name wider than `w` breaks between words
-function banner(name: string, big: boolean, w: number): string[][] {
-  const font = big ? BANNER_BIG : BANNER_SMALL;
-  const draw = (text: string) => {
-    const rows = font[" "].map(() => "");
-    for (const ch of text.toUpperCase()) {
-      const g = font[ch] ?? font[" "];
-      for (let r = 0; r < rows.length; r += 1) rows[r] += `${g[r]} `;
-    }
-    return rows;
-  };
-  const lines: string[][] = [];
-  let cur = "";
-  for (const word of name.split(" ")) {
-    const next = cur ? `${cur} ${word}` : word;
-    if (cur && draw(next)[0].trimEnd().length > w) {
-      lines.push(draw(cur));
-      cur = word;
-    } else cur = next;
-  }
-  lines.push(draw(cur));
-  return lines;
-}
-// banner lines stack with one blank row between them
-const bannerRows = (lines: string[][]) => lines.reduce((a, l) => a + l.length, 0) + lines.length - 1;
 // notebooks are Python; markup and build files are not "writing in" anything
 const NON_CODE = ["HTML", "CSS", "SCSS", "Dockerfile", "Makefile", "Procfile", "Batchfile", "MDX", "Nix", "TeX", "CMake"];
 const LANG_AS: Record<string, string> = { "Jupyter Notebook": "Python" };
