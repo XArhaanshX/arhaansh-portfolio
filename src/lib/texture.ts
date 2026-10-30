@@ -51,7 +51,8 @@ const TEX_BANDS = [0.7, 2.0, 5.5];
 // one glyph per tone, brightest first: strand, edge, halo, ground
 export const TEX_CH = ["x", "+", ";", ":"];
 // shades indexed by light level, so ground first
-export const TEX_HEX = ["#181818", "#242424", "#343434", "#4c4c4c"];
+// pond teal, dim: water behind the copy, not grey noise competing with it
+export const TEX_HEX = ["#0a1a1b", "#0f2426", "#153133", "#1f4245"];
 
 // one stable pseudo-random number per lattice node, so a seed keeps its own drift phase
 // across frames and resizes without a stored table
