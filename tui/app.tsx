@@ -38,15 +38,16 @@ import { NowPlaying, VolumeBar, type VolumeChannel } from "./music";
 const MAX_CHAT_INPUT_CHARS = 2_000;
 const MAX_CHAT_MESSAGES = 50;
 
-type Screen = "home" | "projects" | "about" | "chat";
+type Screen = "home" | "projects" | "chat";
 
 const NAV: { key: string; screen: Screen }[] = [
   { key: "h", screen: "home" },
   { key: "p", screen: "projects" },
-  { key: "a", screen: "about" },
   { key: "c", screen: "chat" },
 ];
-const SCREENS: Screen[] = ["home", "projects", "about", "chat"];
+const SCREENS: Screen[] = ["home", "projects", "chat"];
+// About merged into home: the old key and command still land there
+const NAV_ALIAS: Record<string, Screen> = { a: "home", about: "home" };
 
 // grouped /help — rendered as a multi-line assistant message (hierarchy, not one line)
 const HELP_TEXT = [
@@ -58,7 +59,7 @@ const HELP_TEXT = [
   "  /delete [name]     delete a saved chat — no name opens a picker",
   "  /exit              back to home",
   "NAVIGATE",
-  "  /home /projects /about /chat   (or press h p a c)",
+  "  /home /projects /chat   (or press h p c)",
   "SCROLL",
   "  PageUp / PageDown   ·   ↑ / ↓ when the input is empty",
 ].join("\n");
@@ -68,7 +69,7 @@ const PUBLIC_SSH_HELP_TEXT = [
   "  /clear             wipe history",
   "  /exit              back to home",
   "NAVIGATE",
-  "  /home /projects /about /chat   (or press h p a c)",
+  "  /home /projects /chat   (or press h p c)",
   "SCROLL",
   "  PageUp / PageDown   ·   ↑ / ↓ when the input is empty",
   "",
@@ -405,9 +406,9 @@ export default function App({
         const parts = content.slice(1).split(/\s+/);
         const cmd = parts[0].toLowerCase();
         const arg = parts.slice(1).join(" ").trim();
-        // /home /projects /about /chat /links  (and single-char aliases h p a c l)
+        // /home /projects /chat (and single-char aliases h p c; /about and a go home)
         const navTarget =
-          (SCREENS.find((s) => s === cmd) as Screen | undefined) ?? NAV.find((n) => n.key === cmd)?.screen;
+          (SCREENS.find((s) => s === cmd) as Screen | undefined) ?? NAV.find((n) => n.key === cmd)?.screen ?? NAV_ALIAS[cmd];
         if (navTarget) {
           if (navTarget !== "chat") go(navTarget);
           return;
@@ -556,8 +557,8 @@ export default function App({
         return;
       }
     }
-    const nav = NAV.find((n) => n.key === key.name);
-    if (nav && nav.screen !== screen) go(nav.screen);
+    const target = NAV.find((n) => n.key === key.name)?.screen ?? NAV_ALIAS[key.name];
+    if (target && target !== screen) go(target);
   });
 
   if (quitting) {
@@ -589,11 +590,10 @@ export default function App({
       {/* ponytail: when pond=false the root mouse handlers above still fill these refs; harmless, capped at 64 */}
       {pond && <KoiPond width={termW} height={termH} scale={narrow ? 0.5 : 1} mouseRef={pondMouse} splashRef={pondSplash} cellsRef={pondCells} />}
       <box style={{ position: "absolute", left: 0, top: 0, width: "100%", height: "100%", flexDirection: "column", zIndex: 1 }}>
-        <Header screen={screen} />
+        <Header screen={screen} visits={visit.count} />
         <box style={{ flexGrow: 1, flexDirection: "column" }}>
-          {screen === "home" && <Home visit={visit} narrow={narrow} volume={volume} />}
+          {screen === "home" && <Home linkedIn={linkedIn} list={projectList} volume={volume} />}
           {screen === "projects" && <Projects list={projectList} selected={selected} onSelect={setSelected} />}
-          {screen === "about" && <About linkedIn={linkedIn} list={projectList} />}
           {screen === "chat" && (
             <Chat
               messages={messages}
@@ -632,7 +632,9 @@ export default function App({
   );
 }
 
-function Header({ screen }: { screen: Screen }) {
+function Header({ screen, visits }: { screen: Screen; visits: number }) {
+  // the visitor count lives up here now that home is the profile; phones keep just the path
+  const wide = useTerminalDimensions().width >= 64;
   return (
     // flexShrink 0: if a screen's body ever overflows again, crush the body, never the header
     <box style={{ flexDirection: "column", flexShrink: 0 }}>
@@ -640,10 +642,13 @@ function Header({ screen }: { screen: Screen }) {
         <text bg={PANEL}>
           <strong fg={INK}>{profile.site}</strong>
         </text>
-        <text bg={PANEL}>
-          <span fg={FAINT}>{"~/"}</span>
-          <span fg={ACCENT}>{screen}</span>
-        </text>
+        <box style={{ flexDirection: "row" }}>
+          {wide && <VisitorHead total={visits} />}
+          <text bg={PANEL}>
+            <span fg={FAINT}>{wide ? "    ~/" : "~/"}</span>
+            <span fg={ACCENT}>{screen}</span>
+          </text>
+        </box>
       </box>
       <Rule />
     </box>
@@ -888,7 +893,7 @@ function VisitorHead({ total }: { total: number }) {
   return (
     <text bg={PANEL}>
       <strong fg={ACCENT}>{`#${commas(total)}`}</strong>
-      <span fg={MUTED}>{" total"}</span>
+      <span fg={MUTED}>{" visitors"}</span>
       <span fg={FAINT}>{SEP}</span>
       <span fg={ACCENT}>{"◉ "}</span>
       <span fg={INK}>{n}</span>
@@ -936,110 +941,6 @@ function GitHubPulse({ g }: { g: GitHubPulse | null }) {
         </text>
       )}
     </Stat>
-  );
-}
-
-// daily-visits bar chart — solid green bars with each day's count carved into the bar
-// as a vertical (rotated) dark number in the center column.
-const CHART_ROWS = 7;
-const BAR_W = 3; // preferred cells per day column — center column holds the rotated count
-const CARVE = "#030c0d"; // page bg → dark digit reads as a cutout in the green bar
-type ChartCell = { ch: string; fg: string; bg?: string };
-function VisitorChart({ data }: { data: number[] }) {
-  // shrink bar width to fit the terminal so the chart never overflows a narrow phone
-  const { width } = useTerminalDimensions();
-  const bw = Math.max(1, Math.min(BAR_W, Math.floor((width - 4) / data.length)));
-  const max = Math.max(1, ...data);
-  const W = data.length * bw;
-  const grid: ChartCell[][] = Array.from({ length: CHART_ROWS }, () =>
-    Array.from({ length: W }, () => ({ ch: " ", fg: MUTED })),
-  );
-  for (let i = 0; i < data.length; i += 1) {
-    const v = data[i];
-    const barRows = v > 0 ? Math.max(1, Math.round((v / max) * CHART_ROWS)) : 0;
-    // solid bar (green bg) from the bottom up
-    for (let d = 0; d < barRows; d += 1) {
-      const rowIdx = CHART_ROWS - 1 - d;
-      for (let k = 0; k < bw; k += 1) grid[rowIdx][i * bw + k] = { ch: " ", fg: ACCENT, bg: ACCENT };
-    }
-    // count rotated 90° (one digit per row), carved dark into the bar, anchored at the bottom
-    const digits = v > 0 ? String(v) : "";
-    const cx = i * bw + Math.floor(bw / 2);
-    for (let j = 0; j < digits.length; j += 1) {
-      const rowIdx = CHART_ROWS - digits.length + j;
-      if (rowIdx >= CHART_ROWS - barRows && rowIdx < CHART_ROWS) grid[rowIdx][cx] = { ch: digits[j], fg: CARVE, bg: ACCENT };
-    }
-  }
-  const rowsOut = grid.map((cells, rowIdx) => {
-    const spans: { fg: string; bg?: string; text: string }[] = [];
-    for (const cell of cells) {
-      const last = spans[spans.length - 1];
-      if (last && last.fg === cell.fg && last.bg === cell.bg) last.text += cell.ch;
-      else spans.push({ fg: cell.fg, bg: cell.bg, text: cell.ch });
-    }
-    return (
-      <text key={rowIdx} bg={PANEL}>
-        {spans.map((s, k) => (
-          <span key={k} fg={s.fg} bg={s.bg}>
-            {s.text}
-          </span>
-        ))}
-      </text>
-    );
-  });
-  const span = "14 days ago" + " ".repeat(Math.max(1, W - 16)) + "today";
-  return (
-    <box style={{ flexDirection: "column" }}>
-      {rowsOut}
-      <text bg={PANEL} fg={FAINT}>{"─".repeat(W)}</text>
-      <text bg={PANEL} fg={FAINT}>{span}</text>
-    </box>
-  );
-}
-
-function Home({ visit, narrow, volume }: { visit: VisitInfo; narrow: boolean; volume?: VolumeChannel }) {
-  // github data lives here so the music controls can align to the stats row's ★ column
-  const [gh, setGh] = useState<GitHubPulse | null>(null);
-  useEffect(() => {
-    let alive = true;
-    getGitHub()
-      .then((d) => {
-        if (alive) setGh(d);
-      })
-      .catch(() => {});
-    return () => {
-      alive = false;
-    };
-  }, []);
-  // stretch row: headers align at the top; the left column pins its chart to the row's
-  // bottom edge so the chart baseline meets the bottom of the right block
-  return (
-    <box style={{ flexDirection: narrow ? "column" : "row", alignItems: narrow ? "flex-start" : "stretch", paddingLeft: 2, paddingTop: 1 }}>
-      {/* 43 = 14-day chart (42) + 1; anything wider is dead space before the volume bar */}
-      <box style={{ flexDirection: "column", width: narrow ? undefined : 43 }}>
-        <text bg={PANEL} fg={MUTED}>VISITORS</text>
-        <VisitorHead total={visit.count} />
-        {narrow ? <box style={{ height: 1 }} /> : <box style={{ flexGrow: 1, minHeight: 1 }} />}
-        {/* marginBottom mirrors Stat's, so the chart baseline == the right block's bottom */}
-        <box style={{ flexDirection: "column", marginBottom: 1 }}>
-          <VisitorChart data={visit.daily} />
-        </box>
-      </box>
-      {/* the bar hugs the visitors chart tighter than the plain column gap (4) */}
-      <box style={{ flexDirection: "row", alignItems: "flex-start", paddingLeft: narrow ? 0 : 1 }}>
-        {/* vertical volume runs down the left edge, top-aligned with the GITHUB header;
-            ssh gets it too — adjustable, labelled X since no audio can reach the client */}
-        {!narrow ? (
-          <box style={{ flexDirection: "column", paddingRight: 2 }}>
-            <VolumeBar channel={volume} />
-          </box>
-        ) : null}
-        <box style={{ flexDirection: "column" }}>
-          <GitHubPulse g={gh} />
-          <NowPlaying volume={volume} controlsWidth={gh ? ghStatsWidth(gh) : undefined} />
-        </box>
-      </box>
-    </box>
   );
 }
 
@@ -1305,7 +1206,7 @@ function Projects({ list, selected, onSelect }: { list: Project[]; selected: num
   );
 }
 
-// ---- About (layout A: profile + experience + wins) ------------------------------------------
+// ---- Home (profile + experience + wins + live) ----------------------------------------------
 // Everything is derived: wins from LinkedIn honours, "building" from the most recently
 // pushed personal repo, "writes in" from each repo's code languages weighted by his commits.
 // Name banner letterforms (own drawing): 5-row full blocks wide, 2-row half blocks on phones.
@@ -1396,46 +1297,78 @@ function FieldLink({ k, href, text }: { k: string; href: string; text: string })
   );
 }
 
-function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[] }) {
+// The landing screen: who he is on the left (banner, now, studies, links), what he has done
+// and what is live on the right (experience, wins, GitHub, Spotify, languages by commits).
+// Below TWO_COL columns it stacks into one column. The screen never scrolls, so sections are
+// budgeted against the rows left: the least useful ones (writes-in, then music) drop first,
+// then the wins and experience lists shorten, so a row is never squeezed onto another.
+const LEFT_W = 66; // the widest left-column copy: the ARHAANSH banner (65)
+const TWO_COL = LEFT_W + 6 + 56;
+const MUSIC_ROWS = 10; // RECENTLY PLAYED: label, 6 tracks, gap, controls, margin
+const GH_ROWS = 3; // GITHUB: label, stats, margin
+
+function Home({ linkedIn, list, volume }: { linkedIn: LinkedInSnapshot; list: Project[]; volume?: VolumeChannel }) {
   const { width, height } = useTerminalDimensions();
+  // github data lives here so the music controls can align to the stats row's ★ column
+  const [gh, setGh] = useState<GitHubPulse | null>(null);
+  useEffect(() => {
+    let alive = true;
+    getGitHub()
+      .then((d) => {
+        if (alive) setGh(d);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
   const narrow = width < 80;
+  const twoCol = width >= TWO_COL;
   const wins = parseHonours((linkedIn.sections ?? []).find((s) => s.title === "Honors & Awards")?.items ?? []);
   const languages = [...new Set(((linkedIn.sections ?? []).find((s) => s.title === "Languages")?.items ?? []).map(compactLanguage))].filter(Boolean);
+  const copyW = twoCol ? LEFT_W : width - 4;
   // as many languages as fit on the line, no ellipsis
   let speaks = "";
   for (const l of languages) {
     const next = speaks ? `${speaks} · ${l}` : l;
-    if (next.length <= (narrow ? width - 4 : 78) - 12) speaks = next;
+    if (next.length <= copyW - 12) speaks = next;
   }
   const building = list.filter((p) => p.origin === "personal").sort((a, b) => b.pushedAt.localeCompare(a.pushedAt))[0];
   const job = profile.work.find((w) => !w.to);
   const work = profile.work;
-  const stacked = width < 148;
-  const extraRows = (building ? 1 : 0) + (job ? 1 : 0) + (wins[0] ? 1 : 0) + (profile.dob ? 1 : 0) + profile.studies.length + (speaks ? 1 : 0);
-  // rows left for the two lists: screen minus header/footer (6), padding, the left column when
-  // stacked, and the fixed rows of the right column (experience block, 2 headings, the gaps
-  // between); overflow overprints rows
-  const budgetFor = (nameRows: number, gap: number, linkRows: number) =>
-    height - 6 - 1 - (stacked ? nameRows + 3 + linkRows + 4 * gap + extraRows + gap : 0) - (1 + work.length + gap) - 2 - gap;
-  const bannerW = narrow ? width - 4 : 78;
-  const bigRows = bannerRows(banner(profile.name, true, bannerW));
-  const smallRows = bannerRows(banner(profile.name, false, bannerW));
-  // stacked on a short screen: first the 2-row banner instead of the 5-row one, then drop the spacer
-  // rows and put the links on one line, so at least a few wins and languages always fit
-  const compact = narrow || (stacked && budgetFor(bigRows, 1, 3) < 4);
-  const tight = stacked && budgetFor(smallRows, 1, 3) < 4;
+  const nowRows = 1 + (building ? 1 : 0) + (job ? 1 : 0) + (wins[0] ? 1 : 0) + (profile.dob ? 1 : 0);
+  const aboutRows = profile.studies.length + 1 + (speaks ? 1 : 0);
+  // rows under the header/footer chrome (6) and the top pad
+  const avail = height - 7;
+  const leftRows = (nameRows: number, gap: number, linkRows: number) => nameRows + gap + 1 + gap + nowRows + gap + aboutRows + gap + linkRows;
+  const bigRows = bannerRows(banner(profile.name, true, copyW));
+  const smallRows = bannerRows(banner(profile.name, false, copyW));
+  // the left column (or, stacked, the top block) shrinks first: small banner, then no spacers
+  // and the links on one row
+  const fits = (rows: number) => (twoCol ? rows <= avail : rows + 12 <= avail);
+  const compact = narrow || !fits(leftRows(bigRows, 1, 3));
+  const tight = !fits(leftRows(smallRows, 1, 3));
   const gap = tight ? 0 : 1;
-  const name = banner(profile.name, !compact, bannerW);
+  const name = banner(profile.name, !compact, copyW);
+  const linkRows = tight ? 1 : 3;
+  // the right-hand sections, in priority order, against what is left of the column
+  let room = twoCol ? avail : avail - leftRows(bannerRows(name), gap, linkRows) - gap;
+  const nExp = Math.max(0, Math.min(work.length, room - 1));
+  room -= nExp ? 1 + nExp + gap : 0;
+  const nWins = Math.max(0, Math.min(wins.length, room - 1));
+  room -= nWins ? 1 + nWins + gap : 0;
+  const showGh = room >= GH_ROWS;
+  room -= showGh ? GH_ROWS : 0;
+  const showMusic = room >= MUSIC_ROWS;
+  room -= showMusic ? MUSIC_ROWS : 0;
+  const nWrites = Math.max(0, Math.min(narrow ? 4 : 6, room - 1));
+  const writesShown = writesIn(list).slice(0, nWrites);
   const role = `${profile.role}${job ? ` @ ${job.org}` : ""}`.toLowerCase();
   const tagline = `${role}  ·  ${profile.studies.map((s) => s.school).join(" and ").toLowerCase()}`;
   const short = (place: string) => (place.startsWith("1st") ? "1st" : !RANKED.test(place) || place === "Track Prize" ? "prize" : place.split(" · ")[0]);
   const event = (h: { place: string; event: string }) => `${h.event.replace(/ Hackathon$/i, "")}${RANKED.test(h.place) ? "" : ` · ${h.place.toLowerCase()}`}`;
   const barW = narrow ? Math.max(8, width - 4 - 22) : 30;
-  const budget = budgetFor(bannerRows(name), gap, tight ? 1 : 3);
-  const nWrites = Math.max(0, Math.min(narrow ? 4 : 6, Math.floor(budget / 2)));
-  const nWins = Math.max(0, Math.min(narrow ? 5 : 8, budget - nWrites));
-  const writesShown = writesIn(list).slice(0, nWrites);
-  const listW = narrow ? width - 20 : 46;
+  const listW = narrow ? width - 20 : 40;
   const bare = (u: string) => u.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, "");
   // tight: github · linkedin · email on one row, as many as fit the width
   let linkW = narrow ? 0 : 12;
@@ -1443,9 +1376,9 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
     { href: profile.links.github, text: bare(profile.links.github) },
     { href: profile.links.linkedin, text: bare(profile.links.linkedin) },
     { href: `mailto:${profile.links.email}`, text: profile.links.email },
-  ].filter((l) => (linkW += l.text.length + 3) - 3 <= width - 4);
+  ].filter((l) => (linkW += l.text.length + 3) - 3 <= copyW);
   const left = (
-    <box style={{ flexDirection: "column", width: narrow ? undefined : 78, flexShrink: 0 }}>
+    <box style={{ flexDirection: "column", width: twoCol ? LEFT_W : undefined, flexShrink: 0 }}>
       {name.map((line, li) => (
         <Fragment key={li}>
           {li > 0 && <box style={{ height: 1 }} />}
@@ -1466,7 +1399,7 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
       </text>
       {building && (
         <Field k="building">
-          <span fg={INK}>{`${building.title} — pushed ${timeAgo(building.pushedAt)}`}</span>
+          <span fg={INK}>{truncate(`${building.title} — pushed ${timeAgo(building.pushedAt)}`, copyW - 12)}</span>
         </Field>
       )}
       {job && (
@@ -1477,7 +1410,7 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
       )}
       {wins[0] && (
         <Field k="last win">
-          <span fg={ACCENT}>{`${short(wins[0].place)} · ${event(wins[0])}`}</span>
+          <span fg={ACCENT}>{truncate(`${short(wins[0].place)} · ${event(wins[0])}`, copyW - 12)}</span>
         </Field>
       )}
       {profile.dob && (
@@ -1488,7 +1421,7 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
       <box style={{ height: gap }} />
       {profile.studies.map((s, i) => (
         <Field key={s.school} k={i === 0 ? "studying" : ""}>
-          <span fg={INK}>{truncate(s.degree, (narrow ? width - 4 : 78) - 12 - s.school.length - 3)}</span>
+          <span fg={INK}>{truncate(s.degree, copyW - 12 - s.school.length - 3)}</span>
           <span fg={MUTED}>{` · ${s.school}`}</span>
         </Field>
       ))}
@@ -1519,54 +1452,77 @@ function About({ linkedIn, list }: { linkedIn: LinkedInSnapshot; list: Project[]
       )}
     </box>
   );
+  const live = (
+    <box style={{ flexDirection: "column" }}>
+      {showGh && <GitHubPulse g={gh} />}
+      {showMusic && <NowPlaying volume={volume} controlsWidth={gh ? ghStatsWidth(gh) : undefined} />}
+    </box>
+  );
   const right = (
-    <box style={{ flexDirection: "column", paddingLeft: stacked ? 0 : 6, paddingTop: stacked ? gap : 0 }}>
-      <text bg={PANEL}>
-        <span fg={MUTED}>EXPERIENCE</span>
-        <span fg={FAINT}>{`  ${work.length}`}</span>
-      </text>
-      {work.map((w) => (
-        <text key={w.org} bg={PANEL} wrapMode="none">
-          <span fg={FAINT}>{`${stamp(w.from)}  `}</span>
-          <span fg={w.to ? FAINT : ACCENT}>{(w.to ? stamp(w.to) : "now").padEnd(8)}</span>
-          <span fg={w.to ? INK : ACCENT}>{truncate(w.role, listW)}</span>
-          <span fg={MUTED}>{truncate(` @ ${w.org}`, Math.max(0, listW - w.role.length))}</span>
-        </text>
-      ))}
-      <box style={{ height: gap }} />
-      {nWins > 0 && (
-        <text bg={PANEL}>
-          <span fg={MUTED}>WINS</span>
-          <span fg={FAINT}>{`  ${wins.length}`}</span>
-        </text>
+    <box style={{ flexDirection: "column", paddingLeft: twoCol ? 6 : 0, paddingTop: twoCol ? 0 : gap }}>
+      {nExp > 0 && (
+        <>
+          <text bg={PANEL}>
+            <span fg={MUTED}>EXPERIENCE</span>
+            <span fg={FAINT}>{`  ${work.length}`}</span>
+          </text>
+          {work.slice(0, nExp).map((w) => (
+            <text key={w.org} bg={PANEL} wrapMode="none">
+              <span fg={FAINT}>{`${stamp(w.from)}  `}</span>
+              <span fg={w.to ? FAINT : ACCENT}>{(w.to ? stamp(w.to) : "now").padEnd(8)}</span>
+              <span fg={w.to ? INK : ACCENT}>{truncate(w.role, listW)}</span>
+              <span fg={MUTED}>{truncate(` @ ${w.org}`, Math.max(0, listW - w.role.length))}</span>
+            </text>
+          ))}
+          <box style={{ height: gap }} />
+        </>
       )}
-      {wins.slice(0, nWins).map((h) => (
-        <text key={h.text} bg={PANEL} wrapMode="none">
-          <span fg={FAINT}>{`${stamp(h.when)}  `}</span>
-          <span fg={h.place.startsWith("1st") ? ACCENT : INK}>{short(h.place).padEnd(8)}</span>
-          <span fg={MUTED}>{truncate(event(h), listW)}</span>
-        </text>
-      ))}
+      {nWins > 0 && (
+        <>
+          <text bg={PANEL}>
+            <span fg={MUTED}>WINS</span>
+            <span fg={FAINT}>{`  ${wins.length}`}</span>
+          </text>
+          {wins.slice(0, nWins).map((h) => (
+            <text key={h.text} bg={PANEL} wrapMode="none">
+              <span fg={FAINT}>{`${stamp(h.when)}  `}</span>
+              <span fg={h.place.startsWith("1st") ? ACCENT : INK}>{short(h.place).padEnd(8)}</span>
+              <span fg={MUTED}>{truncate(event(h), listW)}</span>
+            </text>
+          ))}
+          <box style={{ height: gap }} />
+        </>
+      )}
+      {/* the vertical volume bar runs down the left of the live block, as on the old home */}
+      {twoCol && showMusic ? (
+        <box style={{ flexDirection: "row", alignItems: "flex-start" }}>
+          <box style={{ flexDirection: "column", paddingRight: 2 }}>
+            <VolumeBar channel={volume} />
+          </box>
+          {live}
+        </box>
+      ) : (
+        live
+      )}
       {nWrites > 0 && (
         <>
-          {nWins > 0 && <box style={{ height: gap }} />}
           <text bg={PANEL}>
             <span fg={MUTED}>WRITES IN</span>
             <span fg={FAINT}>{"  by his commits"}</span>
           </text>
+          {writesShown.map((l) => (
+            <text key={l.name} bg={PANEL} wrapMode="none">
+              <span fg={MUTED}>{l.name.padEnd(12)}</span>
+              <span fg={techTag(l.name).col}>{"▆".repeat(Math.max(1, Math.round((l.pct / (writesShown[0]?.pct || 1)) * barW)))}</span>
+              <span fg={FAINT}>{` ${Math.round(l.pct)}%`}</span>
+            </text>
+          ))}
         </>
       )}
-      {writesShown.map((l) => (
-        <text key={l.name} bg={PANEL} wrapMode="none">
-          <span fg={MUTED}>{l.name.padEnd(12)}</span>
-          <span fg={techTag(l.name).col}>{"▆".repeat(Math.max(1, Math.round((l.pct / (writesShown[0]?.pct || 1)) * barW)))}</span>
-          <span fg={FAINT}>{` ${Math.round(l.pct)}%`}</span>
-        </text>
-      ))}
     </box>
   );
   return (
-    <box style={{ flexDirection: stacked ? "column" : "row", paddingLeft: 2, paddingTop: 1 }}>
+    <box style={{ flexDirection: twoCol ? "row" : "column", paddingLeft: 2, paddingTop: 1 }}>
       {left}
       {right}
     </box>
