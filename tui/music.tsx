@@ -6,7 +6,7 @@ import { useKeyboard } from "@opentui/react";
 import { TextAttributes } from "@opentui/core";
 import { getSpotify, type SpotifyState } from "@/lib/spotify";
 import { getPreviewUrl } from "@/lib/preview";
-import { ACCENT, BARS, FAINT, INK, MUTED, PANEL, Stat, fmtMs, timeAgo, truncate } from "./ui";
+import { ACCENT, BARS, FAINT, INK, LIVE, MUTED, PANEL, Stat, fmtMs, timeAgo, truncate } from "./ui";
 
 // Two-way link between the TUI volume bar and the browser tab's ambient audio.
 // web.ts creates one per websocket session; ssh sessions have no audio, so no channel.
@@ -380,7 +380,7 @@ export function NowPlaying({ volume, controlsWidth }: { volume?: VolumeChannel; 
               (indentation carries the hierarchy) so navigating never shifts the layout */}
           {playing && beforeRows.length ? <box style={{ height: 1 }} /> : null}
           <text bg={PANEL}>
-            <span fg={ACCENT}>{"♫ "}</span>
+            <span fg={LIVE}>{"♫ "}</span>
             {focus.songUrl ? (
               <a href={focus.songUrl} fg={INK} attributes={TextAttributes.UNDERLINE}>
                 {fitRow(2, focus.name, focus.artists, "  —  ", 34).nameFit}

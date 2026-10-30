@@ -2,12 +2,17 @@
 // Split from app.tsx so the music module and the app share one source of visual truth.
 import type { ReactNode } from "react";
 
-// Editorial palette: green ACCENT reserved for links/active/live; neutral INK/MUTED/FAINT for hierarchy.
+// Palette, taken from the pond: green ACCENT for what you can press or pick (links, keys,
+// selection) and the tagline; koi orange LIVE for what is happening now (online, current roles,
+// the latest win, the track playing, active repos); koi gold STAR for the ★ on wins only;
+// neutral INK/MUTED/FAINT for everything else.
 export const ACCENT = "#43f08a";
+export const LIVE = "#ff8a3d";
+export const STAR = "#f2d36b";
 export const INK = "#e9ece9";
 export const MUTED = "#7c8a82";
 // FAINT is the quietest copy. The water texture runs behind every screen, so it sits above
-// the texture's brightest strand (#4c4c4c); the old #2c3531 drowned in it.
+// the texture's brightest strand (#1f4245).
 export const FAINT = "#56645d";
 // dashed rules and dividers: they claim their whole row or column, so the texture never
 // touches them and they keep the old faint shade

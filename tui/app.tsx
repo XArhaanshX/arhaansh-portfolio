@@ -34,7 +34,7 @@ import {
   DOWN_AMP,
   SPLASH_CAP,
 } from "@/lib/pond";
-import { ACCENT, BARS, ERR, FAINT, HAIRLINE, INK, MUTED, PANEL, SEL_BG, SEP, Stat, commas, compactNum, timeAgo, truncate } from "./ui";
+import { ACCENT, BARS, ERR, FAINT, HAIRLINE, INK, LIVE, MUTED, PANEL, SEL_BG, SEP, STAR, Stat, commas, compactNum, timeAgo, truncate } from "./ui";
 import { NowPlaying, VolumeBar, type VolumeChannel } from "./music";
 
 const MAX_CHAT_INPUT_CHARS = 2_000;
@@ -846,10 +846,10 @@ function VisitorHead({ total }: { total: number }) {
   }, []);
   return (
     <text bg={PANEL}>
-      <strong fg={ACCENT}>{`#${commas(total)}`}</strong>
+      <strong fg={INK}>{`#${commas(total)}`}</strong>
       <span fg={MUTED}>{" visitors"}</span>
       <span fg={FAINT}>{SEP}</span>
-      <span fg={ACCENT}>{"◉ "}</span>
+      <span fg={LIVE}>{"◉ "}</span>
       <span fg={INK}>{n}</span>
       <span fg={MUTED}>{" online"}</span>
     </text>
@@ -866,7 +866,7 @@ function ghParts(g: GitHubPulse): { text: string; fg: string; label?: string }[]
   const parts: { text: string; fg: string; label?: string }[] = [];
   if (g.commits !== undefined) parts.push({ text: compactNum(g.commits), fg: INK, label: " commits" });
   if (g.contributions !== undefined) parts.push({ text: compactNum(g.contributions), fg: INK, label: " contributions" });
-  if (g.stars !== undefined) parts.push({ text: `${compactNum(g.stars)}★`, fg: ACCENT });
+  if (g.stars !== undefined) parts.push({ text: `${compactNum(g.stars)}★`, fg: INK });
   return parts;
 }
 function ghStatsWidth(g: GitHubPulse): number {
@@ -988,7 +988,7 @@ const ORIGIN_LABEL: Record<Project["origin"], string> = {
   contrib: "CONTRIBUTOR",
 };
 const STATUS_MARK: Record<Project["status"], { ch: string; col: string }> = {
-  active: { ch: "●", col: ACCENT },
+  active: { ch: "●", col: LIVE },
   recent: { ch: "●", col: "#5f9e7c" },
   shipped: { ch: "◆", col: MUTED },
   dormant: { ch: "○", col: FAINT },
@@ -1044,7 +1044,8 @@ function ProjectIndex({ groups, selected, width, rows, onSelect }: { groups: Gro
             <text bg={r.i === selected ? SEL_BG : PANEL} wrapMode="none">
               <span fg={r.i === selected ? ACCENT : FAINT}>{r.i === selected ? " ▐▌ " : "    "}</span>
               <span fg={r.i === selected ? INK : MUTED}>{truncate(r.p.title, nameW - 1).padEnd(nameW)}</span>
-              <span fg={r.p.award ? ACCENT : FAINT}>{`${r.p.award ? "★" : " "} ${yy(r.p)}`}</span>
+              <span fg={r.p.award ? STAR : FAINT}>{r.p.award ? "★" : " "}</span>
+              <span fg={FAINT}>{` ${yy(r.p)}`}</span>
             </text>
           </box>
         ),
@@ -1065,7 +1066,8 @@ function ProjectDossier({ p, w, narrow, tight }: { p: Project; w: number; narrow
     <box style={{ flexGrow: 1, flexDirection: "column", paddingLeft: 2, paddingRight: 2, paddingTop: 1 }}>
       {p.award ? (
         <text bg={PANEL} wrapMode="none">
-          <span fg={ACCENT}>{truncate(`★ ${p.award.place} · ${p.award.event}`.toUpperCase(), w - 10)}</span>
+          <span fg={STAR}>{"★ "}</span>
+          <span fg={INK}>{truncate(`${p.award.place} · ${p.award.event}`.toUpperCase(), w - 12)}</span>
           <span fg={FAINT}>{`  ${p.award.when}`}</span>
         </text>
       ) : (
@@ -1328,7 +1330,7 @@ function Home({ linkedIn, list, volume }: { linkedIn: LinkedInSnapshot; list: Pr
       )}
       {wins[0] && (
         <Field k="last win">
-          <span fg={ACCENT}>{truncate(`${short(wins[0].place)} · ${event(wins[0])}`, copyW - 12)}</span>
+          <span fg={LIVE}>{truncate(wins[0].place === "Winner" ? event(wins[0]) : `${short(wins[0].place)} · ${event(wins[0])}`, copyW - 12)}</span>
         </Field>
       )}
       {profile.dob && (
@@ -1388,8 +1390,8 @@ function Home({ linkedIn, list, volume }: { linkedIn: LinkedInSnapshot; list: Pr
           {work.slice(0, nExp).map((w) => (
             <text key={w.org} bg={PANEL} wrapMode="none">
               <span fg={FAINT}>{`${stamp(w.from)}  `}</span>
-              <span fg={w.to ? FAINT : ACCENT}>{(w.to ? stamp(w.to) : "now").padEnd(8)}</span>
-              <span fg={w.to ? INK : ACCENT}>{truncate(w.role, listW)}</span>
+              <span fg={w.to ? FAINT : LIVE}>{(w.to ? stamp(w.to) : "now").padEnd(8)}</span>
+              <span fg={INK}>{truncate(w.role, listW)}</span>
               <span fg={MUTED}>{truncate(` @ ${w.org}`, Math.max(0, listW - w.role.length))}</span>
             </text>
           ))}
@@ -1405,7 +1407,7 @@ function Home({ linkedIn, list, volume }: { linkedIn: LinkedInSnapshot; list: Pr
           {research.slice(0, nResearch).map((r) => (
             <text key={r.title} bg={PANEL} wrapMode="none">
               <span fg={FAINT}>{`${stamp(r.when)}  `}</span>
-              <span fg={r.status.startsWith("Accepted") ? ACCENT : INK}>{r.tag.padEnd(8)}</span>
+              <span fg={r.status.startsWith("Accepted") ? INK : MUTED}>{r.tag.padEnd(8)}</span>
               <span fg={INK}>{truncate(r.title, listW)}</span>
             </text>
           ))}
@@ -1421,7 +1423,9 @@ function Home({ linkedIn, list, volume }: { linkedIn: LinkedInSnapshot; list: Pr
           {wins.slice(0, nWins).map((h) => (
             <text key={h.text} bg={PANEL} wrapMode="none">
               <span fg={FAINT}>{`${stamp(h.when)}  `}</span>
-              <span fg={h.place.startsWith("1st") ? ACCENT : INK}>{short(h.place).padEnd(8)}</span>
+              {/* every row is a win: the star says so; only another placing is spelled out */}
+              <span fg={STAR}>{"★ "}</span>
+              <span fg={INK}>{(h.place === "Winner" ? "" : short(h.place)).padEnd(6)}</span>
               <span fg={MUTED}>{truncate(event(h), listW)}</span>
             </text>
           ))}
