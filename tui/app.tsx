@@ -1247,6 +1247,9 @@ function Home({ linkedIn, list, volume }: { linkedIn: LinkedInSnapshot; list: Pr
   const building = list.filter((p) => p.origin === "personal").sort((a, b) => b.pushedAt.localeCompare(a.pushedAt))[0];
   const job = profile.work.find((w) => !w.to);
   const work = profile.work;
+  const research = profile.research;
+  // the résumé lives on the site; an absolute link works from SSH too
+  const resumeUrl = profile.links.resume ? `https://${profile.site}${profile.links.resume}` : "";
   const nowRows = 1 + (building ? 1 : 0) + (job ? 1 : 0) + (wins[0] ? 1 : 0) + (profile.dob ? 1 : 0);
   const aboutRows = profile.studies.length + 1 + (speaks ? 1 : 0);
   // rows under the header/footer chrome (6) and the top pad
@@ -1257,15 +1260,18 @@ function Home({ linkedIn, list, volume }: { linkedIn: LinkedInSnapshot; list: Pr
   // the left column (or, stacked, the top block) shrinks first: small banner, then no spacers
   // and the links on one row
   const fits = (rows: number) => (twoCol ? rows <= avail : rows + 12 <= avail);
-  const compact = narrow || !fits(leftRows(bigRows, 1, 3));
-  const tight = !fits(leftRows(smallRows, 1, 3));
+  const fullLinkRows = resumeUrl ? 4 : 3;
+  const compact = narrow || !fits(leftRows(bigRows, 1, fullLinkRows));
+  const tight = !fits(leftRows(smallRows, 1, fullLinkRows));
   const gap = tight ? 0 : 1;
   const name = banner(profile.name, !compact, copyW);
-  const linkRows = tight ? 1 : 3;
+  const linkRows = tight ? 1 : fullLinkRows;
   // the right-hand sections, in priority order, against what is left of the column
   let room = twoCol ? avail : avail - leftRows(bannerRows(name), gap, linkRows) - gap;
   const nExp = Math.max(0, Math.min(work.length, room - 1));
   room -= nExp ? 1 + nExp + gap : 0;
+  const nResearch = Math.max(0, Math.min(research.length, room - 1));
+  room -= nResearch ? 1 + nResearch + gap : 0;
   const nWins = Math.max(0, Math.min(wins.length, room - 1));
   room -= nWins ? 1 + nWins + gap : 0;
   const showGh = room >= GH_ROWS;
@@ -1287,6 +1293,7 @@ function Home({ linkedIn, list, volume }: { linkedIn: LinkedInSnapshot; list: Pr
     { href: profile.links.github, text: bare(profile.links.github) },
     { href: profile.links.linkedin, text: bare(profile.links.linkedin) },
     { href: `mailto:${profile.links.email}`, text: profile.links.email },
+    ...(resumeUrl ? [{ href: resumeUrl, text: "résumé" }] : []),
   ].filter((l) => (linkW += l.text.length + 3) - 3 <= copyW);
   const left = (
     <box style={{ flexDirection: "column", width: twoCol ? LEFT_W : undefined, flexShrink: 0 }}>
@@ -1359,6 +1366,7 @@ function Home({ linkedIn, list, volume }: { linkedIn: LinkedInSnapshot; list: Pr
           <FieldLink k="github" href={profile.links.github} text={bare(profile.links.github)} />
           <FieldLink k="linkedin" href={profile.links.linkedin} text={bare(profile.links.linkedin)} />
           <FieldLink k="email" href={`mailto:${profile.links.email}`} text={profile.links.email} />
+          {resumeUrl && <FieldLink k="résumé" href={resumeUrl} text={bare(resumeUrl)} />}
         </>
       )}
     </box>
@@ -1383,6 +1391,22 @@ function Home({ linkedIn, list, volume }: { linkedIn: LinkedInSnapshot; list: Pr
               <span fg={w.to ? FAINT : ACCENT}>{(w.to ? stamp(w.to) : "now").padEnd(8)}</span>
               <span fg={w.to ? INK : ACCENT}>{truncate(w.role, listW)}</span>
               <span fg={MUTED}>{truncate(` @ ${w.org}`, Math.max(0, listW - w.role.length))}</span>
+            </text>
+          ))}
+          <box style={{ height: gap }} />
+        </>
+      )}
+      {nResearch > 0 && (
+        <>
+          <text bg={PANEL}>
+            <span fg={MUTED}>RESEARCH</span>
+            <span fg={FAINT}>{`  ${research.length}`}</span>
+          </text>
+          {research.slice(0, nResearch).map((r) => (
+            <text key={r.title} bg={PANEL} wrapMode="none">
+              <span fg={FAINT}>{`${stamp(r.when)}  `}</span>
+              <span fg={r.status.startsWith("Accepted") ? ACCENT : INK}>{r.tag.padEnd(8)}</span>
+              <span fg={INK}>{truncate(r.title, listW)}</span>
             </text>
           ))}
           <box style={{ height: gap }} />
