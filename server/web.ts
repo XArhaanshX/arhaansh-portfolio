@@ -1,7 +1,7 @@
 // Bun HTTP server for the browser product (local dev, and the self-hosted container).
 // Routes live in ./routes (shared with the Cloudflare Worker); this file adds /app.js,
 // the favicon, and the listener. Runtime data goes to ./.data via @/lib/store's default.
-import { buildAppJs } from "./bundle";
+import { buildAppJs, buildPhoneJs } from "./bundle";
 import { handle } from "./routes";
 
 const PORT = Number(process.env.PORT ?? 8787);
@@ -29,6 +29,10 @@ Bun.serve({
       const file = Bun.file(`public${url.pathname}`);
       if (await file.exists()) return new Response(file, { headers: { "cache-control": "public, max-age=86400" } });
     }
+    if (url.pathname === "/m.js")
+      return new Response(await buildPhoneJs(process.env.NODE_ENV !== "production"), {
+        headers: { "content-type": "text/javascript; charset=utf-8", "cache-control": "no-store" },
+      });
     if (url.pathname === "/app.js")
       return new Response(await appJs(), {
         headers: { "content-type": "text/javascript; charset=utf-8", "cache-control": "no-store" },

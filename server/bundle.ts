@@ -35,11 +35,31 @@ export async function buildAppJs(dev: boolean): Promise<string> {
   return result.outputs[0].text();
 }
 
+// /m.js — the phone edition's script (web/phone): plain DOM on top of the server-rendered page
+export async function buildPhoneJs(dev: boolean): Promise<string> {
+  const lib = new URL("../src/lib/", import.meta.url).pathname;
+  const result = await Bun.build({
+    entrypoints: [new URL("../web/phone/main.ts", import.meta.url).pathname],
+    target: "browser",
+    minify: !dev,
+    plugins: [
+      {
+        name: "lib-paths",
+        setup(b) {
+          b.onResolve({ filter: /^@\/lib\/(.+)$/ }, (a) => ({ path: `${lib}${a.path.slice("@/lib/".length)}.ts` }));
+        },
+      },
+    ],
+  });
+  return result.outputs[0].text();
+}
+
 if (import.meta.main) {
   await Bun.write("dist/app.js", await buildAppJs(false));
+  await Bun.write("dist/m.js", await buildPhoneJs(false));
   // the AJ monogram under both names
   await Bun.write("dist/favicon.png", Bun.file("public/favicon.png"));
   await Bun.write("dist/favicon.ico", Bun.file("public/favicon.png"));
   await Bun.write("dist/og.png", Bun.file("public/og.png"));
-  console.log("wrote dist/app.js, dist/favicon.png, dist/favicon.ico, dist/og.png");
+  console.log("wrote dist/app.js, dist/m.js, dist/favicon.png, dist/favicon.ico, dist/og.png");
 }
