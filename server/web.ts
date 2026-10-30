@@ -24,6 +24,11 @@ Bun.serve({
       return new Response(Bun.file("public/favicon.png"), {
         headers: { "content-type": "image/png", "cache-control": "public, max-age=86400" },
       });
+    // other files in public/ (the link-preview image), served as Workers static assets in production
+    if (/^\/[\w-]+\.(png|jpg|pdf|webmanifest)$/.test(url.pathname)) {
+      const file = Bun.file(`public${url.pathname}`);
+      if (await file.exists()) return new Response(file, { headers: { "cache-control": "public, max-age=86400" } });
+    }
     if (url.pathname === "/app.js")
       return new Response(await appJs(), {
         headers: { "content-type": "text/javascript; charset=utf-8", "cache-control": "no-store" },

@@ -40,5 +40,6 @@ if (import.meta.main) {
   // the AJ monogram under both names
   await Bun.write("dist/favicon.png", Bun.file("public/favicon.png"));
   await Bun.write("dist/favicon.ico", Bun.file("public/favicon.png"));
-  console.log("wrote dist/app.js, dist/favicon.png, dist/favicon.ico");
+  await Bun.write("dist/og.png", Bun.file("public/og.png"));
+  console.log("wrote dist/app.js, dist/favicon.png, dist/favicon.ico, dist/og.png");
 }

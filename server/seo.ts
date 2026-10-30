@@ -5,7 +5,7 @@ import { profile } from "@/lib/profile";
 import type { Project } from "@/lib/projects";
 
 const ORIGIN = (process.env.PUBLIC_ORIGIN ?? `https://${profile.site}`).replace(/\/$/, "");
-const PAGE_TITLE = `${profile.name} — ${profile.role}`;
+export const PAGE_TITLE = `${profile.name} — ${profile.role}`;
 const STUDIES = profile.studies.map((s) => `${s.degree} @ ${s.school}`).join(", ");
 const DESC = `${profile.name} — ${profile.role}, machine learning engineer. ${STUDIES}, based in ${profile.location}. ML projects, hackathon wins, and an AI you can ask about me — in a terminal UI right in the browser.`;
 
@@ -33,7 +33,13 @@ export const SEO_HEAD = `
 <meta property="og:title" content="${esc(PAGE_TITLE)}" />
 <meta property="og:description" content="${esc(DESC)}" />
 <meta property="og:url" content="${ORIGIN}/" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:site_name" content="${esc(profile.site)}" />
+<meta property="og:image" content="${ORIGIN}/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="${esc(`${profile.name}, ${profile.role}`)}" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="${ORIGIN}/og.png" />
 <script type="application/ld+json">${JSON.stringify(personLd)}</script>`;
 
 const projectLabel = (p: Project) => (p.award ? ` (${p.award.place}, ${p.award.event})` : "");

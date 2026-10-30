@@ -1,8 +1,7 @@
 // Platform-neutral request handler for the browser product: the HTML shell, the /api/*
 // data endpoints and the SEO files. Shared by the Bun server (server/web.ts) and the
 // Cloudflare Worker (server/worker.ts); /app.js and the favicon are served by each host.
-import { SEO_HEAD, seoBody, robotsTxt, sitemapXml, llmsTxt } from "./seo";
-import { profile } from "@/lib/profile";
+import { PAGE_TITLE, SEO_HEAD, seoBody, robotsTxt, sitemapXml, llmsTxt } from "./seo";
 import { getSpotify } from "@/lib/spotify";
 import { getPreviewUrl } from "@/lib/preview";
 import { getLinkedInSnapshot } from "@/lib/linkedin";
@@ -22,11 +21,14 @@ const APP_HTML = `<!doctype html>
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>${profile.site}</title>${SEO_HEAD}
+<title>${PAGE_TITLE}</title>${SEO_HEAD}
 <link rel="icon" type="image/png" href="/favicon.png" />
 <meta name="theme-color" content="#030c0d" />
 <style>
+  html{color-scheme:dark;}
   html,body{margin:0;height:100%;background:#030c0d;overflow:hidden;}
+  /* taps act at once (no double-tap-zoom wait) and without the grey flash */
+  body{touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
   #app{position:fixed;top:0;left:0;right:0;height:100dvh;box-sizing:border-box;}
   /* no filter on #app: the brightness(1.08) saturate(1.18) grade is baked into the colours
      (web/dom/tone.ts), because a viewport-sized filter re-runs on every pond frame (slow at 4K) */
@@ -52,6 +54,14 @@ const APP_HTML = `<!doctype html>
   }
   .seo-content{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 </style>
+<noscript><style>
+  /* no JS: hide the terminal and show the SEO block as a plain page */
+  html,body{overflow:auto;}
+  #app,.crt-overlay,.crt-vignette{display:none;}
+  .seo-content{position:static;width:auto;height:auto;margin:0 auto;clip:auto;overflow:visible;white-space:normal;
+    max-width:72ch;padding:32px 20px;color:#e9ece9;font:16px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;}
+  .seo-content a{color:#43f08a;}
+</style></noscript>
 </head>
 <body>
 <!--seo-body-->
