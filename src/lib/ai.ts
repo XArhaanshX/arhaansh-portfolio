@@ -134,6 +134,8 @@ async function buildProfileContext() {
     `Education: ${profile.studies.map((s) => `${s.degree}, ${s.school} (${s.years})`).join("; ")}`,
     `Experience: ${profile.work.map((w) => `${w.role} @ ${w.org}, ${w.from} - ${w.to ?? "present"} (${w.kind})`).join("; ")}`,
     `Bio: ${profile.bio}`,
+    `Research: ${profile.research.map((r) => `${r.title} (${r.status}, ${r.when}): ${r.detail}`).join(" | ")}`,
+    profile.links.resume ? `Résumé (PDF): https://${profile.site}${profile.links.resume}` : "",
     `Skills: ${profile.skills.join(", ")}`,
     `GitHub: ${profile.links.github}`,
     `LinkedIn: ${profile.links.linkedin}`,

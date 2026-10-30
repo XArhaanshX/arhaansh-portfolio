@@ -104,6 +104,9 @@ export function llmsTxt(projects: Project[]) {
     "## Experience",
     ...profile.work.map((w) => `- ${w.role} @ ${w.org} (${w.from} - ${w.to ?? "present"})`),
     "",
+    "## Research",
+    ...profile.research.map((r) => `- ${r.title}: ${r.status}, ${r.when}. ${r.detail}`),
+    "",
     "## Projects",
     ...projects.map((p) => `- ${p.githubUrl ? `[${p.title}](${p.githubUrl})` : p.title}: ${p.summary}${projectLabel(p)}`),
     "",
@@ -114,6 +117,7 @@ export function llmsTxt(projects: Project[]) {
     `- GitHub: ${profile.links.github}`,
     `- LinkedIn: ${profile.links.linkedin}`,
     `- Email: ${profile.links.email}`,
+    ...(profile.links.resume ? [`- Résumé: ${ORIGIN}${profile.links.resume}`] : []),
     "",
   ].join("\n");
 }
