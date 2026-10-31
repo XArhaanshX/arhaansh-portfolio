@@ -10,7 +10,9 @@ import { techTag } from "@/lib/tech";
 import { BANNER_SHADE, banner } from "@/lib/banner";
 import { PAGE_TITLE, SEO_HEAD } from "./seo";
 
-const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+// typographic apostrophes and ellipses ("Arhaansh’s", "’26", "…"), then HTML escaping
+const typo = (s: string) => s.replace(/\.\.\./g, "…").replace(/(\w)'(\w)/g, "$1’$2").replace(/(^|[\s(])'(\d\d)\b/g, "$1’$2");
+const esc = (s: string) => typo(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
 // "Aug 2026" stays as written; "2026-08-01" style dates are not used on this page
 const RANKED = /^(1st|2nd|3rd|Top \d+|Winner|Track Prize)/;
@@ -202,7 +204,7 @@ ${r.url ? `<a class="out" href="${esc(r.url)}" rel="noopener" target="_blank">co
 </section>
 <section id="ask" aria-labelledby="ask-h">
   <h2 id="ask-h"><span aria-hidden="true">~/</span>ask</h2>
-  <p class="lede">Ask the assistant anything about ${esc(first)}'s ML work, projects, wins or stack.</p>
+  <p class="lede">Ask the assistant anything about ${esc(first)}’s ML work, projects, wins or stack.</p>
   <div class="thread" data-thread aria-live="polite"></div>
   <form class="askform" data-ask>
     <label class="sr" for="q">Your question</label>
@@ -237,7 +239,7 @@ ${r.url ? `<a class="out" href="${esc(r.url)}" rel="noopener" target="_blank">co
 const CSS = `
 /* from the pond: green for what you can press, koi orange for what is live now, koi gold for
    the star on wins, ink and greys for the rest */
-:root{--bg:#030c0d;--ink:#e9ece9;--muted:#8d9a92;--dim:#6f7d75;--line:#1c2925;--accent:#43f08a;--live:#ff8a3d;--star:#f2d36b;
+:root{--bg:#030c0d;--ink:#e9ece9;--muted:#8d9a92;--dim:#73827a;--line:#1c2925;--accent:#43f08a;--live:#ff8a3d;--star:#f2d36b;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Roboto Mono","Liberation Mono",monospace;color-scheme:dark}
 *{box-sizing:border-box}
 html{background:var(--bg);-webkit-text-size-adjust:100%;scroll-padding-top:56px}
@@ -340,7 +342,7 @@ h2 .count{order:2}
 .thread .err{color:#fda4af}
 .askform{display:flex;gap:8px}
 .askform input{flex:1;min-width:0;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:2px;background:#07171a;color:var(--ink);font:inherit;font-size:16px}
-.askform input::placeholder{color:var(--dim)}
+.askform input::placeholder{color:var(--muted)}
 .askform button{min-height:44px;padding:0 18px;border:0;border-radius:2px;background:var(--accent);color:var(--bg);font:inherit;font-weight:600}
 .askform button:disabled{opacity:.6}
 .sub{margin:28px 0 8px;font-size:13px;font-weight:400;color:var(--muted)}

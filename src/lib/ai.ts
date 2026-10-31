@@ -311,7 +311,7 @@ export async function ask(messages: ChatMessage[]): Promise<AskResult> {
   if (ageAnswer) return { answer: ageAnswer, model: "local/profile-facts" };
   if (injected(conversation)) return { answer: OFF_SCOPE, model: "local/scope" };
 
-  if (!globalAskAllowed(Date.now())) return { error: "Chat is busy right now. Try again in a minute." };
+  if (!globalAskAllowed(Date.now())) return { error: "The assistant is busy. Ask again in a minute." };
 
   activeAsks += 1;
   try {
@@ -357,7 +357,8 @@ export async function ask(messages: ChatMessage[]): Promise<AskResult> {
     }
 
     // all attempts exhausted — visitors get something human, not an upstream status line
-    return { error: `Chat is busy right now (${lastError}). Try again in a moment.` };
+    console.warn(`chat failed after retries: ${lastError}`);
+    return { error: "The assistant could not answer right now. Ask again in a minute." };
   } finally {
     activeAsks -= 1;
   }

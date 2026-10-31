@@ -51,7 +51,7 @@ Wins, experience and languages come from `src/data/linkedin-about.json` and `src
 ```bash
 bunx wrangler kv namespace create DATA        # paste the id into wrangler.jsonc
 bunx wrangler secret put GITHUB_TOKEN         # and SPOTIFY_*, OPENROUTER_API_KEY
-CLOUDFLARE_ACCOUNT_ID=... bun run deploy:cf
+CLOUDFLARE_ACCOUNT_ID=your_account_id_here bun run deploy:cf
 ```
 
 It serves on `arhaansh-me.<account>.workers.dev`; add a custom domain under `routes` in `wrangler.jsonc` and set `PUBLIC_ORIGIN` to it.

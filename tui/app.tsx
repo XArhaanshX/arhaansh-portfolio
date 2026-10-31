@@ -57,8 +57,8 @@ const HELP_TEXT = [
   "  /help              show this",
   "  /clear             wipe history",
   "  /save [name]       save chat (auto-named if blank)",
-  "  /resume [name]     reopen a saved chat — no name opens a picker",
-  "  /delete [name]     delete a saved chat — no name opens a picker",
+  "  /resume [name]     reopen a saved chat (no name opens a picker)",
+  "  /delete [name]     delete a saved chat (no name opens a picker)",
   "  /exit              back to home",
   "NAVIGATE",
   "  /home /projects /chat   (or press h p c)",
@@ -148,7 +148,7 @@ const BOOT_LINES = [
   "[ ok ] render tui",
   "ready.",
   "",
-  `welcome — ${profile.name.toLowerCase()}`,
+  `welcome, ${profile.name.toLowerCase()}`,
 ];
 
 // a returning visitor (same browser session) gets two lines instead of the whole log
@@ -166,7 +166,7 @@ const SHUTDOWN_LINES = [
   "[ ok ] release koi pond",
   `[ ok ] unmount ${HOME}`,
   "connection closed.",
-  `goodbye — ${profile.name.toLowerCase()}`,
+  `goodbye from ${profile.name.toLowerCase()}`,
 ];
 
 function BootLine({ line }: { line: string }) {
@@ -373,10 +373,10 @@ export default function App({
           if (arg) {
             const msgs = loadSession(arg);
             if (msgs) loadInto(msgs);
-            else pushAssistant(`no saved chat "${arg}" — /resume with no name to pick one.`);
+            else pushAssistant(`no saved chat "${arg}". Type /resume with no name to pick one.`);
           } else {
             const items = listSessions();
-            if (items.length === 0) pushAssistant("no saved chats yet — /save first.");
+            if (items.length === 0) pushAssistant("no saved chats yet. Type /save to keep this one.");
             else setPicker({ items, index: 0, mode: "resume" });
           }
         } else if (cmd === "delete" || cmd === "del" || cmd === "rm") {
@@ -390,7 +390,7 @@ export default function App({
         } else if (cmd === "help") {
           pushAssistant(allowSavedSessions ? HELP_TEXT : PUBLIC_SSH_HELP_TEXT);
         } else {
-          pushAssistant(`unknown command: /${cmd} — try /help`);
+          pushAssistant(`unknown command: /${cmd}. Type /help for the list.`);
         }
         return;
       }
@@ -1319,7 +1319,8 @@ function Home({ linkedIn, list, volume }: { linkedIn: LinkedInSnapshot; list: Pr
       </text>
       {building && (
         <Field k="building">
-          <span fg={INK}>{truncate(`${building.title} — pushed ${timeAgo(building.pushedAt)}`, copyW - 12)}</span>
+          <span fg={INK}>{building.title}</span>
+          <span fg={MUTED}>{truncate(`, pushed ${timeAgo(building.pushedAt)}`, Math.max(0, copyW - 12 - building.title.length))}</span>
         </Field>
       )}
       {job && (
@@ -1534,7 +1535,7 @@ function Chat({
       <box style={{ flexGrow: 1, flexDirection: "column", paddingLeft: 2, paddingRight: 2 }}>
         {messages.length === 0 && (
           <text bg={PANEL} fg={FAINT} wrapMode="none" style={{ height: 1 }}>
-            {`Ask about ${profile.name.split(" ")[0]} — ML work, projects, wins, stack, links. Type /help for commands.`}
+            {`Ask about ${profile.name.split(" ")[0]}'s ML work, projects, wins, stack or links. Type /help for commands.`}
           </text>
         )}
         {visible.map((r, i) => (
