@@ -10,10 +10,10 @@ export const ACCENT = "#43f08a";
 export const LIVE = "#ff8a3d";
 export const STAR = "#f2d36b";
 export const INK = "#e9ece9";
-export const MUTED = "#7c8a82";
-// FAINT is the quietest copy. The water texture runs behind every screen, so it sits above
-// the texture's brightest strand (#1f4245).
-export const FAINT = "#56645d";
+export const MUTED = "#8d9a92";
+// FAINT is the quietest copy, still 5.6:1 on the pond (and 4.6:1 on a selected row), so dates,
+// counts and hints pass WCAG AA; MUTED sits a clear step above it.
+export const FAINT = "#73827a";
 // dashed rules and dividers: they claim their whole row or column, so the texture never
 // touches them and they keep the old faint shade
 export const HAIRLINE = "#2c3531";

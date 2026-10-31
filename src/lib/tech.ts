@@ -58,7 +58,7 @@ export const TECH: Record<string, { tag: string; col: string }> = {
   mediapipe: { tag: "MP", col: "#00c2a8" },
   yolo: { tag: "YOLO", col: "#9b7ad6" },
 };
-export function techTag(name: string, fallback = "#7c8a82") {
+export function techTag(name: string, fallback = "#8d9a92") {
   const key = name.toLowerCase().replace(/[.\s_-]/g, "");
   return TECH[key] ?? { tag: name.slice(0, 3).toUpperCase(), col: fallback };
 }
