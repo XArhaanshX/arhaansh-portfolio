@@ -280,13 +280,16 @@ function Input({ style, focused, placeholder, value, onInput, onSubmit }: InputP
         ref={ref}
         style={{ ...css, flexGrow: 1 }}
         value={value ?? ""}
+        // the placeholder is painted text in the grid, so the input names itself
+        aria-label={placeholder?.replace(/[\s…(]+\/help\)?$/, "").trim() || "Message"}
+        autoComplete="off"
         onChange={(e) => onInput?.(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Enter") onSubmit?.((e.target as HTMLInputElement).value);
         }}
       />
       {!value && placeholder ? (
-        <span style={{ position: "absolute", left: 0, top: 0, pointerEvents: "none", whiteSpace: "pre", color: tone("#56645d") }}>{placeholder}</span>
+        <span aria-hidden="true" style={{ position: "absolute", left: 0, top: 0, pointerEvents: "none", whiteSpace: "pre", color: tone("#73827a") }}>{placeholder}</span>
       ) : null}
     </span>
   );

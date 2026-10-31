@@ -132,6 +132,7 @@ export function startPond(app: HTMLElement): void {
   const ctx = layer.getContext("2d", { alpha: false }) as CanvasRenderingContext2D; // nothing but the page background lies beneath
   // input flows to the app; we listen on the container (same contract as before)
   layer.style.cssText = "position:absolute;left:0;top:0;pointer-events:none;";
+  layer.setAttribute("aria-hidden", "true"); // decoration: screen readers skip it
   app.insertBefore(layer, app.firstChild); // behind #root, inside the CRT filter
 
   // backing-store scale: the device pixel ratio, capped so the canvas stays ~16 megapixels

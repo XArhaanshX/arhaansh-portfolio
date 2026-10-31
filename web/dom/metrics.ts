@@ -3,7 +3,9 @@
 // mouse mapping, pond canvas) — every consumer reads the same numbers, so the text grid,
 // the canvas grid, and cell-coordinate math can never drift apart.
 export const FONT_SIZE = 14;
-export const LINE_H = 19; // fixed px line height; width is the only platform-variable metric
+// fixed px line height (width is the only platform-variable metric): 19px for a mouse, 24px on
+// touch screens so every tappable row meets the 24px target size (WCAG 2.5.8)
+export const LINE_H = typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches ? 24 : 19;
 export const FONT_STACK = "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace";
 export const FONT = `${FONT_SIZE}px/${LINE_H}px ${FONT_STACK}`;
 
