@@ -91,12 +91,12 @@
    "sure": true
   },
   "githubUrl": "https://github.com/XArhaanshX/SCOPE-Reverse-Engineering",
-  "score": 46
+  "score": 45
  },
  {
   "repo": "Ujjwal160107/vivaad-radar",
   "title": "Land Dispute Radar",
-  "summary": "Vivaad Radar: links court cases to land survey numbers and scores, with evidence, whether a parcel is caught up in litigation.",
+  "summary": "Vivaad Radar: links court cases to land survey numbers and shows, with evidence, whether a parcel is in litigation.",
   "category": "NLP & agents",
   "origin": "hackathon",
   "stack": [
@@ -137,7 +137,7 @@
    "sure": true
   },
   "githubUrl": "https://github.com/Ujjwal160107/vivaad-radar",
-  "score": 42
+  "score": 41
  },
  {
   "repo": "XArhaanshX/SilentHeat",
@@ -174,7 +174,7 @@
  {
   "repo": "XArhaanshX/Tremor-Detection",
   "title": "Tremor Detection",
-  "summary": "An ESP32 + IMU wristband that watches a Parkinson's patient's hand all day, detects rest tremor on the band itself with an FFT (no cloud), turns it i…",
+  "summary": "An ESP32 wristband that detects Parkinson's rest tremor on the band itself and scores how severe it is.",
   "category": "Time series",
   "origin": "personal",
   "stack": [
@@ -358,7 +358,7 @@
  {
   "repo": "Ujjwal160107/adhigrahan-radar",
   "title": "Land Delay Radar",
-  "summary": "Adhigrahan Radar (SIH 2026, SIH26017): predicts which land-acquisition projects will miss their statutory deadlines, before they do.",
+  "summary": "Adhigrahan Radar (Smart India Hackathon 2026): predicts which land-acquisition projects will miss their legal deadlines.",
   "category": "Classical ML",
   "origin": "hackathon",
   "stack": [
@@ -395,7 +395,7 @@
  {
   "repo": "XArhaanshX/Wafer-Anomaly-Detection",
   "title": "Wafer Anomaly Audit",
-  "summary": "Audit and repair of the Fab-7 WAFER-GUARD excursion detector (GDG wildcard, AI/ML task).",
+  "summary": "Finds and fixes the bugs in a broken chip-fab anomaly detector, with evidence for every fix.",
   "category": "Classical ML",
   "origin": "personal",
   "stack": [
@@ -465,7 +465,7 @@
  {
   "repo": "liualt/Quorum",
   "title": "AI Interview Panel",
-  "summary": "Quorum (EcoSphere 2026 by Agora): three AI interviewers run a live engineering case while the candidate fixes a real defect in a sandbox.",
+  "summary": "Quorum (EcoSphere 2026): three AI interviewers run a live engineering case while the candidate fixes a real bug.",
   "category": "NLP & agents",
   "origin": "hackathon",
   "stack": [
@@ -503,7 +503,7 @@
  {
   "repo": "XArhaanshX/MeghMitra",
   "title": "MeghMitra",
-  "summary": "Ankur (SIH 2026): retrieves pre-approved contingency actions from district agriculture plans to match IMD's forecast.",
+  "summary": "Ankur (Smart India Hackathon 2026): finds the pre-approved farm contingency plan that matches the weather forecast.",
   "category": "NLP & agents",
   "origin": "hackathon",
   "stack": [
@@ -541,7 +541,7 @@
  {
   "repo": "XArhaanshX/Churn-Prediction-Project",
   "title": "Churn Prediction",
-  "summary": "A churn prediction system using ML models with full data pre-processing , EDA, class balancing, and performance evaluation.",
+  "summary": "Predicts which customers will leave, from data cleaning and SMOTE class balancing to a FastAPI service.",
   "category": "Classical ML",
   "origin": "personal",
   "stack": [
@@ -573,7 +573,7 @@
  {
   "repo": "XArhaanshX/HFLF-Temporal-Resolution-Study",
   "title": "HFLF Resolution Study",
-  "summary": "This repository is an independent research extension of the Short-Term Load Forecasting (STLF) project.",
+  "summary": "Tests whether simple persistence still beats LightGBM at load forecasting as the sampling interval changes.",
   "category": "Time series",
   "origin": "research",
   "stack": [
@@ -600,7 +600,7 @@
  {
   "repo": "XArhaanshX/Stochastic-Signal-Integration-in-HF-Load-Data",
   "title": "Stochastic HF Load",
-  "summary": "An Independent Research Framework for Evaluating Forecasting Robustness",
+  "summary": "Adds controlled random noise to high-frequency load data to test how robust forecasting models are.",
   "category": "Time series",
   "origin": "research",
   "stack": [
@@ -627,7 +627,7 @@
  {
   "repo": "XArhaanshX/Symbol-Segmentation-in-SLDs",
   "title": "SLD Segmentation",
-  "summary": "Automated Circuit Symbol Localization in Single Line Diagrams",
+  "summary": "Locates circuit symbols in single line diagrams (SLDs), the drawings engineers use to map power networks.",
   "category": "Computer vision",
   "origin": "research",
   "stack": [
@@ -655,7 +655,7 @@
  {
   "repo": "XArhaanshX/Time-Series-Load-Forecasting",
   "title": "Load Forecasting",
-  "summary": "Working on predicting energy load in power grids using various machine learning architectures",
+  "summary": "Compares machine learning models for predicting electricity demand on a power grid.",
   "category": "Time series",
   "origin": "research",
   "stack": [
@@ -681,7 +681,7 @@
  {
   "repo": "XArhaanshX/Handwriting-Recognition-Few-Shot-Pipeline",
   "title": "Few-Shot Handwriting",
-  "summary": "A research framework for deterministically identifying specific handwritten symbols (such as lowercase 'a' and uppercase 'A') in scanned paragraphs u…",
+  "summary": "Picks out one handwritten letter, like a lowercase a, in scanned paragraphs with a deterministic few-shot pipeline.",
   "category": "Computer vision",
   "origin": "research",
   "stack": [
@@ -789,7 +789,7 @@
  {
   "repo": "XArhaanshX/Single-Circuit-Symbol-Identification",
   "title": "Circuit Symbol ID",
-  "summary": "A research-oriented hybrid Computer Vision pipeline for one-shot localization of embedded circuit symbols inside complex engineering diagrams.",
+  "summary": "Finds a circuit symbol inside large engineering diagrams from one template image, with a hybrid vision pipeline.",
   "category": "Computer vision",
   "origin": "research",
   "stack": [

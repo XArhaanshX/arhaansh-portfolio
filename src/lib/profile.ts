@@ -47,9 +47,9 @@ export const profile: Profile = {
     {
       title: "Short-term electrical load forecasting",
       tag: "AUPEC",
-      status: "Accepted at AUPEC 2026",
+      status: "Accepted at the Australasian Universities Power Engineering Conference (AUPEC) 2026",
       when: "Aug 2026",
-      detail: "A new pre-processing approach for load signals on Haryana grid data, under Dr. Ganesan K. Benchmarked 17 forecasting models (statistical, tree-based, deep and attention-based); feature-engineered tree models came out on top.",
+      detail: "Proposes a new way to pre-process electrical load signals, tested on Haryana grid data with Dr. Ganesan K. It benchmarks 17 forecasting models, and feature-engineered tree models do best.",
       url: "https://github.com/XArhaanshX/Time-Series-Load-Forecasting",
     },
     {
@@ -57,7 +57,7 @@ export const profile: Profile = {
       tag: "study",
       status: "Research study",
       when: "Jul 2026",
-      detail: "Clustering algorithms written from scratch that combine machine learning with fuzzy logic, to handle uncertainty and overlapping cluster boundaries in partial-discharge data.",
+      detail: "Clustering algorithms, written from scratch, that combine machine learning with fuzzy logic. They handle uncertainty and overlapping clusters in partial-discharge data.",
       url: "https://github.com/XArhaanshX/Clustering-Problem-for-Discharge-Research",
     },
   ],

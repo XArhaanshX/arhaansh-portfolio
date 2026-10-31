@@ -46,17 +46,17 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
   },
   // Smart India Hackathon 2026 build; the README calls it Ankur
   "XArhaanshX/MeghMitra": {
-    set: { origin: "hackathon", category: "NLP & agents", summary: "Ankur (SIH 2026): retrieves pre-approved contingency actions from district agriculture plans to match IMD's forecast." },
+    set: { origin: "hackathon", category: "NLP & agents", summary: "Ankur (Smart India Hackathon 2026): finds the pre-approved farm contingency plan that matches the weather forecast." },
   },
   // team hackathon builds on teammates' accounts: the repo names do not say what they are
   "liualt/Quorum": {
-    set: { title: "AI Interview Panel", origin: "hackathon", category: "NLP & agents", summary: "Quorum (EcoSphere 2026 by Agora): three AI interviewers run a live engineering case while the candidate fixes a real defect in a sandbox." },
+    set: { title: "AI Interview Panel", origin: "hackathon", category: "NLP & agents", summary: "Quorum (EcoSphere 2026): three AI interviewers run a live engineering case while the candidate fixes a real bug." },
   },
   "liualt/PRISM": {
-    set: { title: "Code History Search", origin: "hackathon", category: "NLP & agents", summary: "PRISM (Samsung PRISM GenAI Hackathon): ask about a JavaScript repo in plain English and get matching functions across its whole git history." },
+    set: { title: "Code History Search", origin: "hackathon", category: "NLP & agents", summary: "PRISM (Samsung GenAI Hackathon): plain-English search over a JavaScript repo's code and its whole git history." },
   },
   "Ujjwal160107/adhigrahan-radar": {
-    set: { title: "Land Delay Radar", origin: "hackathon", category: "Classical ML", summary: "Adhigrahan Radar (SIH 2026, SIH26017): predicts which land-acquisition projects will miss their statutory deadlines, before they do." },
+    set: { title: "Land Delay Radar", origin: "hackathon", category: "Classical ML", summary: "Adhigrahan Radar (Smart India Hackathon 2026): predicts which land-acquisition projects will miss their legal deadlines." },
   },
   // no README, so the filter skips it
   "Ujjwal160107/vivaad-radar": {
@@ -65,7 +65,7 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
       title: "Land Dispute Radar",
       origin: "hackathon",
       category: "NLP & agents",
-      summary: "Vivaad Radar: links court cases to land survey numbers and scores, with evidence, whether a parcel is caught up in litigation.",
+      summary: "Vivaad Radar: links court cases to land survey numbers and shows, with evidence, whether a parcel is in litigation.",
       award: { place: "Winner", event: "Innohack 2.0", when: "Aug 2026", at: "2026-08-01", sure: true },
     },
   },
@@ -83,16 +83,17 @@ export const PROJECT_OVERRIDES: Record<string, ProjectOverride> = {
     },
   },
   // titles that fit the 22-cell index column
-  "XArhaanshX/Handwriting-Recognition-Few-Shot-Pipeline": { set: { title: "Few-Shot Handwriting" } },
+  "XArhaanshX/Handwriting-Recognition-Few-Shot-Pipeline": { set: { title: "Few-Shot Handwriting", summary: "Picks out one handwritten letter, like a lowercase a, in scanned paragraphs with a deterministic few-shot pipeline." } },
   "XArhaanshX/Clustering-Problem-for-Discharge-Research": { set: { title: "Partial Discharge", summary: "How robust is partial-discharge classification (simulated, sharp point, void, surface) as the signal degrades with noise?" } },
-  "XArhaanshX/Stochastic-Signal-Integration-in-HF-Load-Data": { set: { title: "Stochastic HF Load" } },
-  "XArhaanshX/HFLF-Temporal-Resolution-Study": { set: { title: "HFLF Resolution Study" } },
-  "XArhaanshX/Single-Circuit-Symbol-Identification": { set: { title: "Circuit Symbol ID" } },
-  "XArhaanshX/Symbol-Segmentation-in-SLDs": { set: { title: "SLD Segmentation" } },
-  "XArhaanshX/Time-Series-Load-Forecasting": { set: { title: "Load Forecasting" } },
+  "XArhaanshX/Stochastic-Signal-Integration-in-HF-Load-Data": { set: { title: "Stochastic HF Load", summary: "Adds controlled random noise to high-frequency load data to test how robust forecasting models are." } },
+  "XArhaanshX/HFLF-Temporal-Resolution-Study": { set: { title: "HFLF Resolution Study", summary: "Tests whether simple persistence still beats LightGBM at load forecasting as the sampling interval changes." } },
+  "XArhaanshX/Single-Circuit-Symbol-Identification": { set: { title: "Circuit Symbol ID", summary: "Finds a circuit symbol inside large engineering diagrams from one template image, with a hybrid vision pipeline." } },
+  "XArhaanshX/Symbol-Segmentation-in-SLDs": { set: { title: "SLD Segmentation", summary: "Locates circuit symbols in single line diagrams (SLDs), the drawings engineers use to map power networks." } },
+  "XArhaanshX/Time-Series-Load-Forecasting": { set: { title: "Load Forecasting", summary: "Compares machine learning models for predicting electricity demand on a power grid." } },
   "XArhaanshX/Load-forecasting": { set: { title: "Load Forecast Survey" } },
-  "XArhaanshX/Churn-Prediction-Project": { set: { title: "Churn Prediction" } },
-  "XArhaanshX/Wafer-Anomaly-Detection": { set: { title: "Wafer Anomaly Audit" } },
+  "XArhaanshX/Churn-Prediction-Project": { set: { title: "Churn Prediction", summary: "Predicts which customers will leave, from data cleaning and SMOTE class balancing to a FastAPI service." } },
+  "XArhaanshX/Wafer-Anomaly-Detection": { set: { title: "Wafer Anomaly Audit", summary: "Finds and fixes the bugs in a broken chip-fab anomaly detector, with evidence for every fix." } },
+  "XArhaanshX/Tremor-Detection": { set: { summary: "An ESP32 wristband that detects Parkinson's rest tremor on the band itself and scores how severe it is." } },
   "XArhaanshX/SCOPE-Reverse-Engineering": {
     set: {
       title: "CTF-Dortress",
