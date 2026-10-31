@@ -35,9 +35,9 @@ const APP_HTML = `<!doctype html>
      (web/dom/tone.ts), because a viewport-sized filter re-runs on every pond frame (slow at 4K) */
   /* #root paints the text grid over the pond canvas (explicit z-index: the canvas must
      never composite above the text); cell size comes from --cw/--lh (metrics.ts) */
-  #root{position:absolute;inset:0;z-index:1;color:#fbfffb;font:14px/19px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  #root{position:absolute;inset:0;z-index:1;color:#fbfffb;font:14px/19px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;line-height:var(--lh,19px);
         -webkit-font-smoothing:antialiased;}
-  #root input::placeholder{color:#5b6d64;opacity:1;}
+  #root input::placeholder{color:#73827a;opacity:1;}
   #root a{cursor:pointer;}
   /* keyboard focus is visible on links and tappable rows; a click never shows the ring */
   #root a:focus-visible,#root [role=button]:focus-visible{outline:1px solid #43f08a;outline-offset:1px;}
@@ -48,7 +48,8 @@ const APP_HTML = `<!doctype html>
      re-composited the whole viewport ten times a second (very slow at 4K) */
   .crt-overlay{
     position:fixed;inset:0;z-index:10;pointer-events:none;
-    background:repeating-linear-gradient(0deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 1px, rgba(0,0,0,0.32) 2px);
+    /* 20% (was 32%): the lines darkened every other pixel row of the text enough to fail contrast */
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 1px, rgba(0,0,0,0.2) 2px);
   }
   /* vignette only: the old 4% green wash muddied every colour; a normal-blend layer instead of
      mix-blend-mode: screen, which forced a full-viewport backdrop read every frame */
@@ -60,19 +61,19 @@ const APP_HTML = `<!doctype html>
   .chooser{position:fixed;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;padding:24px;
     font:15px/1.6 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#e9ece9;}
   .ch-panel{width:min(520px,100%);background:#030c0d;border:1px solid #2c3531;padding:28px;}
-  .ch-site{margin:0;color:#7c8a82;font-size:13px;}
+  .ch-site{margin:0;color:#8d9a92;font-size:13px;}
   .ch-title{margin:6px 0 0;font-size:22px;font-weight:600;}
   .ch-role{margin:2px 0 0;color:#43f08a;}
-  .ch-q{margin:24px 0 10px;color:#7c8a82;}
+  .ch-q{margin:24px 0 10px;color:#8d9a92;}
   .ch-opts{display:grid;gap:10px;}
   .ch-opt{display:grid;gap:2px;text-align:left;width:100%;min-height:64px;padding:12px 14px;background:none;color:inherit;
     font:inherit;border:1px solid #2c3531;cursor:pointer;}
-  .ch-opt:hover{border-color:#56645d;}
+  .ch-opt:hover{border-color:#73827a;}
   .ch-opt.ch-suggested{border-color:#43f08a;}
   .ch-opt:focus-visible{outline:2px solid #43f08a;outline-offset:2px;}
   .ch-name{font-weight:600;}
   .ch-tag{margin-left:8px;color:#43f08a;font-weight:400;font-size:13px;}
-  .ch-desc{color:#7c8a82;font-size:14px;}
+  .ch-desc{color:#8d9a92;font-size:14px;}
   .ch-note{margin:14px 0 0;color:#6f7d75;font-size:13px;}
   .seo-content{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 </style>
@@ -87,7 +88,7 @@ const APP_HTML = `<!doctype html>
 </head>
 <body>
 <!--seo-body-->
-<div id="app"><div id="root"></div></div>
+<div id="app"><main id="root"></main></div>
 <div class="crt-vignette"></div>
 <div class="crt-overlay"></div>
 <script type="module" src="/app.js"></script>

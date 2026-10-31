@@ -46,7 +46,7 @@ const projectLabel = (p: Project) => (p.award ? ` (${p.award.place}, ${p.award.e
 
 export function seoBody(projects: Project[]): string {
   return `
-<main class="seo-content">
+<section class="seo-content" aria-label="Portfolio summary">
   <h1>${esc(profile.name)}</h1>
   <p>${esc(profile.role)} · ${esc(STUDIES)} · ${esc(profile.location)}</p>
   <p>${esc(DESC)}</p>
@@ -62,7 +62,7 @@ export function seoBody(projects: Project[]): string {
     <li><a href="${esc(profile.links.linkedin)}">LinkedIn</a></li>
     <li><a href="mailto:${esc(profile.links.email)}">Email</a></li>
   </ul>
-</main>`;
+</section>`;
 }
 
 export function robotsTxt() {
